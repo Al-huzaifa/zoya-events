@@ -10,7 +10,9 @@ import {
   Maximize2,
   Timer,
   History,
-  X // Added for closing the popup
+  X,
+  Hammer,
+  ShieldCheck
 } from "lucide-react";
 import Link from "next/link";
 
@@ -85,7 +87,7 @@ export default function SalesOfficePage() {
 
   const [activeIndex, setActiveIndex] = useState(0);
   type ProjectType = typeof autoProjects[number];
-  const [selectedProject, setSelectedProject] = useState<ProjectType | null>(null); // State for the popup
+  const [selectedProject, setSelectedProject] = useState<ProjectType | null>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -186,7 +188,109 @@ export default function SalesOfficePage() {
         </div>
       </section>
 
-      {/* --- SECTION 3: MASONRY ARCHIVE --- */}
+      {/* --- NEW SECTION 3: PERMANENT SALES OFFICE --- */}
+      <section className="py-24 md:py-32 px-6 bg-zinc-950 border-t border-zinc-900">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+          <div className="relative group overflow-hidden border border-zinc-800 bg-black">
+            <img 
+              src="/images/salesoffice_permanent.webp" 
+              alt="Permanent Sales Office Luxury Interior" 
+              className="w-full h-[600px] object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent opacity-80 pointer-events-none" />
+            <div className="absolute bottom-8 left-8">
+               <span className="px-4 py-2 bg-[#D4AF37] text-black text-[10px] font-black uppercase tracking-widest">
+                 Long-Term Asset
+               </span>
+            </div>
+          </div>
+          
+          <div className="space-y-10">
+            <div>
+              <h2 className="text-[#D4AF37] text-[10px] md:text-xs uppercase tracking-[0.6em] mb-6 font-bold flex items-center gap-3">
+                <ShieldCheck size={16} /> Architectural Permanence
+              </h2>
+              <h3 className="text-4xl md:text-6xl font-black uppercase leading-none mb-6">
+                Permanent <br /> <span className="text-zinc-500">Sales Hubs.</span>
+              </h3>
+              <p className="text-zinc-400 text-lg leading-relaxed font-light">
+                For developers requiring a sustained market presence (12+ months), we engineer <strong>Permanent Sales Offices</strong> that rival 5-star hotel lobbies. We combine heavy structural integrity with high-end interior finishes—Italian marble flooring, acoustic glass partitions, and automated climate control—creating an environment of absolute trust and luxury for your investors.
+              </p>
+            </div>
+
+            <ul className="space-y-6 border-l border-zinc-800 pl-8">
+              <li className="space-y-2">
+                <h4 className="text-white font-bold uppercase tracking-wider text-sm">Heavy Civil Integration</h4>
+                <p className="text-zinc-500 text-sm">Seamless connection to main construction sites with reinforced foundations.</p>
+              </li>
+              <li className="space-y-2">
+                <h4 className="text-white font-bold uppercase tracking-wider text-sm">Acoustic Privacy</h4>
+                <p className="text-zinc-500 text-sm">Sound-proof closing cabins designed for high-value negotiations.</p>
+              </li>
+              <li className="space-y-2">
+                <h4 className="text-white font-bold uppercase tracking-wider text-sm">Brand Immersion</h4>
+                <p className="text-zinc-500 text-sm">Integrated digital walls and architectural model lighting systems.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* --- NEW SECTION 4: TEMPORARY GERMAN HANGAR --- */}
+      <section className="py-24 md:py-32 px-6 bg-black border-y border-[#D4AF37]/10">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+          
+          <div className="lg:order-2 relative group overflow-hidden border border-zinc-800 bg-zinc-900">
+            <img 
+              src="/images/salesoffice_temporary.webp" 
+              alt="German Hangar Temporary Office" 
+              className="w-full h-[600px] object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000 grayscale hover:grayscale-0"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent opacity-80 pointer-events-none" />
+            <div className="absolute bottom-8 right-8 text-right">
+               <span className="px-4 py-2 bg-white text-black text-[10px] font-black uppercase tracking-widest">
+                 Rapid Deployment
+               </span>
+            </div>
+          </div>
+
+          <div className="lg:order-1 space-y-10">
+            <div>
+              <h2 className="text-white text-[10px] md:text-xs uppercase tracking-[0.6em] mb-6 font-bold flex items-center gap-3">
+                <Hammer size={16} className="text-[#D4AF37]" /> Tactical Speed
+              </h2>
+              <h3 className="text-4xl md:text-6xl font-black uppercase leading-none mb-6">
+                Temporary <br /> <span className="text-[#D4AF37]">German Hangars.</span>
+              </h3>
+              <p className="text-zinc-400 text-lg leading-relaxed font-light">
+                When speed is the strategy. Our <strong>Temporary Sales Offices</strong> utilize advanced German Hangar technology to go from bare ground to a fully air-conditioned, operational sales gallery in just <strong>48 to 72 hours</strong>. Ideal for pre-launches (2-3 month cycles), these structures offer the look and feel of a permanent building without the time cost.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-6">
+              <div className="p-6 border border-zinc-800 bg-zinc-900/50 hover:border-[#D4AF37]/50 transition-colors">
+                <h4 className="text-2xl font-black text-[#D4AF37] mb-2">48H</h4>
+                <p className="text-zinc-500 text-xs uppercase tracking-widest">Setup Time</p>
+              </div>
+              <div className="p-6 border border-zinc-800 bg-zinc-900/50 hover:border-[#D4AF37]/50 transition-colors">
+                <h4 className="text-2xl font-black text-white mb-2">100%</h4>
+                <p className="text-zinc-500 text-xs uppercase tracking-widest">Weather Proof</p>
+              </div>
+              <div className="p-6 border border-zinc-800 bg-zinc-900/50 hover:border-[#D4AF37]/50 transition-colors">
+                <h4 className="text-2xl font-black text-white mb-2">MODULAR</h4>
+                <p className="text-zinc-500 text-xs uppercase tracking-widest">Scalable Design</p>
+              </div>
+              <div className="p-6 border border-zinc-800 bg-zinc-900/50 hover:border-[#D4AF37]/50 transition-colors">
+                <h4 className="text-2xl font-black text-[#D4AF37] mb-2">HVAC</h4>
+                <p className="text-zinc-500 text-xs uppercase tracking-widest">Climate Ready</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* --- SECTION 5: MASONRY ARCHIVE (EXISTING) --- */}
       <section className="py-24 px-6 bg-black">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-20 gap-8">
@@ -205,7 +309,7 @@ export default function SalesOfficePage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                onClick={() => setSelectedProject(proj)} // Set the project on click
+                onClick={() => setSelectedProject(proj)}
                 className="relative group overflow-hidden border border-zinc-900 bg-zinc-950 break-inside-avoid cursor-pointer"
               >
                 <div className="absolute inset-0 bg-black/50 z-10 group-hover:bg-black/20 transition-all duration-700" />
@@ -226,7 +330,7 @@ export default function SalesOfficePage() {
         </div>
       </section>
 
-      {/* --- POPUP / MODAL COMPONENT --- */}
+      {/* --- POPUP / MODAL COMPONENT (EXISTING) --- */}
       <AnimatePresence>
         {selectedProject && (
           <motion.div 
@@ -234,16 +338,15 @@ export default function SalesOfficePage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-100 flex items-center justify-center p-4 md:p-12 bg-black/95 backdrop-blur-xl"
-            onClick={() => setSelectedProject(null)} // Close on background click
+            onClick={() => setSelectedProject(null)}
           >
             <motion.div 
               initial={{ scale: 0.9, y: 20, opacity: 0 }}
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.9, y: 20, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()} // Prevent close on modal content click
+              onClick={(e) => e.stopPropagation()}
               className="bg-zinc-950 border border-[#D4AF37]/30 w-full max-w-6xl max-h-[90vh] overflow-y-auto relative flex flex-col md:flex-row"
             >
-              {/* Close Button */}
               <button 
                 onClick={() => setSelectedProject(null)}
                 className="absolute top-6 right-6 z-50 p-2 bg-white text-black hover:bg-[#D4AF37] transition-colors"
@@ -251,7 +354,6 @@ export default function SalesOfficePage() {
                 <X size={24} />
               </button>
 
-              {/* Modal Image */}
               <div className="w-full md:w-1/2 h-64 md:h-auto overflow-hidden">
                 <img 
                   src={selectedProject.src} 
@@ -260,7 +362,6 @@ export default function SalesOfficePage() {
                 />
               </div>
 
-              {/* Modal Content */}
               <div className="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center">
                 <span className="text-[#D4AF37] text-xs font-black uppercase tracking-[0.4em] mb-4">
                   Project Brief / {selectedProject.category}
@@ -272,7 +373,6 @@ export default function SalesOfficePage() {
                   {selectedProject.desc}
                 </p>
 
-                {/* Technical Specs Table */}
                 <div className="grid grid-cols-2 gap-8 border-t border-zinc-800 pt-8">
                   <div>
                     <p className="text-[10px] text-zinc-500 uppercase font-bold tracking-widest mb-1">Scale</p>
@@ -304,7 +404,7 @@ export default function SalesOfficePage() {
         )}
       </AnimatePresence>
 
-      {/* --- SECTION 4: THE TECHNICAL DATA --- */}
+      {/* --- SECTION 6: THE TECHNICAL DATA --- */}
       <section className="py-24 md:py-32 px-6 bg-zinc-950 border-y border-zinc-900">
         <div className="max-w-4xl mx-auto text-center">
           <History className="mx-auto text-[#D4AF37] mb-12" size={48} />
@@ -322,13 +422,13 @@ export default function SalesOfficePage() {
             </div>
             <div>
               <p className="text-4xl md:text-6xl font-black text-white">200+</p>
-              <p className="text-[#D4AF37] text-[9px] uppercase tracking-widest font-bold mt-2 italic">Global Brands</p>
+              <p className="text-[#D4AF37] text-[9px] uppercase tracking-widest font-bold mt-2 italic">national Brands</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* --- SECTION 5: EXTRAORDINARY CTA --- */}
+      {/* --- SECTION 7: EXTRAORDINARY CTA --- */}
       <section className="py-32 md:py-48 px-6 text-center bg-black relative">
         <h2 className="text-6xl md:text-[18rem] font-black uppercase leading-none mb-12 opacity-5 pointer-events-none select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full">EXTRAORDINARY.</h2>
         <div className="relative z-10">
