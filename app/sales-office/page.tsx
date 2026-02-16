@@ -3,11 +3,8 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  Building2, 
-  Zap, 
   ArrowUpRight, 
   MapPin, 
-  Maximize2,
   Timer,
   History,
   X,
@@ -97,10 +94,27 @@ export default function SalesOfficePage() {
   }, [autoProjects.length]);
 
   return (
-    <main className="bg-black text-white min-h-screen selection:bg-[#D4AF37] selection:text-black font-sans overflow-x-hidden">
+    <main className="relative min-h-screen text-white overflow-hidden bg-black selection:bg-[#D4AF37] selection:text-black font-sans">
+      
+      {/* =========================================================
+          GLOBAL BACKGROUND: LUXURY GRADIENTS & PARTICLES
+          (Copied from About Page for Consistency)
+      ========================================================= */}
+      <div className="absolute inset-0 z-0 pointer-events-none h-full w-full">
+        <div className="absolute inset-0 bg-gradient-to-br from-zinc-950 via-black to-zinc-900" />
+        <div className="absolute top-[-10%] left-[-10%] w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(212,175,55,0.15)_0%,transparent_70%)] blur-3xl opacity-60" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(184,134,11,0.1)_0%,transparent_70%)] blur-3xl opacity-50" />
+        <div className="absolute top-0 left-1/2 w-full h-full bg-gradient-to-tr from-transparent via-white/[0.03] to-transparent -translate-x-1/2 skew-x-12 pointer-events-none" />
+        {/* Floating Particles */}
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-[#D4AF37] rounded-full opacity-20 animate-pulse" />
+        <div className="absolute top-3/4 right-1/4 w-3 h-3 bg-[#F3E779] rounded-full opacity-10 animate-bounce duration-[10000ms]" />
+        <div className="absolute bottom-1/3 left-1/2 w-1 h-1 bg-[#D4AF37] rounded-full opacity-30" />
+      </div>
+
+      <div className="relative z-10">
       
       {/* --- SECTION 1: AUTO-CHANGING CINEMATIC HERO --- */}
-      <section className="relative h-screen w-full bg-black overflow-hidden border-b border-[#D4AF37]/20">
+      <section className="relative h-screen w-full overflow-hidden border-b border-[#D4AF37]/20">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeIndex}
@@ -110,7 +124,7 @@ export default function SalesOfficePage() {
             transition={{ duration: 1.5, ease: "easeInOut" }}
             className="absolute inset-0"
           >
-            <div className="absolute inset-0 bg-linear-to-b from-black/20 via-black/60 to-black z-10" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/60 to-black z-10" />
             <img 
               src={autoProjects[activeIndex].src} 
               alt={autoProjects[activeIndex].title}
@@ -133,16 +147,16 @@ export default function SalesOfficePage() {
               </span>
               <div className="h-px w-12 bg-[#D4AF37]/40" />
             </div>
-            <h1 className="text-5xl md:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] mb-8">
+            <h1 className="text-5xl md:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] mb-8 drop-shadow-2xl">
               {autoProjects[activeIndex].title.split(' ')[0]} <br />
               <span className="text-[#D4AF37] italic font-light">{autoProjects[activeIndex].title.split(' ').slice(1).join(' ')}</span>
             </h1>
-            <p className="text-zinc-400 text-lg md:text-2xl font-light mb-12 leading-relaxed max-w-xl">
+            <p className="text-zinc-300 text-lg md:text-2xl font-light mb-12 leading-relaxed max-w-xl drop-shadow-md">
               {autoProjects[activeIndex].desc}
             </p>
             <Link 
               href="/contact"
-              className="inline-flex items-center gap-6 px-12 py-6 bg-[#D4AF37] text-black font-black uppercase tracking-widest text-[10px] hover:bg-white transition-all duration-700"
+              className="inline-flex items-center gap-6 px-12 py-6 bg-[#D4AF37] text-black font-black uppercase tracking-widest text-[10px] hover:bg-white transition-all duration-700 shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:shadow-[0_0_50px_rgba(255,255,255,0.6)]"
             >
               Start Technical Quote <ArrowUpRight size={18} />
             </Link>
@@ -153,15 +167,16 @@ export default function SalesOfficePage() {
           {autoProjects.map((_, i) => (
             <div 
               key={i} 
-              className={`h-1 transition-all duration-700 ${i === activeIndex ? 'w-24 bg-[#D4AF37]' : 'w-8 bg-zinc-800'}`} 
+              className={`h-1 transition-all duration-700 ${i === activeIndex ? 'w-24 bg-[#D4AF37] shadow-[0_0_10px_#D4AF37]' : 'w-8 bg-zinc-800'}`} 
             />
           ))}
         </div>
       </section>
 
       {/* --- SECTION 2: THE MAHARASHTRA MANIFESTO --- */}
-      <section className="py-24 md:py-40 px-6 bg-white text-black relative">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-24 md:py-40 px-6 relative">
+        <div className="absolute inset-0 bg-white/[0.95] backdrop-blur-md z-0" /> {/* High contrast background for text */}
+        <div className="max-w-6xl mx-auto relative z-10 text-black">
           <h2 className="text-[#D4AF37] text-[10px] md:text-xs uppercase tracking-[0.8em] mb-8 md:mb-16 font-black text-center md:text-left underline decoration-[#D4AF37]/20 underline-offset-8">Regional Command</h2>
           <p className="text-4xl md:text-8xl font-light leading-tight tracking-tighter mb-16 md:mb-24 uppercase text-center md:text-left">
             13+ Years of <span className="font-black italic">Expertise</span> <br /> in the Heart of <br /> <span className="text-[#D4AF37] font-black">Maharashtra.</span>
@@ -188,18 +203,18 @@ export default function SalesOfficePage() {
         </div>
       </section>
 
-      {/* --- NEW SECTION 3: PERMANENT SALES OFFICE --- */}
-      <section className="py-24 md:py-32 px-6 bg-zinc-950 border-t border-zinc-900">
+      {/* --- SECTION 3: PERMANENT SALES OFFICE --- */}
+      <section className="py-24 md:py-32 px-6 border-t border-white/5 bg-zinc-950/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <div className="relative group overflow-hidden border border-zinc-800 bg-black">
+          <div className="relative group overflow-hidden border border-zinc-800 bg-black shadow-2xl">
             <img 
               src="/images/salesoffice_permanent.webp" 
               alt="Permanent Sales Office Luxury Interior" 
               className="w-full h-[600px] object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000"
             />
-            <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent opacity-80 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 pointer-events-none" />
             <div className="absolute bottom-8 left-8">
-               <span className="px-4 py-2 bg-[#D4AF37] text-black text-[10px] font-black uppercase tracking-widest">
+               <span className="px-4 py-2 bg-[#D4AF37] text-black text-[10px] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(212,175,55,0.4)]">
                  Long-Term Asset
                </span>
             </div>
@@ -219,16 +234,16 @@ export default function SalesOfficePage() {
             </div>
 
             <ul className="space-y-6 border-l border-zinc-800 pl-8">
-              <li className="space-y-2">
-                <h4 className="text-white font-bold uppercase tracking-wider text-sm">Heavy Civil Integration</h4>
+              <li className="space-y-2 group">
+                <h4 className="text-white font-bold uppercase tracking-wider text-sm group-hover:text-[#D4AF37] transition-colors">Heavy Civil Integration</h4>
                 <p className="text-zinc-500 text-sm">Seamless connection to main construction sites with reinforced foundations.</p>
               </li>
-              <li className="space-y-2">
-                <h4 className="text-white font-bold uppercase tracking-wider text-sm">Acoustic Privacy</h4>
+              <li className="space-y-2 group">
+                <h4 className="text-white font-bold uppercase tracking-wider text-sm group-hover:text-[#D4AF37] transition-colors">Acoustic Privacy</h4>
                 <p className="text-zinc-500 text-sm">Sound-proof closing cabins designed for high-value negotiations.</p>
               </li>
-              <li className="space-y-2">
-                <h4 className="text-white font-bold uppercase tracking-wider text-sm">Brand Immersion</h4>
+              <li className="space-y-2 group">
+                <h4 className="text-white font-bold uppercase tracking-wider text-sm group-hover:text-[#D4AF37] transition-colors">Brand Immersion</h4>
                 <p className="text-zinc-500 text-sm">Integrated digital walls and architectural model lighting systems.</p>
               </li>
             </ul>
@@ -236,19 +251,19 @@ export default function SalesOfficePage() {
         </div>
       </section>
 
-      {/* --- NEW SECTION 4: TEMPORARY GERMAN HANGAR --- */}
-      <section className="py-24 md:py-32 px-6 bg-black border-y border-[#D4AF37]/10">
+      {/* --- SECTION 4: TEMPORARY GERMAN HANGAR --- */}
+      <section className="py-24 md:py-32 px-6 border-y border-[#D4AF37]/10 bg-black/40 backdrop-blur-md">
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           
-          <div className="lg:order-2 relative group overflow-hidden border border-zinc-800 bg-zinc-900">
+          <div className="lg:order-2 relative group overflow-hidden border border-zinc-800 bg-zinc-900 shadow-2xl">
             <img 
               src="/images/salesoffice_temporary.webp" 
               alt="German Hangar Temporary Office" 
               className="w-full h-[600px] object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000 grayscale hover:grayscale-0"
             />
-            <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent opacity-80 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 pointer-events-none" />
             <div className="absolute bottom-8 right-8 text-right">
-               <span className="px-4 py-2 bg-white text-black text-[10px] font-black uppercase tracking-widest">
+               <span className="px-4 py-2 bg-white text-black text-[10px] font-black uppercase tracking-widest shadow-[0_0_20px_rgba(255,255,255,0.3)]">
                  Rapid Deployment
                </span>
             </div>
@@ -260,7 +275,7 @@ export default function SalesOfficePage() {
                 <Hammer size={16} className="text-[#D4AF37]" /> Tactical Speed
               </h2>
               <h3 className="text-4xl md:text-6xl font-black uppercase leading-none mb-6">
-                Temporary <br /> <span className="text-[#D4AF37]">German Hangars.</span>
+                Temporary <br /> <span className="text-[#D4AF37] drop-shadow-[0_0_15px_rgba(212,175,55,0.5)]">German Hangars.</span>
               </h3>
               <p className="text-zinc-400 text-lg leading-relaxed font-light">
                 When speed is the strategy. Our <strong>Temporary Sales Offices</strong> utilize advanced German Hangar technology to go from bare ground to a fully air-conditioned, operational sales gallery in just <strong>48 to 72 hours</strong>. Ideal for pre-launches (2-3 month cycles), these structures offer the look and feel of a permanent building without the time cost.
@@ -268,22 +283,17 @@ export default function SalesOfficePage() {
             </div>
 
             <div className="grid grid-cols-2 gap-6">
-              <div className="p-6 border border-zinc-800 bg-zinc-900/50 hover:border-[#D4AF37]/50 transition-colors">
-                <h4 className="text-2xl font-black text-[#D4AF37] mb-2">48H</h4>
-                <p className="text-zinc-500 text-xs uppercase tracking-widest">Setup Time</p>
-              </div>
-              <div className="p-6 border border-zinc-800 bg-zinc-900/50 hover:border-[#D4AF37]/50 transition-colors">
-                <h4 className="text-2xl font-black text-white mb-2">100%</h4>
-                <p className="text-zinc-500 text-xs uppercase tracking-widest">Weather Proof</p>
-              </div>
-              <div className="p-6 border border-zinc-800 bg-zinc-900/50 hover:border-[#D4AF37]/50 transition-colors">
-                <h4 className="text-2xl font-black text-white mb-2">MODULAR</h4>
-                <p className="text-zinc-500 text-xs uppercase tracking-widest">Scalable Design</p>
-              </div>
-              <div className="p-6 border border-zinc-800 bg-zinc-900/50 hover:border-[#D4AF37]/50 transition-colors">
-                <h4 className="text-2xl font-black text-[#D4AF37] mb-2">HVAC</h4>
-                <p className="text-zinc-500 text-xs uppercase tracking-widest">Climate Ready</p>
-              </div>
+              {[
+                  { title: "48H", sub: "Setup Time", color: "text-[#D4AF37]" },
+                  { title: "100%", sub: "Weather Proof", color: "text-white" },
+                  { title: "MODULAR", sub: "Scalable Design", color: "text-white" },
+                  { title: "HVAC", sub: "Climate Ready", color: "text-[#D4AF37]" },
+              ].map((item, idx) => (
+                  <div key={idx} className="p-6 border border-zinc-800 bg-white/[0.03] hover:border-[#D4AF37]/50 transition-all duration-300 backdrop-blur-sm">
+                    <h4 className={`text-2xl font-black ${item.color} mb-2`}>{item.title}</h4>
+                    <p className="text-zinc-500 text-xs uppercase tracking-widest">{item.sub}</p>
+                  </div>
+              ))}
             </div>
           </div>
 
@@ -291,11 +301,11 @@ export default function SalesOfficePage() {
       </section>
 
       {/* --- SECTION 5: MASONRY ARCHIVE (EXISTING) --- */}
-      <section className="py-24 px-6 bg-black">
+      <section className="py-24 px-6 bg-zinc-950/90 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-20 gap-8">
             <h3 className="text-5xl md:text-7xl font-black uppercase tracking-tighter italic text-center md:text-left">
-              The <span className="text-[#D4AF37] not-italic">Archive.</span>
+              The <span className="text-[#D4AF37] not-italic drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]">Archive.</span>
             </h3>
             <p className="text-zinc-500 text-[10px] uppercase font-bold tracking-[0.5em] text-center md:text-right border-r-2 border-[#D4AF37] pr-6">
               Maharashtra Execution Force
@@ -310,7 +320,7 @@ export default function SalesOfficePage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 onClick={() => setSelectedProject(proj)}
-                className="relative group overflow-hidden border border-zinc-900 bg-zinc-950 break-inside-avoid cursor-pointer"
+                className="relative group overflow-hidden border border-zinc-900 bg-zinc-950 break-inside-avoid cursor-pointer shadow-lg hover:shadow-[#D4AF37]/20 transition-all duration-500"
               >
                 <div className="absolute inset-0 bg-black/50 z-10 group-hover:bg-black/20 transition-all duration-700" />
                 <img 
@@ -318,7 +328,7 @@ export default function SalesOfficePage() {
                   className="w-full h-auto grayscale opacity-50 group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105 transition duration-1000" 
                   alt={proj.title} 
                 />
-                <div className="absolute bottom-0 left-0 p-8 z-20 w-full bg-linear-to-t from-black via-black/90 to-transparent translate-y-6 group-hover:translate-y-0 transition-transform duration-500">
+                <div className="absolute bottom-0 left-0 p-8 z-20 w-full bg-gradient-to-t from-black via-black/90 to-transparent translate-y-6 group-hover:translate-y-0 transition-transform duration-500">
                   <span className="text-[#D4AF37] text-[10px] font-bold uppercase tracking-widest mb-2 block">{proj.category}</span>
                   <h4 className="text-2xl font-black uppercase flex items-center justify-between">
                     {proj.title} <ArrowUpRight className="text-[#D4AF37] opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -330,14 +340,14 @@ export default function SalesOfficePage() {
         </div>
       </section>
 
-      {/* --- POPUP / MODAL COMPONENT (EXISTING) --- */}
+      {/* --- POPUP / MODAL COMPONENT --- */}
       <AnimatePresence>
         {selectedProject && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-100 flex items-center justify-center p-4 md:p-12 bg-black/95 backdrop-blur-xl"
+            className="fixed inset-0 z-[1050] flex items-center justify-center p-4 md:p-12 bg-black/95 backdrop-blur-xl"
             onClick={() => setSelectedProject(null)}
           >
             <motion.div 
@@ -345,11 +355,11 @@ export default function SalesOfficePage() {
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.9, y: 20, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-zinc-950 border border-[#D4AF37]/30 w-full max-w-6xl max-h-[90vh] overflow-y-auto relative flex flex-col md:flex-row"
+              className="bg-zinc-950 border border-[#D4AF37]/30 w-full max-w-6xl max-h-[90vh] overflow-y-auto relative flex flex-col md:flex-row shadow-[0_0_100px_rgba(212,175,55,0.1)]"
             >
               <button 
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-6 right-6 z-50 p-2 bg-white text-black hover:bg-[#D4AF37] transition-colors"
+                className="absolute top-6 right-6 z-[1100] p-2 bg-white text-black hover:bg-[#D4AF37] transition-colors shadow-lg rounded-full"
               >
                 <X size={24} />
               </button>
@@ -394,7 +404,7 @@ export default function SalesOfficePage() {
 
                 <Link 
                     href="/contact"
-                    className="mt-12 inline-flex items-center justify-center gap-4 px-8 py-4 bg-[#D4AF37] text-black font-black uppercase tracking-widest text-[10px] hover:bg-white transition-all duration-500"
+                    className="mt-12 inline-flex items-center justify-center gap-4 px-8 py-4 bg-[#D4AF37] text-black font-black uppercase tracking-widest text-[10px] hover:bg-white transition-all duration-500 shadow-[0_0_20px_rgba(212,175,55,0.3)]"
                 >
                     Request Similar Build <ArrowUpRight size={14} />
                 </Link>
@@ -405,9 +415,9 @@ export default function SalesOfficePage() {
       </AnimatePresence>
 
       {/* --- SECTION 6: THE TECHNICAL DATA --- */}
-      <section className="py-24 md:py-32 px-6 bg-zinc-950 border-y border-zinc-900">
+      <section className="py-24 md:py-32 px-6 bg-zinc-950/80 border-y border-zinc-900 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto text-center">
-          <History className="mx-auto text-[#D4AF37] mb-12" size={48} />
+          <History className="mx-auto text-[#D4AF37] mb-12 drop-shadow-[0_0_15px_rgba(212,175,55,0.6)]" size={48} />
           <h3 className="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-none mb-12">
             Engineered <br /> for <span className="text-[#D4AF37] italic font-light">Success.</span>
           </h3>
@@ -429,20 +439,22 @@ export default function SalesOfficePage() {
       </section>
 
       {/* --- SECTION 7: EXTRAORDINARY CTA --- */}
-      <section className="py-32 md:py-48 px-6 text-center bg-black relative">
+      <section className="py-32 md:py-48 px-6 text-center bg-black/80 relative backdrop-blur-md">
         <h2 className="text-6xl md:text-[18rem] font-black uppercase leading-none mb-12 opacity-5 pointer-events-none select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full">EXTRAORDINARY.</h2>
         <div className="relative z-10">
           <h3 className="text-4xl md:text-8xl font-black mb-16 uppercase tracking-tighter leading-none">
-            Ready to Build <br /> <span className="text-[#D4AF37] italic font-light underline decoration-[#D4AF37]/30 decoration-1 underline-offset-8">The Hub?</span>
+            Ready to Build <br /> <span className="text-[#D4AF37] italic font-light underline decoration-[#D4AF37]/30 decoration-1 underline-offset-8 drop-shadow-[0_0_15px_rgba(212,175,55,0.4)]">The Hub?</span>
           </h3>
           <Link
             href="/contact"
-            className="group inline-flex items-center gap-8 px-12 py-8 bg-[#D4AF37] text-black font-black uppercase tracking-[0.5em] text-[10px] md:text-xs hover:bg-white transition-all duration-700 shadow-[0_0_50px_rgba(212,175,55,0.3)]"
+            className="group inline-flex items-center gap-8 px-12 py-8 bg-[#D4AF37] text-black font-black uppercase tracking-[0.5em] text-[10px] md:text-xs hover:bg-white transition-all duration-700 shadow-[0_0_50px_rgba(212,175,55,0.3)] hover:shadow-[0_0_80px_rgba(255,255,255,0.4)]"
           >
             Start Technical Quote <ArrowUpRight />
           </Link>
         </div>
       </section>
+
+      </div>
     </main>
   );
 }

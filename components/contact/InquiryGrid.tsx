@@ -20,7 +20,7 @@ const InquiryGrid: React.FC = () => {
       title: 'General Inquiries',
       description: 'Have a question about our services or need event planning assistance? Get in touch with our main team.',
       email: 'info@zoyaevent.com',
-      phone: '+91 98765 43210',
+      phone: '+91 9503802865',
     },
     {
       id: 'partnerships',
@@ -28,7 +28,7 @@ const InquiryGrid: React.FC = () => {
       title: 'Partnerships',
       description: 'Interested in collaborating or becoming a partner? We love working with like-minded brands.',
       email: 'partnerships@zoyaevent.com',
-      phone: '+91 98765 43220',
+      phone: '+91 9372146434',
     },
     {
       id: 'sales',
@@ -36,7 +36,7 @@ const InquiryGrid: React.FC = () => {
       title: 'Sales Office',
       description: 'Visit our corporate office for consultations, bookings, and premium service packages.',
       email: 'sales@zoyaevent.com',
-      phone: '+91 98765 43211',
+      phone: '+91 9137487189',
     },
   ];
 

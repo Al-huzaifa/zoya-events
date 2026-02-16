@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Phone, ArrowUpRight, Mail, Sparkles, Command, Activity } from 'lucide-react';
+import { Phone, ArrowUpRight, Mail, Command, Activity } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const ContactHero: React.FC = () => {
@@ -10,19 +10,14 @@ const ContactHero: React.FC = () => {
       
       {/* --- 1. THE ATMOSPHERE (Background) --- */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        {/* The Spotlight - Concentrated and Elegant */}
         <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-[radial-gradient(circle,rgba(212,175,55,0.12)_0%,transparent_70%)] blur-[80px]"></div>
-        
-        {/* Subtle Noise Texture */}
         <div className="absolute inset-0 opacity-[0.05] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
-        
-        {/* Precision Grid */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
       </div>
 
       <div className="relative z-10 w-full max-w-5xl mx-auto flex flex-col justify-center h-full">
         
-        {/* --- 2. THE HEADLINE (Compact & Impactful) --- */}
+        {/* --- 2. THE HEADLINE --- */}
         <div className="text-center mb-12 lg:mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -52,9 +47,9 @@ const ContactHero: React.FC = () => {
         {/* --- 3. THE COMPACT INTERFACE (Cards) --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
           
-          {/* --- CARD 1: EXECUTIVE LINE --- */}
+          {/* --- CARD 1: EXECUTIVE LINE (DIALER LINK) --- */}
           <motion.a
-            href="tel:+919876543210"
+            href="tel:+919372146434" // 👈 UPDATED: Opens Dialer
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
@@ -74,7 +69,7 @@ const ContactHero: React.FC = () => {
                   <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-[0.2em]">Live Support</p>
                 </div>
                 <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight group-hover:text-[#D4AF37] transition-colors font-mono">
-                  +91 98765 43210
+                  +91 9372146434
                 </h2>
                 <p className="text-zinc-600 text-[10px] uppercase tracking-wider mt-1 group-hover:text-zinc-400 transition-colors">
                   Speak to a Director
@@ -85,9 +80,10 @@ const ContactHero: React.FC = () => {
             <ArrowUpRight className="text-zinc-700 w-5 h-5 group-hover:text-[#D4AF37] group-hover:-translate-y-1 group-hover:translate-x-1 transition-all duration-300" />
           </motion.a>
 
-          {/* --- CARD 2: STRATEGIC BRIEF --- */}
+          {/* --- CARD 2: STRATEGIC BRIEF (EMAIL LINK) --- */}
           <motion.a
-            href="mailto:contact@zoyaevents.com"
+            // 👈 UPDATED: Pre-fills Subject and Body
+            href="mailto:zoyaevent01@gmail.com?subject=Project%20Inquiry%20-%20[Client%20Name]&body=Hello%20Zoya%20Events%20Team,%0D%0A%0D%0AI%20am%20interested%20in%20discussing%20an%20upcoming%20event.%0D%0A%0D%0A---%20Details%20---%0D%0AEvent%20Type:%20%0D%0ATentative%20Date:%20%0D%0ALocation:%20%0D%0A%0D%0APlease%20get%20back%20to%20me."
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3, duration: 0.8 }}
@@ -107,7 +103,7 @@ const ContactHero: React.FC = () => {
                    <p className="text-zinc-500 text-[9px] font-bold uppercase tracking-[0.2em]">Rapid Response</p>
                 </div>
                 <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight group-hover:text-[#D4AF37] transition-colors">
-                  contact@zoya
+                  zoyaevent01@gmail.com
                 </h2>
                 <p className="text-zinc-600 text-[10px] uppercase tracking-wider mt-1 group-hover:text-zinc-400 transition-colors">
                   Submit Project Brief
@@ -130,7 +126,7 @@ const ContactHero: React.FC = () => {
           <div className="inline-flex items-center gap-4 px-4 py-2 rounded-full border border-white/5 bg-black/40 backdrop-blur-sm">
              <span className="w-1.5 h-1.5 rounded-full bg-[#D4AF37]"></span>
              <p className="text-zinc-600 text-[9px] uppercase tracking-[0.3em]">
-                Mumbai HQ • Operational
+               Mumbai HQ • Operational
              </p>
           </div>
         </motion.div>

@@ -47,23 +47,44 @@ const ContactFormSection: React.FC = () => {
     if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
   };
 
+  // --- UPDATED: Connect to SheetMonkey ---
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    // 1. Validate
     if (!validateForm()) return;
+    
     setIsLoading(true);
+
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate API
-      setSubmitted(true);
-      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-      setTimeout(() => setSubmitted(false), 5000);
+      // 2. Send Data to SheetMonkey
+      const response = await fetch("https://api.sheetmonkey.io/form/cGSLF4Dg8LinMSp6wha7Rx", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          "Created At": new Date().toLocaleString(), // Adds a timestamp
+          "Source": "Contact Page" // Tells you which form they used
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      } else {
+        setErrors({ submit: 'Submission failed. Please try again.' });
+      }
     } catch (error) {
-      setErrors({ submit: 'Submission failed. Please try again.' });
+      console.error("Error:", error);
+      setErrors({ submit: 'Network error. Please check your connection.' });
     } finally {
       setIsLoading(false);
     }
   };
 
-  // New Content: "Why Inquiry?" features instead of contact info
+  // "Why Inquiry?" features
   const privileges = [
     { icon: Zap, title: 'Priority Access', content: 'Inquiries via this secure form skip the general queue.' },
     { icon: Star, title: 'Director Oversight', content: 'Projects are reviewed directly by senior management.' },
@@ -106,7 +127,7 @@ const ContactFormSection: React.FC = () => {
             {/* 1. BACKGROUND IMAGE */}
             <div className="absolute inset-0 z-0">
                 <img 
-                 src="/images/placeholder-office.jpg" // Your Company Image
+                 src="/images/placeholder-office.jpg" // Ensure this image path is correct in your project
                  alt="Zoya Events Excellence" 
                  className="w-full h-full object-cover opacity-60"
                />
@@ -154,7 +175,7 @@ const ContactFormSection: React.FC = () => {
                      Years of <br /> Excellence
                   </div>
                   <div className="h-8 w-px bg-white/20 mx-2"></div>
-                  <div className="text-3xl font-serif text-white">200+</div>
+                  <div className="text-3xl font-serif text-white">100+</div>
                   <div className="text-[10px] uppercase tracking-widest text-slate-400">
                      Corporate <br /> Clients
                   </div>
@@ -172,11 +193,11 @@ const ContactFormSection: React.FC = () => {
              <AnimatePresence mode='wait'>
              {submitted ? (
                 <motion.div 
-                    key="success"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    className="bg-green-50 border border-green-100 p-8 rounded-2xl text-center flex flex-col items-center justify-center h-[400px]"
+                   key="success"
+                   initial={{ opacity: 0, scale: 0.95 }}
+                   animate={{ opacity: 1, scale: 1 }}
+                   exit={{ opacity: 0, scale: 0.95 }}
+                   className="bg-green-50 border border-green-100 p-8 rounded-2xl text-center flex flex-col items-center justify-center h-[400px]"
                 >
                    <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6 text-green-600 shadow-sm">
                       <Send size={32} strokeWidth={1.5} />
@@ -186,9 +207,9 @@ const ContactFormSection: React.FC = () => {
                 </motion.div>
              ) : (
                 <motion.form 
-                    key="form"
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                    onSubmit={handleSubmit} className="space-y-6"
+                   key="form"
+                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                   onSubmit={handleSubmit} className="space-y-6"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                      <div className="space-y-2">
@@ -201,6 +222,7 @@ const ContactFormSection: React.FC = () => {
                            className={`w-full bg-slate-50 border ${errors.name ? 'border-red-300 bg-red-50/50' : 'border-slate-200 focus:border-[#D4AF37] focus:bg-white'} rounded-xl px-4 py-3.5 text-slate-900 text-sm outline-none transition-all placeholder:text-slate-400`}
                            placeholder="Full Name"
                         />
+                        {errors.name && <p className="text-red-500 text-[10px]">{errors.name}</p>}
                      </div>
                      <div className="space-y-2">
                         <label className="text-[10px] uppercase font-bold text-slate-500 tracking-widest ml-1">Phone *</label>
@@ -212,6 +234,7 @@ const ContactFormSection: React.FC = () => {
                            className={`w-full bg-slate-50 border ${errors.phone ? 'border-red-300 bg-red-50/50' : 'border-slate-200 focus:border-[#D4AF37] focus:bg-white'} rounded-xl px-4 py-3.5 text-slate-900 text-sm outline-none transition-all placeholder:text-slate-400`}
                            placeholder="+91..."
                         />
+                        {errors.phone && <p className="text-red-500 text-[10px]">{errors.phone}</p>}
                      </div>
                   </div>
 
@@ -225,6 +248,7 @@ const ContactFormSection: React.FC = () => {
                         className={`w-full bg-slate-50 border ${errors.email ? 'border-red-300 bg-red-50/50' : 'border-slate-200 focus:border-[#D4AF37] focus:bg-white'} rounded-xl px-4 py-3.5 text-slate-900 text-sm outline-none transition-all placeholder:text-slate-400`}
                         placeholder="john@company.com"
                      />
+                     {errors.email && <p className="text-red-500 text-[10px]">{errors.email}</p>}
                   </div>
 
                   <div className="space-y-2">
@@ -237,6 +261,7 @@ const ContactFormSection: React.FC = () => {
                         className={`w-full bg-slate-50 border ${errors.subject ? 'border-red-300 bg-red-50/50' : 'border-slate-200 focus:border-[#D4AF37] focus:bg-white'} rounded-xl px-4 py-3.5 text-slate-900 text-sm outline-none transition-all placeholder:text-slate-400`}
                         placeholder="Project Inquiry / Partnership"
                      />
+                     {errors.subject && <p className="text-red-500 text-[10px]">{errors.subject}</p>}
                   </div>
 
                   <div className="space-y-2">
@@ -249,6 +274,7 @@ const ContactFormSection: React.FC = () => {
                         className={`w-full bg-slate-50 border ${errors.message ? 'border-red-300 bg-red-50/50' : 'border-slate-200 focus:border-[#D4AF37] focus:bg-white'} rounded-xl px-4 py-3.5 text-slate-900 text-sm outline-none transition-all placeholder:text-slate-400 resize-none`}
                         placeholder="Tell us about your project requirements..."
                      />
+                     {errors.message && <p className="text-red-500 text-[10px]">{errors.message}</p>}
                   </div>
 
                   <button
@@ -258,6 +284,9 @@ const ContactFormSection: React.FC = () => {
                   >
                      {isLoading ? <Loader2 className="animate-spin w-4 h-4" /> : <><Send className="w-4 h-4" /> Send Securely</>}
                   </button>
+                  {errors.submit && (
+                     <p className="text-red-500 text-xs text-center mt-2">{errors.submit}</p>
+                  )}
                 </motion.form>
              )}
              </AnimatePresence>

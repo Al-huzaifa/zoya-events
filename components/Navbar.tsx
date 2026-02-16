@@ -31,11 +31,7 @@ export default function Navbar() {
     {
       name: "Portfolios",
       href: "/portfolio",
-      subItems: [
-        { name: "Corporate Event", href: "/portfolio/corporate-events" },
-        { name: "Exhibition", href: "/portfolio/exhibitions" },
-        { name: "Sales Offices", href: "/portfolio/sales-offices" },
-      ],
+      // 👇 REMOVED SUB-ITEMS HERE
     },
   ];
 
@@ -75,17 +71,20 @@ export default function Navbar() {
               <div 
                 key={item.name} 
                 className="relative h-full flex items-center group cursor-pointer"
-                onMouseEnter={() => setActiveDropdown(item.name)}
+                onMouseEnter={() => item.subItems && setActiveDropdown(item.name)} // Only show dropdown if subItems exist
                 onMouseLeave={() => setActiveDropdown(null)}
               >
                 <Link href={item.href} className={`flex items-center gap-2 py-8 ${goldHoverClass}`}>
                   {item.name} 
-                  <span className="text-[8px] opacity-70 group-hover:text-[#D4AF37] transition-transform group-hover:rotate-180">▼</span>
+                  {/* Only show arrow if subItems exist */}
+                  {item.subItems && (
+                    <span className="text-[8px] opacity-70 group-hover:text-[#D4AF37] transition-transform group-hover:rotate-180">▼</span>
+                  )}
                 </Link>
 
-                {/* Dropdown Menu */}
+                {/* Dropdown Menu (Only renders if subItems exist) */}
                 <AnimatePresence>
-                  {activeDropdown === item.name && (
+                  {item.subItems && activeDropdown === item.name && (
                     <motion.div
                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -136,7 +135,7 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* 1. Backdrop (Darkens the rest of the screen) */}
+            {/* 1. Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -145,7 +144,7 @@ export default function Navbar() {
               className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[90]"
             />
 
-            {/* 2. Sidebar (Slides in from Right) */}
+            {/* 2. Sidebar */}
             <motion.div 
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -176,7 +175,7 @@ export default function Navbar() {
                       {link.name}
                     </Link>
                     
-                    {/* Subitems indent */}
+                    {/* Subitems indent (Only renders if subItems exist) */}
                     {link.subItems && (
                       <div className="flex flex-col mt-3 ml-4 gap-3 border-l border-[#BF953F]/20 pl-4">
                         {link.subItems.map(sub => (

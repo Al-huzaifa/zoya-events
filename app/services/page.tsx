@@ -6,7 +6,7 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, CheckCircle2, Star, ShieldCheck, Clock } from "lucide-react";
 
-// --- Service Data with High-Quality Placeholder Images ---
+// --- Service Data ---
 const services = [
   {
     id: "01",
@@ -55,6 +55,27 @@ const services = [
   },
 ];
 
+// --- INVENTORY DATA (Split for 2 Rows) ---
+const inventoryRow1 = [
+  { name: "German Hangar", image: "/images/servicehanger.webp" },
+  { name: "Pagoda Tents", image: "/images/portfolio-3.jpg" },
+  { name: "Tower Cooling (AC)", image: "/images/service1ac.webp" },
+  { name: "Event Towers", image: "/images/service3hanger.webp" },
+  { name: "Raised Platforms", image: "/images/service2platform.webp" },
+  { name: "Staging Solutions", image: "/images/services4tagetruss .webp" },
+];
+
+const inventoryRow2 = [
+  { name: "Premium Chairs", image: "" },
+  { name: "corporate", image: "/images/service8event.webp" },
+  { name: "Designer Canopies", image: "/images/service5canopy.webp" },
+  { name: "Sea Side", image: "/images/service10seaside.webp" },
+  { name: "Octonorm Stalls", image: "/images/services7octonorm.webp" },
+  { name: "VIP Green Room", image: "/images/service12vipgreenroom.webp" },
+  { name: "VIP Green Room", image: "/images/service6pagoda.webp" },
+];
+
+
 export default function ServicesPage() {
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -63,14 +84,13 @@ export default function ServicesPage() {
   });
 
   return (
-    <div ref={containerRef} className="bg-black text-white min-h-screen font-sans selection:bg-[#D4AF37] selection:text-black">
+    <div ref={containerRef} className="bg-black text-white min-h-screen font-sans selection:bg-[#D4AF37] selection:text-black overflow-x-hidden">
       
-      {/* --- GLOBAL TEXTURE OVERLAY (Adds Film Grain for texture) --- */}
+      {/* --- GLOBAL TEXTURE OVERLAY --- */}
       <div className="fixed inset-0 pointer-events-none opacity-[0.03] z-50 mix-blend-overlay" style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/stardust.png")` }}></div>
 
       {/* ================= HERO SECTION ================= */}
       <section className="relative w-full h-[70vh] flex items-center justify-center overflow-hidden border-b border-white/10">
-        {/* Background Image with Parallax-ish feel */}
         <div className="absolute inset-0 z-0">
           <Image 
             src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop"
@@ -107,7 +127,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ================= SERVICES LIST (ALTERNATING LAYOUT) ================= */}
+      {/* ================= SERVICES LIST ================= */}
       <section className="py-24 px-6 relative">
         <div className="max-w-7xl mx-auto space-y-32">
           {services.map((service, index) => (
@@ -121,7 +141,6 @@ export default function ServicesPage() {
                 index % 2 === 1 ? "lg:flex-row-reverse" : ""
               }`}
             >
-              {/* Image Side */}
               <div className="w-full lg:w-1/2 relative group">
                 <div className="relative h-[400px] md:h-[500px] w-full overflow-hidden rounded-sm border border-white/10">
                   <Image
@@ -130,14 +149,11 @@ export default function ServicesPage() {
                     fill
                     className="object-cover transition-transform duration-1000 group-hover:scale-110"
                   />
-                  {/* Gold Overlay on Hover */}
                   <div className="absolute inset-0 bg-[#D4AF37]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </div>
-                {/* Decorative Offset Border */}
                 <div className={`absolute -bottom-4 -right-4 w-full h-full border border-[#D4AF37]/30 -z-10 hidden md:block transition-transform duration-500 group-hover:translate-x-2 group-hover:translate-y-2 ${index % 2 === 1 ? "-left-4" : ""}`}></div>
               </div>
 
-              {/* Text Side */}
               <div className="w-full lg:w-1/2">
                 <span className="text-8xl font-serif text-white/5 font-bold absolute -translate-y-12 -translate-x-6 select-none">
                   {service.id}
@@ -177,10 +193,88 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ================= THE ZOYA STANDARD (FEATURES) ================= */}
-      <section className="bg-zinc-900/50 py-24 border-y border-white/5 relative overflow-hidden">
-         {/* Background Glow */}
-         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#D4AF37]/5 rounded-full blur-[120px] pointer-events-none"></div>
+      {/* ================= DUAL ROW INVENTORY SCROLL (UPDATED SIZE) ================= */}
+      <section className="py-24 bg-zinc-950 border-y border-[#D4AF37]/20 overflow-hidden relative">
+        
+        {/* Section Header */}
+        <div className="text-center mb-16 relative z-10 px-6">
+          <h3 className="text-[#D4AF37] text-xs uppercase tracking-[0.3em] font-bold mb-3">
+            Complete Event Solutions
+          </h3>
+          <h2 className="text-3xl md:text-5xl font-serif text-white">
+            Specialized Infrastructure & Inventory
+          </h2>
+        </div>
+
+        {/* Gradient Masks */}
+        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-zinc-950 to-transparent z-20 pointer-events-none"></div>
+        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-zinc-950 to-transparent z-20 pointer-events-none"></div>
+
+        {/* --- ROW 1: Moves Left --- */}
+        <div className="relative w-full overflow-hidden mb-8">
+          <motion.div
+            className="flex gap-8 w-max"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{
+              repeat: Infinity,
+              ease: "linear",
+              duration: 50, // Slower for larger images
+            }}
+          >
+            {[...inventoryRow1, ...inventoryRow1, ...inventoryRow1].map((item, index) => (
+              // 👇 UPDATED: Increased Width (450px) and Height (300px)
+              <div key={index} className="relative w-[450px] h-[300px] shrink-0 rounded-md overflow-hidden group border border-white/5 hover:border-[#D4AF37] transition-all duration-500 shadow-2xl">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                <div className="absolute bottom-6 left-6">
+                  <h4 className="text-white font-serif text-2xl leading-tight group-hover:text-[#D4AF37] transition-colors drop-shadow-md">
+                    {item.name}
+                  </h4>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* --- ROW 2: Moves Right --- */}
+        <div className="relative w-full overflow-hidden">
+          <motion.div
+            className="flex gap-8 w-max"
+            animate={{ x: ["-50%", "0%"] }}
+            transition={{
+              repeat: Infinity,
+              ease: "linear",
+              duration: 55, 
+            }}
+          >
+            {[...inventoryRow2, ...inventoryRow2, ...inventoryRow2].map((item, index) => (
+              // 👇 UPDATED: Increased Width (450px) and Height (300px)
+              <div key={index} className="relative w-[450px] h-[300px] shrink-0 rounded-md overflow-hidden group border border-white/5 hover:border-[#D4AF37] transition-all duration-500 shadow-2xl">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+                <div className="absolute bottom-6 left-6">
+                  <h4 className="text-white font-serif text-2xl leading-tight group-hover:text-[#D4AF37] transition-colors drop-shadow-md">
+                    {item.name}
+                  </h4>
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+      </section>
+
+      {/* ================= THE ZOYA STANDARD ================= */}
+      <section className="bg-zinc-900/50 py-24 border-b border-white/5 relative overflow-hidden">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#D4AF37]/5 rounded-full blur-[120px] pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
           <div className="text-center mb-16">

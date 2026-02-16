@@ -407,7 +407,7 @@ export default function PortfolioPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-md"
+            className="fixed inset-0 z-[1050] flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-md"
             onClick={closeModal} 
           >
             {/* Modal Content Box */}
@@ -472,7 +472,7 @@ export default function PortfolioPage() {
                  {/* Close Button */}
                  <button 
                   onClick={closeModal}
-                  className="absolute top-4 right-4 z-20 p-2 text-zinc-500 hover:text-white transition-colors"
+                  className="absolute top-4 right-4 z-[1100] p-2 text-zinc-500 hover:text-white transition-colors bg-black/60 rounded-full backdrop-blur-md"
                 >
                   <X size={24} />
                 </button>

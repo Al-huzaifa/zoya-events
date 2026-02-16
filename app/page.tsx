@@ -1,6 +1,8 @@
 import Hero from "@/components/Hero";
 import About from "@/components/About";
+import WhyChooseUs from "@/components/WhyChooseUs";
 import OurWork from "@/components/OurWork";
+
 
 export default function Home() {
   return (
@@ -10,6 +12,9 @@ export default function Home() {
 
       {/* About section */}
       <About />
+
+      <WhyChooseUs />
+      
 
       {/* Our Work gallery (moved from Services) */}
       <OurWork />
