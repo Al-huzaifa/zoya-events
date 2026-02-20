@@ -414,46 +414,6 @@ export default function SalesOfficePage() {
         )}
       </AnimatePresence>
 
-      {/* --- SECTION 6: THE TECHNICAL DATA --- */}
-      <section className="py-24 md:py-32 px-6 bg-zinc-950/80 border-y border-zinc-900 backdrop-blur-sm">
-        <div className="max-w-4xl mx-auto text-center">
-          <History className="mx-auto text-[#D4AF37] mb-12 drop-shadow-[0_0_15px_rgba(212,175,55,0.6)]" size={48} />
-          <h3 className="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-none mb-12">
-            Engineered <br /> for <span className="text-[#D4AF37] italic font-light">Success.</span>
-          </h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12">
-            <div>
-              <p className="text-4xl md:text-6xl font-black text-white">13+</p>
-              <p className="text-[#D4AF37] text-[9px] uppercase tracking-widest font-bold mt-2 italic">Yrs Expertise</p>
-            </div>
-            <div>
-              <p className="text-4xl md:text-6xl font-black text-white">48H</p>
-              <p className="text-[#D4AF37] text-[9px] uppercase tracking-widest font-bold mt-2 italic">Rapid Setup</p>
-            </div>
-            <div>
-              <p className="text-4xl md:text-6xl font-black text-white">200+</p>
-              <p className="text-[#D4AF37] text-[9px] uppercase tracking-widest font-bold mt-2 italic">national Brands</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* --- SECTION 7: EXTRAORDINARY CTA --- */}
-      <section className="py-32 md:py-48 px-6 text-center bg-black/80 relative backdrop-blur-md">
-        <h2 className="text-6xl md:text-[18rem] font-black uppercase leading-none mb-12 opacity-5 pointer-events-none select-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full">EXTRAORDINARY.</h2>
-        <div className="relative z-10">
-          <h3 className="text-4xl md:text-8xl font-black mb-16 uppercase tracking-tighter leading-none">
-            Ready to Build <br /> <span className="text-[#D4AF37] italic font-light underline decoration-[#D4AF37]/30 decoration-1 underline-offset-8 drop-shadow-[0_0_15px_rgba(212,175,55,0.4)]">The Hub?</span>
-          </h3>
-          <Link
-            href="/contact"
-            className="group inline-flex items-center gap-8 px-12 py-8 bg-[#D4AF37] text-black font-black uppercase tracking-[0.5em] text-[10px] md:text-xs hover:bg-white transition-all duration-700 shadow-[0_0_50px_rgba(212,175,55,0.3)] hover:shadow-[0_0_80px_rgba(255,255,255,0.4)]"
-          >
-            Start Technical Quote <ArrowUpRight />
-          </Link>
-        </div>
-      </section>
-
       </div>
     </main>
   );
