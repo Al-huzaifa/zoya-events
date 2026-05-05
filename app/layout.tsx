@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ZoyaAIChatbot from "@/components/ZoyaAIChatbot";
+import FloatingWhatsApp from "@/components/contact/FloatingWhatsApp";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +34,8 @@ export default function RootLayout({
         <Navbar />
         {children}
         <Footer />
+        <ZoyaAIChatbot />
+        <FloatingWhatsApp />
       </body>
     </html>
   );

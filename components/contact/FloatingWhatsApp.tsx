@@ -6,7 +6,7 @@ const FloatingWhatsApp: React.FC = () => {
   const openWhatsApp = () => {
     // 1. Put your real number here (Country code + Number, no spaces or +)
     // Example for India: '919876543210'
-    const phoneNumber = '919372146434'; 
+    const phoneNumber = '919503802865'; 
 
     // 2. This is the message the CLIENT will see typed in their box
     const text = 'Hi Zoya Events, I have an inquiry regarding your event services.';
@@ -19,7 +19,7 @@ const FloatingWhatsApp: React.FC = () => {
     <button
       onClick={openWhatsApp}
       // Updated colors to match official WhatsApp Green
-      className="fixed bottom-8 right-8 z-50 flex items-center justify-center w-16 h-16 bg-[#25D366] hover:bg-[#20ba5a] rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 group"
+      className="fixed bottom-8 left-8 z-50 flex items-center justify-center w-16 h-16 bg-[#25D366] hover:bg-[#20ba5a] rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 group"
       aria-label="Chat with Zoya Events on WhatsApp"
       title="Chat with Zoya Events"
     >

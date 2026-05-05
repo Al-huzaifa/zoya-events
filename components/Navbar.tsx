@@ -4,34 +4,35 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
+// 👇 1. ADD THIS TYPE DEFINITION
+type NavItem = {
+  name: string;
+  href: string;
+  subItems?: { name: string; href: string }[]; // The "?" makes it optional
+};
+
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
-  // Custom Gold Gradient for Text Hover
   const goldTextClass = "bg-clip-text text-transparent bg-gradient-to-r from-[#BF953F] via-[#FCF6BA] to-[#B38728]";
   const goldHoverClass = "hover:text-[#F3E779] transition-colors duration-300";
 
-  const leftLinks = [
+  // 👇 2. APPLY THE TYPE TO YOUR ARRAYS
+  const leftLinks: NavItem[] = [
     { name: "Home", href: "/" },
     { name: "Sales Office", href: "/sales-office" },
     { name: "About Us", href: "/about" },
   ];
 
-  const rightLinks = [
+  const rightLinks: NavItem[] = [
     {
       name: "Services",
-      href: "/services",
-      subItems: [
-        { name: "Corporate Event", href: "/services/corporate-events" },
-        { name: "Exhibition", href: "/services/exhibitions" },
-        { name: "Sales Offices", href: "/services/sales-office-details" },
-      ],
+      href: "/services"
     },
     {
       name: "Portfolios",
       href: "/portfolio",
-      // 👇 REMOVED SUB-ITEMS HERE
     },
   ];
 
@@ -71,18 +72,16 @@ export default function Navbar() {
               <div 
                 key={item.name} 
                 className="relative h-full flex items-center group cursor-pointer"
-                onMouseEnter={() => item.subItems && setActiveDropdown(item.name)} // Only show dropdown if subItems exist
+                onMouseEnter={() => item.subItems && setActiveDropdown(item.name)} 
                 onMouseLeave={() => setActiveDropdown(null)}
               >
                 <Link href={item.href} className={`flex items-center gap-2 py-8 ${goldHoverClass}`}>
                   {item.name} 
-                  {/* Only show arrow if subItems exist */}
                   {item.subItems && (
                     <span className="text-[8px] opacity-70 group-hover:text-[#D4AF37] transition-transform group-hover:rotate-180">▼</span>
                   )}
                 </Link>
 
-                {/* Dropdown Menu (Only renders if subItems exist) */}
                 <AnimatePresence>
                   {item.subItems && activeDropdown === item.name && (
                     <motion.div
@@ -135,7 +134,6 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* 1. Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -144,7 +142,6 @@ export default function Navbar() {
               className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[90]"
             />
 
-            {/* 2. Sidebar */}
             <motion.div 
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -152,7 +149,6 @@ export default function Navbar() {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className="fixed top-0 right-0 h-full w-[80%] max-w-[320px] bg-black border-l border-[#BF953F]/30 z-[100] flex flex-col p-8 overflow-y-auto shadow-2xl"
             >
-              {/* Header inside Sidebar */}
               <div className="flex justify-between items-center mb-10 border-b border-zinc-800 pb-4">
                 <span className={`text-lg font-serif font-bold ${goldTextClass}`}>MENU</span>
                 <button 
@@ -163,7 +159,6 @@ export default function Navbar() {
                 </button>
               </div>
 
-              {/* Links */}
               <div className="flex flex-col gap-6">
                 {[...leftLinks, ...rightLinks].map((link) => (
                   <div key={link.name} className="flex flex-col">
@@ -175,7 +170,6 @@ export default function Navbar() {
                       {link.name}
                     </Link>
                     
-                    {/* Subitems indent (Only renders if subItems exist) */}
                     {link.subItems && (
                       <div className="flex flex-col mt-3 ml-4 gap-3 border-l border-[#BF953F]/20 pl-4">
                         {link.subItems.map(sub => (

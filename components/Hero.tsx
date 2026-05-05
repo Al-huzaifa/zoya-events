@@ -1,6 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+
+type FormData = {
+  name: string;
+  email: string;
+  phone: string;
+};
+
+const SUBMITTED_KEY = "zoya_form_submitted";
 
 export default function Hero() {
   const [popupVisible, setPopupVisible] = useState(false);
@@ -8,199 +16,302 @@ export default function Hero() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // --- 1. NEW: State to store user input ---
-  const [formData, setFormData] = useState({
-    fullName: "",
+  const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const frameRef = useRef<number | null>(null);
+
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
     email: "",
-    phone: ""
+    phone: "",
   });
 
-  // Custom Gold Gradients matching the logo
-  const goldTextGradient = "bg-clip-text text-transparent bg-gradient-to-r from-[#BF953F] via-[#FCF6BA] to-[#B38728]";
-  const goldButtonGradient = "bg-gradient-to-r from-[#BF953F] via-[#F3E779] to-[#B38728]";
+  const goldTextGradient =
+    "bg-clip-text text-transparent bg-gradient-to-r from-[#BF953F] via-[#FCF6BA] to-[#B38728]";
+  const goldButtonGradient =
+    "bg-gradient-to-r from-[#BF953F] via-[#F3E779] to-[#B38728]";
 
-  useEffect(() => {
-    // Check if user has ALREADY submitted the form in the past
-    const hasSubmitted = localStorage.getItem("zoya_form_submitted");
+  const openPopup = useCallback(() => {
+    setPopupVisible(true);
 
-    // If they have submitted, DO NOT start the timer.
-    if (hasSubmitted) return;
-
-    // Timer: Open popup 10 seconds after page load
-    const timer = setTimeout(() => {
-      setPopupVisible(true);
-      setTimeout(() => setIsAnimating(true), 50);
-    }, 10000);
-
-    return () => clearTimeout(timer);
+    frameRef.current = requestAnimationFrame(() => {
+      setIsAnimating(true);
+    });
   }, []);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setIsAnimating(false);
-    setTimeout(() => {
+
+    if (closeTimerRef.current) {
+      clearTimeout(closeTimerRef.current);
+    }
+
+    closeTimerRef.current = setTimeout(() => {
       setPopupVisible(false);
-    }, 300);
-  };
+    }, 260);
+  }, []);
 
-  // --- 2. NEW: Handle typing in the boxes ---
+  useEffect(() => {
+    let hasSubmitted = false;
+
+    try {
+      hasSubmitted = localStorage.getItem(SUBMITTED_KEY) === "true";
+    } catch {
+      hasSubmitted = false;
+    }
+
+    if (hasSubmitted) return;
+
+    openTimerRef.current = setTimeout(openPopup, 10000);
+
+    return () => {
+      if (openTimerRef.current) clearTimeout(openTimerRef.current);
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+      if (frameRef.current) cancelAnimationFrame(frameRef.current);
+    };
+  }, [openPopup]);
+
+  useEffect(() => {
+    if (!popupVisible) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        handleClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [popupVisible, handleClose]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+
+    setFormData((current) => ({
+      ...current,
+      [name]: value,
+    }));
   };
 
-  // --- 3. UPDATED: Send data to your Google Sheet ---
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (isLoading) return;
+
     setIsLoading(true);
 
     try {
-      // Sending data to YOUR specific SheetMonkey link
-      const response = await fetch("https://api.sheetmonkey.io/form/cGSLF4Dg8LinMSp6wha7Rx", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          "Created At": new Date().toLocaleString() // Adds a nice timestamp column
-        }),
-      });
+      const response = await fetch(
+        "https://api.sheetmonkey.io/form/fqTMQChHT8WFaY8X2ktRJb",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            ...formData,
+            "Created At": new Date().toLocaleString(),
+          }),
+        }
+      );
 
-      if (response.ok) {
-        setIsSubmitted(true);
-        // Save to LocalStorage so popup never shows again automatically
-        localStorage.setItem("zoya_form_submitted", "true");
-        // Clear the form
-        setFormData({ fullName: "", email: "", phone: "" });
-      } else {
-        alert("There was a problem submitting your request. Please try again.");
+      if (!response.ok) {
+        throw new Error("SheetMonkey request failed");
       }
+
+      setIsSubmitted(true);
+
+      try {
+        localStorage.setItem(SUBMITTED_KEY, "true");
+      } catch {
+        // Ignore private-mode/localStorage failures.
+      }
+
+      setFormData({ name: "", email: "", phone: "" });
     } catch (error) {
       console.error("Error:", error);
-      alert("Submission failed. Please check your internet connection.");
+      alert("Submission failed. Please try again or contact us on WhatsApp.");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <section className="relative w-full h-screen overflow-hidden font-sans bg-black">
-      {/* --- Background Video --- */}
-      <div className="absolute inset-0 w-full h-full">
+    <section className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-black font-sans text-white md:block">
+      <div className="relative h-[48svh] min-h-[330px] w-full overflow-hidden bg-zinc-950 md:absolute md:inset-0 md:h-full md:min-h-0">
         <video
           src="https://res.cloudinary.com/dv36bszdw/video/upload/f_auto,q_auto/zoya_web_hanger_rs7jqh.mp4"
           autoPlay
           muted
           loop
           playsInline
-          className="w-full h-full object-cover opacity-60"
+          preload="metadata"
+          className="h-full w-full object-cover opacity-95 md:opacity-65"
         />
-        {/* Deep Black Overlay to match the logo background */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/30" />
+
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/10 to-black md:hidden" />
+        <div className="hidden absolute inset-0 bg-gradient-to-t from-black via-black/65 to-black/25 md:block" />
       </div>
 
-      {/* --- Hero Content --- */}
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4 sm:px-6 animate-fade-in-up">
-        {/* Main Title with Logo-Like Gold Gradient */}
-        <h1 className={`text-5xl sm:text-6xl md:text-8xl font-serif font-bold tracking-wider drop-shadow-2xl ${goldTextGradient}`}>
-          ZOYA EVENT
-        </h1>
-        
-        {/* Subtitle using the "Event Solution" color from logo */}
-        <p className="mt-4 text-[#C5A059] max-w-2xl text-sm sm:text-base md:text-lg font-light tracking-[0.2em] uppercase">
-          Event Solution & Exhibition
-        </p>
+      <div className="relative z-10 flex flex-1 flex-col justify-start bg-black px-5 pb-8 pt-6 text-left md:absolute md:inset-0 md:items-center md:justify-center md:bg-transparent md:px-8 md:pb-0 md:pt-0 md:text-center">
+        <div className="w-full max-w-xl md:max-w-5xl">
+          <div className="mb-4 h-1 w-12 rounded-full bg-gradient-to-r from-[#BF953F] via-[#F3E779] to-[#B38728] md:hidden" />
 
-        {/* Divider */}
-        <div className={`h-[2px] w-32 mt-8 rounded-full ${goldButtonGradient}`} />
+          <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.24em] text-[#C5A059] md:hidden">
+            Direct Production Partner
+          </p>
+
+          <h1
+            className={`mb-4 break-words font-serif text-[clamp(2.75rem,15vw,4.9rem)] font-bold leading-[0.95] tracking-wide drop-shadow-2xl md:text-8xl ${goldTextGradient}`}
+          >
+            ZOYA EVENT
+          </h1>
+
+          <div className="space-y-4 md:hidden">
+            <h2 className="max-w-md text-xl font-medium leading-snug text-white">
+              Your trusted{" "}
+              <span className="text-[#F3E779]">in-house</span> vendor for
+              corporate excellence.
+            </h2>
+
+            <div className="flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-widest text-zinc-300">
+              {["German Hangar", "Fabrication", "Decor"].map((item) => (
+                <span
+                  key={item}
+                  className="rounded border border-zinc-800 bg-zinc-900 px-2.5 py-1.5"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+
+            <p className="max-w-md border-l-2 border-[#BF953F] pl-3 text-[15px] font-light leading-7 text-zinc-200">
+              We don&apos;t just plan; we build. As a direct production house,
+              we provide the infrastructure that powers Mumbai&apos;s most
+              prestigious events.
+            </p>
+          </div>
+
+          <p className="mt-5 hidden max-w-2xl text-lg font-light uppercase tracking-[0.2em] text-[#C5A059] md:mx-auto md:block">
+            Event Solution & Exhibition
+          </p>
+
+          <div className={`mx-auto mt-8 hidden h-[2px] w-32 rounded-full md:block ${goldButtonGradient}`} />
+        </div>
       </div>
 
-      {/* --- Popup Modal --- */}
       {popupVisible && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-          {/* Backdrop */}
-          <div 
-            className={`absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-500 ${isAnimating ? 'opacity-100' : 'opacity-0'}`}
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center overflow-y-auto px-4 py-6">
+          <button
+            type="button"
+            aria-label="Close enquiry popup"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300 opacity-100"
             onClick={handleClose}
           />
 
-          {/* Modal Container with Gold Border */}
           <div
-            className={`
-              relative bg-black border border-[#BF953F] text-white 
-              rounded-xl shadow-[0_0_40px_rgba(191,149,63,0.3)] w-full max-w-md p-8 
-              transform transition-all duration-500 ease-out
-              ${isAnimating ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-8 opacity-0 scale-95'}
-            `}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Enquiry form"
+            className={`relative my-auto w-full max-w-md transform rounded-lg border border-[#BF953F] bg-black p-5 text-white shadow-[0_0_40px_rgba(191,149,63,0.3)] transition-all duration-300 ease-out sm:p-8 ${
+              isAnimating
+                ? "translate-y-0 scale-100 opacity-100"
+                : "translate-y-5 scale-[0.98] opacity-0"
+            }`}
           >
-            {/* Close Button */}
             <button
+              type="button"
               onClick={handleClose}
-              className="absolute top-4 right-4 text-[#BF953F] hover:text-white transition-colors z-10"
+              aria-label="Close"
+              className="absolute right-4 top-4 z-10 text-[#BF953F] transition-colors hover:text-white"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.5"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
             </button>
 
-            {/* --- Conditional Rendering: Form vs Success Message --- */}
             {!isSubmitted ? (
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="text-center mb-2">
-                  <h3 className={`text-3xl font-serif font-bold ${goldTextGradient}`}>Get in Touch</h3>
-                  <p className="text-[#8B7D5B] text-xs uppercase tracking-widest mt-2">Exclusive Event Planning</p>
+                <div className="mb-3 pr-8 text-center">
+                  <h3 className={`font-serif text-3xl font-bold ${goldTextGradient}`}>
+                    Get in Touch
+                  </h3>
+                  <p className="mt-2 text-xs uppercase tracking-widest text-[#8B7D5B]">
+                    Exclusive Event Planning
+                  </p>
                 </div>
 
-                <div className="space-y-4">
-                  {/* Name Input */}
-                  <div className="group">
-                    <input 
-                      type="text" 
-                      name="fullName" // Matches state
-                      value={formData.fullName}
-                      onChange={handleChange}
-                      required 
-                      className="w-full bg-[#111] border border-[#333] text-[#F3E779] px-4 py-3 rounded focus:outline-none focus:border-[#BF953F] focus:shadow-[0_0_10px_rgba(191,149,63,0.2)] transition-all placeholder-[#555]"
-                      placeholder="FULL NAME"
-                    />
-                  </div>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  autoComplete="name"
+                  className="w-full rounded border border-[#333] bg-[#111] px-4 py-3 text-[#F3E779] placeholder-[#555] transition-all focus:border-[#BF953F] focus:outline-none focus:shadow-[0_0_10px_rgba(191,149,63,0.2)]"
+                  placeholder="name"
+                />
 
-                  {/* Email Input */}
-                  <div className="group">
-                    <input 
-                      type="email" 
-                      name="email" // Matches state
-                      value={formData.email}
-                      onChange={handleChange}
-                      required 
-                      className="w-full bg-[#111] border border-[#333] text-[#F3E779] px-4 py-3 rounded focus:outline-none focus:border-[#BF953F] focus:shadow-[0_0_10px_rgba(191,149,63,0.2)] transition-all placeholder-[#555]"
-                      placeholder="EMAIL ADDRESS"
-                    />
-                  </div>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  autoComplete="email"
+                  className="w-full rounded border border-[#333] bg-[#111] px-4 py-3 text-[#F3E779] placeholder-[#555] transition-all focus:border-[#BF953F] focus:outline-none focus:shadow-[0_0_10px_rgba(191,149,63,0.2)]"
+                  placeholder="EMAIL ADDRESS"
+                />
 
-                  {/* Phone Input */}
-                  <div className="group">
-                    <input 
-                      type="tel" 
-                      name="phone" // Matches state
-                      value={formData.phone}
-                      onChange={handleChange}
-                      required 
-                      className="w-full bg-[#111] border border-[#333] text-[#F3E779] px-4 py-3 rounded focus:outline-none focus:border-[#BF953F] focus:shadow-[0_0_10px_rgba(191,149,63,0.2)] transition-all placeholder-[#555]"
-                      placeholder="PHONE NUMBER"
-                    />
-                  </div>
-                </div>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                  autoComplete="tel"
+                  className="w-full rounded border border-[#333] bg-[#111] px-4 py-3 text-[#F3E779] placeholder-[#555] transition-all focus:border-[#BF953F] focus:outline-none focus:shadow-[0_0_10px_rgba(191,149,63,0.2)]"
+                  placeholder="PHONE NUMBER"
+                />
 
-                {/* --- SUBMIT BUTTON --- */}
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className={`w-full mt-4 py-3 ${goldButtonGradient} text-black font-bold text-lg rounded shadow-lg transition-all transform hover:scale-[1.02] active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed flex justify-center items-center`}
+                  className={`mt-4 flex w-full items-center justify-center rounded py-3 text-base font-bold text-black shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70 sm:text-lg ${goldButtonGradient}`}
                 >
                   {isLoading ? (
                     <span className="flex items-center gap-2">
-                      <svg className="animate-spin h-5 w-5 text-black" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                      <svg className="h-5 w-5 animate-spin text-black" viewBox="0 0 24 24">
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          fill="none"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                        />
+                      </svg>
                       PROCESSING...
                     </span>
                   ) : (
@@ -208,42 +319,53 @@ export default function Hero() {
                   )}
                 </button>
 
-                {/* --- OR SEPARATOR --- */}
-                <div className="flex items-center justify-center gap-3 my-2">
-                    <div className="h-px bg-[#333] flex-1"></div>
-                    <span className="text-zinc-500 text-sm font-medium">Or</span>
-                    <div className="h-px bg-[#333] flex-1"></div>
+                <div className="flex items-center justify-center gap-3 py-1">
+                  <div className="h-px flex-1 bg-[#333]" />
+                  <span className="text-sm font-medium text-zinc-500">Or</span>
+                  <div className="h-px flex-1 bg-[#333]" />
                 </div>
 
-                {/* --- WHATSAPP BUTTON --- */}
                 <a
-                  href="https://wa.me/919372146434?text=Hello%20Zoya%20Events,%20I%20am%20interested%20in%20an%20enquiry."
+                  href="https://wa.me/919503802865?text=Hello%20Zoya%20Events,%20I%20am%20interested%20in%20an%20enquiry."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3 bg-[#25D366] hover:bg-[#20b858] text-white font-bold text-lg rounded shadow-lg transition-all transform hover:scale-[1.02] active:scale-95 flex justify-center items-center gap-3"
+                  className="flex w-full items-center justify-center gap-3 rounded bg-[#25D366] py-3 text-base font-bold text-white shadow-lg transition-all hover:scale-[1.01] hover:bg-[#20b858] active:scale-[0.99] sm:text-lg"
                 >
-                   {/* WhatsApp Icon SVG */}
-                   <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                   </svg>
-                   Connect On WhatsApp
+                  Connect On WhatsApp
                 </a>
-
               </form>
             ) : (
-              // Success View
-              <div className="text-center py-10 animate-fade-in-up">
-                <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center rounded-full border-2 border-[#BF953F] shadow-[0_0_20px_rgba(191,149,63,0.4)]">
-                  <svg className="w-12 h-12 text-[#BF953F]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+              <div className="py-8 text-center">
+                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border-2 border-[#BF953F] shadow-[0_0_20px_rgba(191,149,63,0.4)] sm:h-24 sm:w-24">
+                  <svg
+                    className="h-10 w-10 text-[#BF953F] sm:h-12 sm:w-12"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
                 </div>
-                <h3 className={`text-3xl font-serif font-bold mb-4 ${goldTextGradient}`}>Request Received</h3>
-                <p className="text-zinc-400 text-sm leading-relaxed mb-8">
-                  Thank you for choosing Zoya Events.<br/>
+
+                <h3 className={`mb-4 font-serif text-3xl font-bold ${goldTextGradient}`}>
+                  Request Received
+                </h3>
+
+                <p className="mb-8 text-sm leading-relaxed text-zinc-400">
+                  Thank you for choosing Zoya Events.
+                  <br />
                   Our team will contact you shortly.
                 </p>
+
                 <button
+                  type="button"
                   onClick={handleClose}
-                  className="px-8 py-2 border border-[#333] hover:border-[#BF953F] text-[#8B7D5B] hover:text-[#BF953F] rounded transition-all text-xs uppercase tracking-widest"
+                  className="rounded border border-[#333] px-8 py-2 text-xs uppercase tracking-widest text-[#8B7D5B] transition-all hover:border-[#BF953F] hover:text-[#BF953F]"
                 >
                   Return to Website
                 </button>

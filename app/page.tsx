@@ -14,10 +14,10 @@ export default function Home() {
       <About />
 
       <WhyChooseUs />
-      
+      <OurWork />
 
       {/* Our Work gallery (moved from Services) */}
-      <OurWork />
+   
     </main>
   );
 }

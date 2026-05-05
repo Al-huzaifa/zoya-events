@@ -1,1 +1,1 @@
-portfolio-1.jpg
+// This file is deprecated and not used
