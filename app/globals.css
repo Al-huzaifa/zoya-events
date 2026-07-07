@@ -1,1 +1,83 @@
 @import "tailwindcss";
+
+/* ─── LUXURY DESIGN SYSTEM — ZOYA EVENTS ─────────────────── */
+
+:root {
+  --font-playfair: "Playfair Display", Georgia, serif;
+  --font-dm-sans: "DM Sans", system-ui, sans-serif;
+
+  /* Gold palette */
+  --gold-light:  #FCF6BA;
+  --gold:        #D4AF37;
+  --gold-deep:   #BF953F;
+  --gold-dark:   #B38728;
+
+  /* Neutrals */
+  --cream:       #F5F1E8;
+  --cream-warm:  #FFFBF0;
+  --ink:         #0a0a0a;
+  --charcoal:    #111111;
+}
+
+/* ─── BASE ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  background-color: var(--cream);
+  color: var(--ink);
+}
+
+/* ─── TYPOGRAPHY TOKENS ─────────────────────────────────────── */
+.font-sans    { font-family: var(--font-dm-sans), system-ui, sans-serif; }
+.font-serif   { font-family: var(--font-playfair), Georgia, serif; }
+
+/* ─── TEXT SELECTION ─────────────────────────────────────────── */
+::selection { background: var(--gold); color: #000; }
+
+/* ─── SCROLLBAR ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--gold-deep); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* ─── ANIMATIONS ─────────────────────────────────────────────── */
+@keyframes infinite-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes infinite-scroll-reverse {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+.animate-infinite-scroll-slow    { animation: infinite-scroll 60s linear infinite; }
+.animate-infinite-scroll-reverse { animation: infinite-scroll-reverse 60s linear infinite; }
+.animate-float                   { animation: float 3s ease-in-out infinite; }
+
+/* Gold shimmer text utility */
+.gold-shimmer {
+  background: linear-gradient(
+    90deg,
+    #BF953F 0%, #FCF6BA 30%, #D4AF37 50%, #FCF6BA 70%, #B38728 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}

@@ -13,12 +13,29 @@ interface Particle {
   delay: number;
 }
 
-const serviceParticles = [...Array(20)].map((_, i) => ({
-  id: i,
-  x: `${Math.random() * 100}vw`,
-  duration: Math.random() * 15 + 20,
-  delay: Math.random() * 10,
-}));
+// ✅ Pre-computed values — same on server AND client (no hydration crash)
+const serviceParticles = [
+  { id: 0,  x: "3.5vw",  duration: 28, delay: 0 },
+  { id: 1,  x: "12vw",  duration: 22, delay: 3 },
+  { id: 2,  x: "21vw",  duration: 35, delay: 7 },
+  { id: 3,  x: "30vw",  duration: 25, delay: 1 },
+  { id: 4,  x: "38vw",  duration: 30, delay: 5 },
+  { id: 5,  x: "47vw",  duration: 20, delay: 9 },
+  { id: 6,  x: "55vw",  duration: 32, delay: 2 },
+  { id: 7,  x: "63vw",  duration: 24, delay: 6 },
+  { id: 8,  x: "70vw",  duration: 27, delay: 4 },
+  { id: 9,  x: "79vw",  duration: 21, delay: 8 },
+  { id: 10, x: "86vw",  duration: 33, delay: 0.5 },
+  { id: 11, x: "93vw",  duration: 26, delay: 3.5 },
+  { id: 12, x: "8vw",   duration: 29, delay: 6.5 },
+  { id: 13, x: "17vw",  duration: 23, delay: 2.5 },
+  { id: 14, x: "26vw",  duration: 31, delay: 7.5 },
+  { id: 15, x: "43vw",  duration: 34, delay: 1.5 },
+  { id: 16, x: "59vw",  duration: 22, delay: 4.5 },
+  { id: 17, x: "66vw",  duration: 28, delay: 8.5 },
+  { id: 18, x: "74vw",  duration: 26, delay: 3.2 },
+  { id: 19, x: "90vw",  duration: 30, delay: 6.2 },
+];
 
 const GoldenBackground = () => {
   const particles = serviceParticles;
@@ -102,7 +119,7 @@ const parallaxServices = [
     title: "Luxury Glass Hangars",
     subtitle: "Auto Expos • Product Launches • Premium Showrooms",
     description: "Transform any open space into a high-end transparent showroom. Perfect for luxury brand launches and night-time exhibitions.",
-    image: "/images/salesoffice/salesofficetemporary.webp", 
+    image: "/images/salesoffice_temporary.webp",
     reverse: false,
   },
   {
@@ -110,7 +127,7 @@ const parallaxServices = [
     title: "Bespoke Sales Offices",
     subtitle: "Real Estate • Climate Controlled Interiors • Brand Lounges",
     description: "Fully customized, climate-controlled temporary structures built specifically for luxury real estate developers with premium interior finishes.",
-    image: "/images/salesoffice/salesoffice-3.3.webp", 
+    image: "/images/salesoffice3.webp",
     reverse: true,
   }
 ];
@@ -140,17 +157,17 @@ const TrueParallaxRow = ({ service }: TrueParallaxRowProps) => {
   const yImage = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
 
   return (
-    <div ref={containerRef} className={`flex flex-col ${service.reverse ? 'md:flex-row-reverse' : 'md:flex-row'} w-full border-b border-white/5 overflow-hidden bg-[#050505]`}>
-      <div className="w-full md:w-1/2 flex items-center justify-center p-8 py-16 md:p-16 lg:p-24 z-10 bg-linear-to-b from-[#080808] to-[#050505]">
+    <div ref={containerRef} className={`flex flex-col ${service.reverse ? 'md:flex-row-reverse' : 'md:flex-row'} w-full border-b border-[#D4AF37]/20 overflow-hidden bg-[#F5F1E8]`}>
+      <div className="w-full md:w-1/2 flex items-center justify-center p-8 py-16 md:p-16 lg:p-24 z-10 bg-linear-to-b from-[#FFFBF0] to-[#F5F1E8]">
         <motion.div style={{ y: yText }} className="max-w-xl">
           <span className="text-[#D4AF37] font-serif italic text-2xl md:text-3xl mb-4 block">{service.id}</span>
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black uppercase leading-tight mb-4 text-white">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-black uppercase leading-tight mb-4 text-[#0a0a0a]">
             {service.title}
           </h2>
           <h4 className="text-[#D4AF37] text-xs md:text-sm font-bold uppercase tracking-[0.2em] mb-6 border-l-2 border-[#D4AF37] pl-3">
             {service.subtitle}
           </h4>
-          <p className="text-zinc-300 text-base md:text-lg leading-relaxed font-light">
+          <p className="text-[#3a3a3a] text-base md:text-lg leading-relaxed font-light">
             {service.description}
           </p>
         </motion.div>
@@ -165,7 +182,7 @@ const TrueParallaxRow = ({ service }: TrueParallaxRowProps) => {
             className="object-cover opacity-90"
             sizes="(max-width: 768px) 100vw, 50vw"
           />
-          <div className="absolute inset-0 bg-linear-to-t from-[#050505]/80 via-transparent to-[#050505]/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/30" />
         </motion.div>
       </div>
     </div>
@@ -174,7 +191,7 @@ const TrueParallaxRow = ({ service }: TrueParallaxRowProps) => {
 
 export default function ServicesPage() {
   return (
-    <div className="bg-[#050505] text-white min-h-screen font-sans selection:bg-[#D4AF37] selection:text-black overflow-x-hidden">
+    <div className="bg-[#F5F1E8] text-[#0a0a0a] min-h-screen font-sans selection:bg-[#D4AF37] selection:text-black overflow-x-hidden">
       <GoldenBackground />
 
       {/* Hero Section */}
@@ -184,10 +201,12 @@ export default function ServicesPage() {
             src="/images/portfolio-4.jpg"
             alt="Background"
             fill
-            className="object-cover opacity-60 grayscale-[0.3]"
+            className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-linear-to-t from-[#050505] via-[#050505]/60 to-[#050505]/80"></div>
+          {/* Dark cinematic overlay — makes image visible and text legible */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+          <div className="absolute inset-0 bg-black/20" />
         </div>
 
         <div className="relative z-10 text-center max-w-6xl px-4">
@@ -195,9 +214,9 @@ export default function ServicesPage() {
             <span className="text-[#D4AF37] tracking-[0.3em] text-[9px] md:text-xs font-bold uppercase mb-4 block">
               Vendor Excellence • Zoya Event
             </span>
-            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black uppercase leading-[0.9] mb-8">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black uppercase leading-[0.9] mb-8 text-white">
               INFRASTRUCTURE <br/> 
-              <span className="bg-linear-to-r from-[#D4AF37] via-[#F9D423] to-[#B8860B] bg-clip-text text-transparent italic font-serif">
+              <span className="bg-gradient-to-r from-[#D4AF37] via-[#F9D423] to-[#B8860B] bg-clip-text text-transparent italic font-serif">
                 FOR THE ELITE.
               </span>
             </h1>
@@ -209,29 +228,12 @@ export default function ServicesPage() {
       </section>
 
       {/* Services Section */}
-      <section className="relative z-10 bg-[#050505]">
+      <section className="relative z-10 bg-[#F5F1E8]">
         {parallaxServices.map((service, idx) => (
           <TrueParallaxRow key={idx} service={service} />
         ))}
       </section>
 
-      {/* Custom Styles for Infinite Scroll */}
-      <style jsx global>{`
-        @keyframes infinite-scroll {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
-        @keyframes infinite-scroll-reverse {
-          from { transform: translateX(-50%); }
-          to { transform: translateX(0); }
-        }
-        .animate-infinite-scroll-slow {
-          animation: infinite-scroll 60s linear infinite;
-        }
-        .animate-infinite-scroll-reverse {
-          animation: infinite-scroll-reverse 60s linear infinite;
-        }
-      `}</style>
     </div>
   );
 }

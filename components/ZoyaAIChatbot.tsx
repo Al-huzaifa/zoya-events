@@ -296,7 +296,7 @@ const ZoyaAIChatbot: React.FC = () => {
             exit="exit"
             // FIXED SIZING: Replaced raw 'h-screen' with calculated heights to avoid navbar overlap
             // and adjusted the positioning so it acts gracefully on mobile, tablet, and desktop.
-            className="fixed bottom-0 right-0 sm:bottom-24 sm:right-6 md:right-8 w-full sm:w-95 h-[calc(100dvh-80px)] sm:h-150 sm:max-h-[calc(100vh-120px)] bg-linear-to-b from-slate-950 to-black border-t sm:border border-yellow-400 border-opacity-40 rounded-t-3xl sm:rounded-2xl shadow-2xl z-9999 flex flex-col overflow-hidden"
+            className="fixed bottom-0 right-0 sm:bottom-24 sm:right-6 md:right-8 w-full sm:w-95 h-[calc(100dvh-80px)] sm:h-150 sm:max-h-[calc(100vh-120px)] bg-linear-to-b from-[#FFFBF0] to-[#F9F5ED] border-t sm:border border-[#D4AF37] border-opacity-60 rounded-t-3xl sm:rounded-2xl shadow-2xl z-9999 flex flex-col overflow-hidden"
           >
             {/* Enhanced Header with stylized ZE Logo */}
             <div className="bg-linear-to-r from-yellow-400 via-yellow-300 to-yellow-400 text-black p-4 flex items-center justify-between">
@@ -325,7 +325,7 @@ const ZoyaAIChatbot: React.FC = () => {
             </div>
 
             {/* Messages Container */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-linear-to-b from-slate-900 via-slate-950 to-black">
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-linear-to-b from-[#FFFBF0] via-[#F5F1E8] to-[#F9F5ED]">
               {messages.map((msg) => (
                 <motion.div
                   key={msg.id}
@@ -336,7 +336,7 @@ const ZoyaAIChatbot: React.FC = () => {
                 >
                   {msg.isTyping ? (
                     <div className="flex justify-start">
-                      <div className="bg-slate-800 border border-yellow-400 border-opacity-30 rounded-lg rounded-bl-none px-4 py-2 max-w-xs">
+                      <div className="bg-[#F5F1E8] border border-[#D4AF37] border-opacity-50 rounded-lg rounded-bl-none px-4 py-2 max-w-xs">
                         <div className="flex space-x-2">
                           <motion.div
                             className="w-2 h-2 bg-yellow-400 rounded-full"
@@ -365,8 +365,8 @@ const ZoyaAIChatbot: React.FC = () => {
                       <div
                         className={`max-w-xs px-4 py-3 rounded-lg group relative ${
                           msg.sender === "user"
-                            ? "bg-linear-to-r from-yellow-400 to-yellow-500 text-black rounded-br-none"
-                            : "bg-slate-800 text-white border border-yellow-400 border-opacity-30 rounded-bl-none"
+                            ? "bg-linear-to-r from-[#D4AF37] to-[#F3E779] text-black rounded-br-none"
+                            : "bg-white text-[#0a0a0a] border border-[#D4AF37] border-opacity-40 rounded-bl-none"
                         }`}
                       >
                         <p className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -377,7 +377,7 @@ const ZoyaAIChatbot: React.FC = () => {
                             className={`text-xs ${
                               msg.sender === "user"
                                 ? "text-black text-opacity-60"
-                                : "text-yellow-400 text-opacity-60"
+                                : "text-[#D4AF37] text-opacity-70"
                             }`}
                           >
                             {msg.timestamp.toLocaleTimeString([], {
@@ -394,7 +394,7 @@ const ZoyaAIChatbot: React.FC = () => {
                               className="opacity-0 group-hover:opacity-100 transition-opacity"
                               title="Copy message"
                             >
-                              <Copy size={14} className="text-yellow-400" />
+                              <Copy size={14} className="text-[#D4AF37]" />
                             </motion.button>
                           )}
                         </div>
@@ -419,7 +419,7 @@ const ZoyaAIChatbot: React.FC = () => {
                             transition={{ delay: idx * 0.1 }}
                             whileHover={{ scale: 1.05, y: -2 }}
                             onClick={(e) => handleSendMessage(e, suggestion)}
-                            className="text-xs px-3 py-1.5 rounded-full bg-slate-700 hover:bg-yellow-400 hover:text-black text-yellow-400 transition-all border border-yellow-400 border-opacity-40 hover:border-opacity-100 line-clamp-1"
+                            className="text-xs px-3 py-1.5 rounded-full bg-[#FFFBF0] hover:bg-[#D4AF37] hover:text-black text-[#D4AF37] transition-all border border-[#D4AF37] border-opacity-50 hover:border-opacity-100 line-clamp-1"
                           >
                             {suggestion}
                           </motion.button>
@@ -436,7 +436,7 @@ const ZoyaAIChatbot: React.FC = () => {
             {/* Input Area */}
             <form
               onSubmit={handleSendMessage}
-              className="border-t border-yellow-400 border-opacity-30 p-4 bg-linear-to-t from-slate-900 to-slate-950 flex gap-2"
+              className="border-t border-[#D4AF37] border-opacity-40 p-4 bg-linear-to-t from-[#FFFBF0] to-[#F5F1E8] flex gap-2"
             >
               <input
                 ref={inputRef}
@@ -444,7 +444,7 @@ const ZoyaAIChatbot: React.FC = () => {
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 placeholder="Ask me anything about Zoya Event..."
-                className="flex-1 bg-slate-800 text-white border border-yellow-400 border-opacity-30 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-yellow-400 focus:border-opacity-100 focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-20 transition placeholder-white placeholder-opacity-40"
+                className="flex-1 bg-white text-[#0a0a0a] border border-[#D4AF37] border-opacity-40 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#D4AF37] focus:border-opacity-100 focus:ring-2 focus:ring-[#D4AF37] focus:ring-opacity-20 transition placeholder-[#0a0a0a] placeholder-opacity-40"
               />
               <motion.button
                 type="submit"

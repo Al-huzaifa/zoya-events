@@ -208,12 +208,12 @@ function ContactCard({
 
 export default function Contact3DHero() {
   return (
-    <section className="relative w-full overflow-hidden bg-black text-white">
+    <section className="relative w-full overflow-hidden bg-[#F5F1E8] text-[#0a0a0a]">
       <div className="absolute inset-0 z-0">
         <div className="absolute left-1/2 top-0 h-[380px] w-[720px] max-w-none -translate-x-1/2 sm:h-[520px] md:h-full md:w-full">
           <Suspense
             fallback={
-              <div className="h-full w-full bg-gradient-to-b from-gray-900 to-black" />
+              <div className="h-full w-full bg-gradient-to-b from-[#FFFBF0] to-[#F5F1E8]" />
             }
           >
             <Canvas3D />
@@ -224,7 +224,7 @@ export default function Contact3DHero() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.16) 0%, transparent 52%), linear-gradient(to bottom, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.78) 78%, #000 100%)",
+              "radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.12) 0%, transparent 52%), linear-gradient(to bottom, rgba(255,255,255,0.08) 0%, rgba(245,241,232,0.4) 78%, #F5F1E8 100%)",
           }}
         />
       </div>
@@ -258,7 +258,7 @@ export default function Contact3DHero() {
             </span>
           </h1>
 
-          <p className="mx-auto mt-4 max-w-2xl text-xs font-light uppercase tracking-[0.18em] text-gray-400 sm:text-sm">
+          <p className="mx-auto mt-4 max-w-2xl text-xs font-light uppercase tracking-[0.18em] text-[#3a3a3a] sm:text-sm">
             Ready to deploy. Available 24/7 for high-stakes execution.
           </p>
         </motion.div>
@@ -273,7 +273,7 @@ export default function Contact3DHero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.65, duration: 0.8 }}
-          className="mt-8 flex items-center justify-center gap-3 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-gray-500 sm:text-xs md:text-sm"
+          className="mt-8 flex items-center justify-center gap-3 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-[#3a3a3a] sm:text-xs md:text-sm"
         >
           <div className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-yellow-500" />
           <span className="break-words">Mumbai HQ • Operational 24/7</span>

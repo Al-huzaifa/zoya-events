@@ -1,24 +1,37 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
-// 👇 1. ADD THIS TYPE DEFINITION
 type NavItem = {
   name: string;
   href: string;
-  subItems?: { name: string; href: string }[]; // The "?" makes it optional
+  subItems?: { name: string; href: string }[];
 };
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
 
-  const goldTextClass = "bg-clip-text text-transparent bg-gradient-to-r from-[#BF953F] via-[#FCF6BA] to-[#B38728]";
-  const goldHoverClass = "hover:text-[#F3E779] transition-colors duration-300";
+  // Glass effect on scroll
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-  // 👇 2. APPLY THE TYPE TO YOUR ARRAYS
+  // Close mobile menu on route change / resize
+  useEffect(() => {
+    if (isOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+    return () => { document.body.style.overflow = ""; };
+  }, [isOpen]);
+
+  const goldHoverClass = "hover:text-[#D4AF37] transition-colors duration-300";
+
   const leftLinks: NavItem[] = [
     { name: "Home", href: "/" },
     { name: "Sales Office", href: "/sales-office" },
@@ -26,60 +39,79 @@ export default function Navbar() {
   ];
 
   const rightLinks: NavItem[] = [
-    {
-      name: "Services",
-      href: "/services"
-    },
-    {
-      name: "Portfolios",
-      href: "/portfolio",
-    },
+    { name: "Services", href: "/services" },
+    { name: "Portfolio", href: "/portfolio" },
   ];
 
   return (
     <>
-      {/* --- MAIN NAVBAR --- */}
-      <nav className="fixed top-0 w-full bg-black shadow-2xl z-50 border-b border-[#BF953F]/40 h-20 sm:h-24 flex items-center transition-all duration-300">
+      {/* ── MAIN NAVBAR ── */}
+      <motion.nav
+        initial={false}
+        animate={{
+          backgroundColor: scrolled ? "rgba(10,9,5,0.85)" : "#F5F1E8",
+          borderBottomColor: scrolled ? "rgba(212,175,55,0.4)" : "rgba(212,175,55,0.2)",
+          backdropFilter: scrolled ? "blur(16px) saturate(180%)" : "none",
+          boxShadow: scrolled
+            ? "0 4px 40px rgba(0,0,0,0.4)"
+            : "0 2px 20px rgba(0,0,0,0.06)",
+        }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        className="fixed top-0 w-full z-50 border-b h-[68px] sm:h-[80px] md:h-[88px] flex items-center"
+      >
         <div className="max-w-[1920px] mx-auto w-full px-6 lg:px-12 flex justify-between items-center relative h-full">
-          
-          {/* --- DESKTOP LEFT LINKS --- */}
-          <div className="hidden lg:flex flex-1 gap-12 items-center justify-start text-xs xl:text-sm font-serif font-medium uppercase tracking-[0.2em] text-zinc-400">
+
+          {/* ── DESKTOP LEFT LINKS ── */}
+          <div
+            className={`hidden lg:flex flex-1 gap-10 xl:gap-12 items-center justify-start text-[12px] xl:text-[13px] font-serif font-medium uppercase tracking-[0.18em] xl:tracking-[0.22em] ${
+              scrolled ? "text-[#C9C2AC]" : "text-[#2a2a2a]"
+            }`}
+          >
             {leftLinks.map((link) => (
-              <Link 
-                key={link.name} 
-                href={link.href} 
-                className={`${goldHoverClass} hover:tracking-[0.25em] transition-all`}
+              <Link
+                key={link.name}
+                href={link.href}
+                className={`${goldHoverClass} transition-all hover:tracking-[0.24em] relative group`}
               >
                 {link.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-[#D4AF37] group-hover:w-full transition-all duration-500" />
               </Link>
             ))}
           </div>
 
-          {/* --- CENTER LOGO --- */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-full py-2">
+          {/* ── CENTER LOGO ── */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-full py-1.5 md:py-2">
             <Link href="/" className="h-full flex items-center justify-center">
-              <img
+              <Image
                 src="/images/transparentlogo.png"
                 alt="Zoya Event Logo"
-                className="h-full w-auto object-contain drop-shadow-[0_0_15px_rgba(191,149,63,0.3)] hover:drop-shadow-[0_0_25px_rgba(191,149,63,0.5)] transition-all duration-500"
+                width={180}
+                height={90}
+                className="h-full w-auto object-contain drop-shadow-[0_0_18px_rgba(191,149,63,0.4)] hover:drop-shadow-[0_0_32px_rgba(191,149,63,0.65)] transition-all duration-500"
+                priority
               />
             </Link>
           </div>
 
-          {/* --- DESKTOP RIGHT LINKS --- */}
-          <div className="hidden lg:flex flex-1 gap-10 items-center justify-end text-xs xl:text-sm font-serif font-medium uppercase tracking-[0.2em] text-zinc-400">
+          {/* ── DESKTOP RIGHT LINKS ── */}
+          <div
+            className={`hidden lg:flex flex-1 gap-10 xl:gap-12 items-center justify-end text-[12px] xl:text-[13px] font-serif font-medium uppercase tracking-[0.18em] xl:tracking-[0.22em] ${
+              scrolled ? "text-[#C9C2AC]" : "text-[#2a2a2a]"
+            }`}
+          >
             {rightLinks.map((item) => (
-              <div 
-                key={item.name} 
+              <div
+                key={item.name}
                 className="relative h-full flex items-center group cursor-pointer"
-                onMouseEnter={() => item.subItems && setActiveDropdown(item.name)} 
+                onMouseEnter={() => item.subItems && setActiveDropdown(item.name)}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
-                <Link href={item.href} className={`flex items-center gap-2 py-8 ${goldHoverClass}`}>
-                  {item.name} 
-                  {item.subItems && (
-                    <span className="text-[8px] opacity-70 group-hover:text-[#D4AF37] transition-transform group-hover:rotate-180">▼</span>
-                  )}
+                <Link
+                  href={item.href}
+                  className={`flex items-center gap-2 py-8 ${goldHoverClass} relative`}
+                >
+                  {item.name}
+                  <span className="absolute -bottom-1 left-0 w-0 h-[1.5px] bg-[#D4AF37] group-hover:w-full transition-all duration-500" />
                 </Link>
 
                 <AnimatePresence>
@@ -88,15 +120,15 @@ export default function Navbar() {
                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute top-20 right-0 w-64 bg-black border border-[#BF953F]/30 shadow-[0_10px_40px_rgba(0,0,0,0.9)] pt-2 pb-2 rounded-sm backdrop-blur-xl"
+                      transition={{ duration: 0.18 }}
+                      className="absolute top-20 right-0 w-64 bg-[#0a0805]/95 backdrop-blur-xl border border-[#D4AF37]/40 shadow-[0_16px_50px_rgba(0,0,0,0.4)] pt-2 pb-2 rounded-sm"
                     >
-                      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#BF953F] to-transparent"></div>
+                      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#BF953F] to-transparent" />
                       {item.subItems.map((sub) => (
-                        <Link 
-                          key={sub.name} 
-                          href={sub.href} 
-                          className="block px-6 py-4 text-[11px] uppercase tracking-[0.15em] text-zinc-400 hover:text-white hover:bg-[#BF953F]/10 hover:border-l-2 border-[#BF953F] transition-all"
+                        <Link
+                          key={sub.name}
+                          href={sub.href}
+                          className="block px-6 py-3.5 text-[12px] uppercase tracking-[0.15em] text-[#C9C2AC] hover:text-[#D4AF37] hover:bg-[#D4AF37]/10 hover:pl-8 transition-all duration-200"
                         >
                           {sub.name}
                         </Link>
@@ -107,30 +139,39 @@ export default function Navbar() {
               </div>
             ))}
 
-            <Link 
-              href="/contact" 
-              className="ml-6 px-6 py-2 border border-[#BF953F] text-[#BF953F] hover:bg-[#BF953F] hover:text-black transition-all duration-500 font-bold uppercase tracking-widest text-[10px]"
+            <Link
+              href="/contact"
+              className="ml-4 px-6 py-3 border border-[#D4AF37] text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black transition-all duration-300 font-bold uppercase tracking-[0.18em] text-[11px] rounded-sm shadow-[0_2px_12px_rgba(212,175,55,0.15)] hover:shadow-[0_4px_20px_rgba(212,175,55,0.35)]"
             >
               Get in Touch
             </Link>
           </div>
 
-          {/* --- MOBILE HAMBURGER --- */}
-          <div className="lg:hidden absolute right-6 top-1/2 -translate-y-1/2">
-            <button 
-              onClick={() => setIsOpen(true)}
-              className="flex flex-col gap-1.5 items-end group p-2"
+          {/* ── MOBILE HAMBURGER ── */}
+          <div className="lg:hidden absolute right-4 sm:right-6 top-1/2 -translate-y-1/2">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              aria-label="Toggle navigation menu"
+              className="relative flex flex-col gap-[5px] items-end p-2 w-11 h-11 justify-center rounded-lg hover:bg-[#D4AF37]/8 transition-colors duration-200"
             >
-              <span className="w-8 h-[2px] bg-[#BF953F] group-hover:w-10 transition-all duration-300"></span>
-              <span className="w-6 h-[2px] bg-zinc-300 group-hover:w-10 transition-all duration-300"></span>
-              <span className="w-8 h-[2px] bg-[#BF953F] group-hover:w-10 transition-all duration-300"></span>
+              <motion.span
+                animate={isOpen ? { rotate: 45, y: 7, width: 26 } : { rotate: 0, y: 0, width: 26 }}
+                className="block h-[2px] bg-[#D4AF37] origin-center"
+              />
+              <motion.span
+                animate={isOpen ? { opacity: 0, x: -8 } : { opacity: 1, x: 0 }}
+                className="block h-[2px] w-[18px] bg-[#8B7D5B]"
+              />
+              <motion.span
+                animate={isOpen ? { rotate: -45, y: -7, width: 26 } : { rotate: 0, y: 0, width: 26 }}
+                className="block h-[2px] bg-[#D4AF37] origin-center"
+              />
             </button>
           </div>
-
         </div>
-      </nav>
+      </motion.nav>
 
-      {/* --- MOBILE SIDEBAR MENU (RIGHT SIDE) --- */}
+      {/* ── MOBILE SIDEBAR ── */}
       <AnimatePresence>
         {isOpen && (
           <>
@@ -139,61 +180,73 @@ export default function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[90]"
+              className="fixed inset-0 bg-black/85 backdrop-blur-sm z-[90]"
             />
 
-            <motion.div 
+            <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed top-0 right-0 h-full w-[80%] max-w-[320px] bg-black border-l border-[#BF953F]/30 z-[100] flex flex-col p-8 overflow-y-auto shadow-2xl"
+              className="fixed top-0 right-0 h-full w-[85%] max-w-[340px] bg-[#050503] border-l border-[#D4AF37]/25 z-[100] flex flex-col overflow-y-auto"
             >
-              <div className="flex justify-between items-center mb-10 border-b border-zinc-800 pb-4">
-                <span className={`text-lg font-serif font-bold ${goldTextClass}`}>MENU</span>
-                <button 
+              {/* Drawer header */}
+              <div className="flex items-center justify-between px-7 py-5 border-b border-[#D4AF37]/15">
+                <Image
+                  src="/images/transparentlogo.png"
+                  alt="Zoya Events"
+                  width={130}
+                  height={65}
+                  className="h-12 w-auto object-contain"
+                />
+                <button
                   onClick={() => setIsOpen(false)}
-                  className="text-[#BF953F] text-sm font-bold uppercase tracking-widest hover:text-white transition-colors"
+                  aria-label="Close menu"
+                  className="w-8 h-8 rounded-full border border-[#D4AF37]/30 flex items-center justify-center text-[#D4AF37] hover:bg-[#D4AF37] hover:text-black transition-all duration-200"
                 >
-                  ✕ Close
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+                  </svg>
                 </button>
               </div>
 
-              <div className="flex flex-col gap-6">
-                {[...leftLinks, ...rightLinks].map((link) => (
-                  <div key={link.name} className="flex flex-col">
-                    <Link 
-                      href={link.href} 
-                      onClick={() => !link.subItems && setIsOpen(false)}
-                      className="text-xl font-serif font-light uppercase tracking-widest text-zinc-300 hover:text-[#BF953F] transition-colors"
+              {/* Nav links */}
+              <div className="flex flex-col flex-1 px-7 py-8 gap-1">
+                {[...leftLinks, ...rightLinks].map((link, idx) => (
+                  <div key={link.name}>
+                    <Link
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center justify-between py-3.5 border-b border-white/5 text-[15px] font-serif uppercase tracking-[0.18em] text-[#C9C2AC] hover:text-[#D4AF37] transition-colors duration-200 group"
                     >
-                      {link.name}
+                      <span>{link.name}</span>
+                      <svg className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     </Link>
-                    
                     {link.subItems && (
-                      <div className="flex flex-col mt-3 ml-4 gap-3 border-l border-[#BF953F]/20 pl-4">
-                        {link.subItems.map(sub => (
-                          <Link 
-                            key={sub.name}
-                            href={sub.href}
-                            onClick={() => setIsOpen(false)}
-                            className="text-[10px] uppercase tracking-widest text-zinc-500 hover:text-white"
-                          >
-                            {sub.name}
-                          </Link>
+                      <div className="flex flex-col ml-4 py-1 gap-1 border-l border-[#D4AF37]/20 pl-4">
+                        {link.subItems.map((sub) => (
+                          <Link key={sub.name} href={sub.href} onClick={() => setIsOpen(false)}
+                            className="text-[11px] uppercase tracking-widest text-[#6B6350] hover:text-[#D4AF37] transition-colors py-1.5"
+                          >{sub.name}</Link>
                         ))}
                       </div>
                     )}
                   </div>
                 ))}
-                
-                <Link 
-                  href="/contact" 
+              </div>
+
+              {/* Drawer footer */}
+              <div className="px-7 py-6 border-t border-[#D4AF37]/15 space-y-3">
+                <Link
+                  href="/contact"
                   onClick={() => setIsOpen(false)}
-                  className="mt-8 py-3 bg-[#BF953F] text-black text-center font-bold uppercase tracking-[0.2em] hover:bg-white transition-all text-xs"
+                  className="flex items-center justify-center py-4 bg-[#D4AF37] text-black font-bold uppercase tracking-[0.2em] text-[11px] rounded-sm hover:bg-[#BF953F] transition-colors duration-200"
                 >
                   Get in Touch
                 </Link>
+                <p className="text-center text-[#3a3a3a] text-[10px] uppercase tracking-[0.22em]">
+                  Est. 2013 · Mumbai, India
+                </p>
               </div>
             </motion.div>
           </>

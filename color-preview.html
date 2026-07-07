@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold Color Combinations Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 40px 20px;
+            background: #1a1a1a;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5em;
+        }
+        
+        .colors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .color-card {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease;
+        }
+        
+        .color-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .color-sample {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .color-sample::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #D4AF37 0%, #F3E779 50%, #B38728 100%);
+            opacity: 0.3;
+            z-index: 1;
+        }
+        
+        .color-label {
+            position: relative;
+            z-index: 2;
+            color: #D4AF37;
+            font-weight: bold;
+            font-size: 1.2em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .color-info {
+            padding: 20px;
+            background: #2a2a2a;
+            color: white;
+        }
+        
+        .color-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #D4AF37;
+        }
+        
+        .color-code {
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            color: #bbb;
+            margin-bottom: 8px;
+        }
+        
+        .color-description {
+            font-size: 0.9em;
+            color: #ddd;
+            line-height: 1.5;
+        }
+        
+        .preview-section {
+            margin-top: 60px;
+            padding: 40px;
+            border-radius: 12px;
+            background: #2a2a2a;
+        }
+        
+        .preview-section h2 {
+            color: #D4AF37;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+        }
+        
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .full-preview {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+        }
+        
+        .preview-header {
+            padding: 20px;
+            background: rgba(212, 175, 55, 0.1);
+            border-bottom: 2px solid #D4AF37;
+        }
+        
+        .preview-header h3 {
+            color: #D4AF37;
+            font-size: 1.1em;
+        }
+        
+        .preview-content {
+            padding: 30px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .preview-text {
+            font-size: 1.2em;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .preview-accent {
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #D4AF37, #F3E779);
+            border-radius: 2px;
+            margin: 15px 0;
+        }
+        
+        .comparison {
+            margin-top: 60px;
+            padding: 40px;
+            border-radius: 12px;
+            background: #2a2a2a;
+            color: white;
+        }
+        
+        .comparison h2 {
+            color: #D4AF37;
+            margin-bottom: 30px;
+            font-size: 1.8em;
+        }
+        
+        .comparison-item {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            border-left: 4px solid #D4AF37;
+        }
+        
+        .comparison-item strong {
+            color: #D4AF37;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #888;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Gold Color Combinations</h1>
+        
+        <div class="colors-grid">
+            <!-- Color 1: Cream -->
+            <div class="color-card">
+                <div class="color-sample" style="background-color: #F5F1E8;">
+                    <span class="color-label">Cream</span>
+                </div>
+                <div class="color-info">
+                    <div class="color-name">Cream</div>
+                    <div class="color-code">#F5F1E8</div>
+                    <div class="color-description">Warm, luxurious, maintains elegance with gold</div>
+                </div>
+            </div>
+            
+            <!-- Color 2: Champagne -->
+            <div class="color-card">
+                <div class="color-sample" style="background-color: #F7E7CE;">
+                    <span class="color-label">Champagne</span>
+                </div>
+                <div class="color-info">
+                    <div class="color-name">Champagne</div>
+                    <div class="color-code">#F7E7CE</div>
+                    <div class="color-description">Slightly warmer, very premium feel</div>
+                </div>
+            </div>
+            
+            <!-- Color 3: Light Ivory -->
+            <div class="color-card">
+                <div class="color-sample" style="background-color: #FFFFF0;">
+                    <span class="color-label">Light Ivory</span>
+                </div>
+                <div class="color-info">
+                    <div class="color-name">Light Ivory</div>
+                    <div class="color-code">#FFFFF0</div>
+                    <div class="color-description">Soft warm tone, not pure white</div>
+                </div>
+            </div>
+            
+            <!-- Color 4: Warm Beige -->
+            <div class="color-card">
+                <div class="color-sample" style="background-color: #E8DCC8;">
+                    <span class="color-label">Warm Beige</span>
+                </div>
+                <div class="color-info">
+                    <div class="color-name">Warm Beige</div>
+                    <div class="color-code">#E8DCC8</div>
+                    <div class="color-description">More contrast while staying warm</div>
+                </div>
+            </div>
+            
+            <!-- Color 5: Soft Taupe -->
+            <div class="color-card">
+                <div class="color-sample" style="background-color: #E8E0D5;">
+                    <span class="color-label">Soft Taupe</span>
+                </div>
+                <div class="color-info">
+                    <div class="color-name">Soft Taupe</div>
+                    <div class="color-code">#E8E0D5</div>
+                    <div class="color-description">Sophisticated, neutral with warmth</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Full Page Previews -->
+        <div class="preview-section">
+            <h2>Full Page Preview Examples</h2>
+            <div class="preview-grid">
+                <div class="full-preview">
+                    <div class="preview-header">
+                        <h3>Cream Background</h3>
+                    </div>
+                    <div class="preview-content" style="background-color: #F5F1E8; color: #0a0a0a;">
+                        <div class="preview-text">Your Content Here</div>
+                        <div class="preview-accent"></div>
+                        <small style="color: #666;">With gold accents and dark text</small>
+                    </div>
+                </div>
+                
+                <div class="full-preview">
+                    <div class="preview-header">
+                        <h3>Champagne Background</h3>
+                    </div>
+                    <div class="preview-content" style="background-color: #F7E7CE; color: #0a0a0a;">
+                        <div class="preview-text">Your Content Here</div>
+                        <div class="preview-accent"></div>
+                        <small style="color: #666;">With gold accents and dark text</small>
+                    </div>
+                </div>
+                
+                <div class="full-preview">
+                    <div class="preview-header">
+                        <h3>Light Ivory Background</h3>
+                    </div>
+                    <div class="preview-content" style="background-color: #FFFFF0; color: #0a0a0a;">
+                        <div class="preview-text">Your Content Here</div>
+                        <div class="preview-accent"></div>
+                        <small style="color: #666;">With gold accents and dark text</small>
+                    </div>
+                </div>
+                
+                <div class="full-preview">
+                    <div class="preview-header">
+                        <h3>Warm Beige Background</h3>
+                    </div>
+                    <div class="preview-content" style="background-color: #E8DCC8; color: #0a0a0a;">
+                        <div class="preview-text">Your Content Here</div>
+                        <div class="preview-accent"></div>
+                        <small style="color: #666;">With gold accents and dark text</small>
+                    </div>
+                </div>
+                
+                <div class="full-preview">
+                    <div class="preview-header">
+                        <h3>Soft Taupe Background</h3>
+                    </div>
+                    <div class="preview-content" style="background-color: #E8E0D5; color: #0a0a0a;">
+                        <div class="preview-text">Your Content Here</div>
+                        <div class="preview-accent"></div>
+                        <small style="color: #666;">With gold accents and dark text</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Comparison -->
+        <div class="comparison">
+            <h2>Which is Best for Your Site?</h2>
+            <div class="comparison-item">
+                <strong>🥇 Best Choice: Cream (#F5F1E8)</strong> - Most elegant, warm, luxury feel that perfectly complements gold. Perfect for event sites.
+            </div>
+            <div class="comparison-item">
+                <strong>🥈 Runner-up: Champagne (#F7E7CE)</strong> - Slightly darker, more defined contrast, very premium appearance.
+            </div>
+            <div class="comparison-item">
+                <strong>🥉 Alternative: Warm Beige (#E8DCC8)</strong> - If you want more contrast and a bolder look.
+            </div>
+            <div class="comparison-item">
+                <strong>⭐ Modern: Light Ivory (#FFFFF0)</strong> - Almost white but with warmth, modern and clean.
+            </div>
+            <div class="comparison-item">
+                <strong>✨ Sophisticated: Soft Taupe (#E8E0D5)</strong> - For a more muted, refined appearance.
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>💡 Tip: Remember to also update text colors from white to dark colors (like #0a0a0a or #1a1a1a) for readability on light backgrounds</p>
+        </div>
+    </div>
+</body>
+</html>

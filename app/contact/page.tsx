@@ -4,15 +4,14 @@ import React from 'react';
 import Contact3dhero from '@/components/contact/Contact3dhero';
 import InquiryGrid from '@/components/contact/InquiryGrid';
 import ContactMapForm from '@/components/contact/ContactMapForm';
-import FloatingWhatsApp from '@/components/contact/FloatingWhatsApp';
 
 export default function ContactPage() {
   return (
-    <main className="bg-black overflow-hidden">
+    <main className="bg-[#F5F1E8] overflow-hidden">
       <Contact3dhero />
       <InquiryGrid />
       <ContactMapForm />
-      <FloatingWhatsApp />
     </main>
   );
 }
+

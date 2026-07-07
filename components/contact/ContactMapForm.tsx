@@ -129,7 +129,7 @@ export default function Contact3DForm() {
   };
 
   return (
-    <section id="contact-form" className="relative overflow-hidden bg-[#030305] px-4 py-12 text-white md:px-6 md:py-24">
+    <section id="contact-form" className="relative overflow-hidden bg-[#F5F1E8] px-4 py-12 text-[#0a0a0a] md:px-6 md:py-24">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_12%,rgba(212,175,55,0.2),transparent_24%),radial-gradient(circle_at_50%_75%,rgba(212,175,55,0.13),transparent_34%),linear-gradient(180deg,#030305,#0c0c10_50%,#030305)]" />
 
       <motion.div
@@ -140,11 +140,11 @@ export default function Contact3DForm() {
         className="relative z-10 mx-auto max-w-7xl"
         style={{ perspective: "1400px" }}
       >
-        <div className="relative rounded-[1.5rem] border border-[#d4af37]/30 bg-gradient-to-br from-zinc-900 via-[#17120a] to-black p-3 shadow-[0_40px_120px_rgba(0,0,0,0.85),0_0_50px_rgba(212,175,55,0.18)] md:rounded-[2rem] md:p-5">
-          <div className="absolute inset-x-8 bottom-0 h-1 rounded-full bg-[#f6d773] shadow-[0_0_28px_rgba(246,215,115,0.95)]" />
+        <div className="relative rounded-[1.5rem] border border-[#d4af37]/30 bg-gradient-to-br from-white via-[#FFFBF0] to-[#F9F5ED] p-3 shadow-[0_40px_120px_rgba(0,0,0,0.08),0_0_50px_rgba(212,175,55,0.12)] md:rounded-[2rem] md:p-5">
+          <div className="absolute inset-x-8 bottom-0 h-1 rounded-full bg-[#D4AF37] shadow-[0_0_28px_rgba(212,175,55,0.6)]" />
 
           <div className="grid gap-4 lg:grid-cols-[0.92fr_1.08fr]">
-            <div className="relative min-h-[520px] overflow-hidden rounded-[1.35rem] border border-white/15 bg-black p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)] md:p-10 lg:min-h-[720px]">
+            <div className="relative min-h-[520px] overflow-hidden rounded-[1.35rem] border border-[#D4AF37]/30 bg-[#FFFBF0] p-6 shadow-[inset_0_1px_0_rgba(212,175,55,0.1)] md:p-10 lg:min-h-[720px]">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_28%,rgba(246,215,115,0.22),transparent_26%),radial-gradient(circle_at_80%_70%,rgba(184,134,11,0.18),transparent_30%)]" />
               <div className="absolute inset-0 bg-[linear-gradient(rgba(246,215,115,0.055)_1px,transparent_1px),linear-gradient(90deg,rgba(246,215,115,0.055)_1px,transparent_1px)] bg-[size:42px_42px]" />
 

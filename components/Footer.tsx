@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { Phone, Mail, MapPin, Facebook, Instagram, MessageCircle } from "lucide-react";
 
 export default function Footer() {
@@ -11,175 +13,226 @@ export default function Footer() {
     "https://www.google.com/maps/search/?api=1&query=Pinnacle%20Corporate%20Park%2C%2010th%20Floor%2C%20Office%20No.11%2C%20Next%20to%20Trader%20Centre%20BKC%2C%20Bandra%20East%2C%20Mumbai%20400051";
 
   const navLinks = [
-    { name: "Home", href: "/" },
-    { name: "About Us", href: "/about" },
-    { name: "Projects", href: "/services" },
-    { name: "Portfolio", href: "/portfolio" },
-    { name: "Join Our Team", href: "/contact" },
-    { name: "Contact", href: "/contact" },
+    { name: "Home",        href: "/" },
+    { name: "About Us",    href: "/about" },
+    { name: "Sales Office",href: "/sales-office" },
+    { name: "Services",    href: "/services" },
+    { name: "Portfolio",   href: "/portfolio" },
+    { name: "Contact Us",  href: "/contact" },
   ];
 
   const socialIcons = [
-    {
-      icon: Facebook,
-      label: "Facebook",
-      href: "https://www.facebook.com/share/1DeTQUHSt8/",
-    },
-    {
-      icon: Instagram,
-      label: "Instagram",
-      href: "https://www.instagram.com/zoya.event?igsh=MThwZTh0cDVuamRjMA==",
-    },
-    {
-      icon: MessageCircle,
-      label: "WhatsApp",
-      href: "https://wa.me/919503802865",
-    },
+    { icon: Facebook,       label: "Facebook",  href: "https://www.facebook.com/share/1DeTQUHSt8/" },
+    { icon: Instagram,      label: "Instagram", href: "https://www.instagram.com/zoya.event?igsh=MThwZTh0cDVuamRjMA==" },
+    { icon: MessageCircle,  label: "WhatsApp",  href: "https://wa.me/919503802865" },
   ];
 
   return (
-    <footer className="bg-[#050505] text-white py-10 sm:py-16 px-4 sm:px-6 lg:px-8 font-sans border-t border-[#BF953F]/20">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-10">
+    <footer className="bg-[#FFFBF0] font-sans relative z-20">
+
+      {/* Top gold rule */}
+      <div className="h-[2px] w-full bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-10 pt-16 pb-10">
+
+        {/* ══════════════════════════════════════════════════
+            MAIN GRID  —  3 columns
+        ══════════════════════════════════════════════════ */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 mb-14">
+
+          {/* ─── COL 1 : Brand + Contact ─────────────────── */}
           <div>
-            <div className="mb-5">
-              <img
+            {/* Logo — mix-blend-mode:multiply removes white bg, shows only gold text */}
+            <div className="mb-6">
+              <Image
                 src="/images/transparentlogo.png"
-                alt="Zoya Events Logo"
-                className="h-24 w-auto object-contain"
+                alt="Zoya Events — Event Solution & Exhibition"
+                width={240}
+                height={120}
+                className="w-[220px] h-auto object-contain"
+                style={{ mixBlendMode: "multiply" }}
+                priority
               />
             </div>
 
-            <p className="text-zinc-500 text-sm leading-relaxed mb-6 max-w-sm">
-              Creating unforgettable events that bring people together and celebrate life&apos;s most important moments.
+            <p className="text-[#4a4a4a] text-[14px] leading-[1.85] mb-8 font-light max-w-xs">
+              Mumbai&apos;s premier turnkey event production company — delivering world-class
+              German Hangar structures, premium staging &amp; full-scale event ecosystems since 2013.
             </p>
 
-            <div className="mb-8">
-              <h3 className="font-semibold text-sm mb-4 uppercase tracking-wider text-[#FCF6BA]">
-                Contact Info
-              </h3>
+            {/* ── Contact ── */}
+            <div className="space-y-5">
 
-              <div className="space-y-4">
-                <a href={mapHref} target="_blank" rel="noopener noreferrer" className="flex items-start gap-3 group">
-                  <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5 text-[#BF953F] group-hover:text-[#FCF6BA]" />
-                  <p className="text-gray-400 text-sm group-hover:text-white transition-colors">
-                    {address}
-                  </p>
-                </a>
-
-                <a
-                  href="mailto:zoyaevent01@gmail.com?subject=Event%20Inquiry%20for%20Zoya%20Event&body=Hello%20Zoya%20Events%20Team%2C%0A%0AI%20am%20interested%20in%20your%20event%20services.%20Please%20find%20the%20details%20below%3A%0A%0A-%20Event%20Type%3A%20%0A-%20Expected%20Date%3A%20%0A-%20Guest%20Count%3A%20%0A-%20Venue%20Location%3A%20%0A-%20Budget%20Range%3A%20%0A-%20Special%20Requirements%3A%20%0A%0AKindly%20share%20a%20quote%20and%20next%20steps.%0A%0AThank%20you.%0A"
-                  className="flex items-center gap-3 group"
-                >
-                  <Mail className="w-5 h-5 flex-shrink-0 text-[#BF953F] group-hover:text-[#FCF6BA]" />
-                  <p className="text-gray-400 text-sm group-hover:text-white transition-colors">
-                    zoyaevent01@gmail.com
-                  </p>
-                </a>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-3 pt-6 border-t border-[#BF953F]/15">
-              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center">
-                <Phone className="w-5 h-5 text-[#BF953F]" />
-              </div>
-              <div>
-                <p className="text-zinc-500 text-[10px] uppercase tracking-wider">
-                  Call us now
+              {/* Address */}
+              <a href={mapHref} target="_blank" rel="noopener noreferrer"
+                className="flex items-start gap-3 group">
+                <div className="w-8 h-8 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/35 flex items-center justify-center flex-shrink-0 mt-0.5 group-hover:bg-[#D4AF37] transition-all duration-300">
+                  <MapPin className="w-3.5 h-3.5 text-[#D4AF37] group-hover:text-black transition-colors" />
+                </div>
+                <p className="text-[#4a4a4a] text-[13px] leading-[1.7] font-light group-hover:text-[#D4AF37] transition-colors">
+                  {address}
                 </p>
-                <a href="tel:+919503802865" className="text-white font-serif font-medium text-lg hover:text-[#FCF6BA]">
-                  9503802865
-                </a>
+              </a>
+
+              {/* Email */}
+              <a
+                href="mailto:zoyaevent01@gmail.com?subject=Event%20Inquiry%20for%20Zoya%20Event&body=Hello%20Zoya%20Events%20Team%2C%0A%0AI%20am%20interested%20in%20your%20event%20services."
+                className="flex items-center gap-3 group">
+                <div className="w-8 h-8 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/35 flex items-center justify-center flex-shrink-0 group-hover:bg-[#D4AF37] transition-all duration-300">
+                  <Mail className="w-3.5 h-3.5 text-[#D4AF37] group-hover:text-black transition-colors" />
+                </div>
+                <p className="text-[#4a4a4a] text-[14px] font-light group-hover:text-[#D4AF37] transition-colors">
+                  zoyaevent01@gmail.com
+                </p>
+              </a>
+
+              {/* Phone */}
+              <div className="flex items-center gap-3 pt-1 border-t border-[#D4AF37]/15">
+                <div className="w-9 h-9 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/35 flex items-center justify-center flex-shrink-0">
+                  <Phone className="w-4 h-4 text-[#D4AF37]" />
+                </div>
+                <div>
+                  <p className="text-[#B38728] text-[10px] uppercase tracking-[0.2em] font-semibold mb-0.5">
+                    Call Us Now
+                  </p>
+                  <a href="tel:+919503802865"
+                    className="text-[#0a0a0a] font-serif text-[19px] hover:text-[#D4AF37] transition-colors tracking-wide">
+                    +91 9503802865
+                  </a>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="md:pl-10">
-            <h3 className="text-white font-semibold text-lg mb-6 uppercase tracking-wide flex items-center gap-2">
-              <span className="w-8 h-[2px] bg-gradient-to-r from-[#BF953F] via-[#FCF6BA] to-[#B38728]" />
+          {/* ─── COL 2 : Navigation ──────────────────────── */}
+          <div>
+            {/* Gold heading */}
+            <h3 className="text-[#D4AF37] font-serif text-[22px] font-light mb-2 tracking-wide">
               Company
             </h3>
+            <div className="flex items-center gap-3 mb-8">
+              <div className="h-px w-8 bg-[#D4AF37]" />
+              <span className="text-[#B38728] text-[10px] uppercase tracking-[0.25em] font-semibold">
+                Navigate
+              </span>
+            </div>
 
-            <nav className="flex flex-col space-y-3">
+            <nav className="flex flex-col space-y-[14px] mb-12">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.name}
                   href={link.href}
-                  className="text-gray-400 hover:text-[#FCF6BA] hover:translate-x-2 transition-all duration-300 text-sm w-fit"
+                  className="group flex items-center gap-3 text-[#0a0a0a] hover:text-[#D4AF37] transition-colors duration-300"
                 >
-                  {link.name}
-                </a>
+                  <span className="w-0 h-px bg-[#D4AF37] group-hover:w-5 transition-all duration-300 inline-block flex-shrink-0" />
+                  <span className="text-[15px] font-light group-hover:translate-x-1 transition-transform duration-300">
+                    {link.name}
+                  </span>
+                </Link>
               ))}
             </nav>
+
+            {/* Trust badge */}
+            <div className="border border-[#D4AF37]/35 bg-white rounded-sm p-5 shadow-[0_4px_24px_rgba(212,175,55,0.1)]">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="h-px w-7 bg-[#D4AF37]" />
+                <span className="text-[#D4AF37] text-[10px] uppercase tracking-[0.25em] font-semibold">Est. 2013</span>
+              </div>
+              <p className="text-[#0a0a0a] font-serif text-[20px] font-light leading-snug mb-2">
+                13+ Years of{" "}
+                <span className="italic text-[#D4AF37]">Excellence</span>
+              </p>
+              <p className="text-[#6B6350] text-[13px] leading-relaxed font-light">
+                500+ events delivered across India. Trusted by India&apos;s top real estate &amp; corporate brands.
+              </p>
+            </div>
           </div>
 
+          {/* ─── COL 3 : Location Map + Follow Us ───────── */}
           <div>
-            <h3 className="text-white font-semibold text-lg mb-6 uppercase tracking-wide flex items-center gap-2">
-              <span className="w-8 h-[2px] bg-gradient-to-r from-[#BF953F] via-[#FCF6BA] to-[#B38728]" />
+            {/* Gold heading */}
+            <h3 className="text-[#D4AF37] font-serif text-[22px] font-light mb-2 tracking-wide">
               Our Location
             </h3>
+            <div className="flex items-center gap-3 mb-8">
+              <div className="h-px w-8 bg-[#D4AF37]" />
+              <span className="text-[#B38728] text-[10px] uppercase tracking-[0.25em] font-semibold">
+                Mumbai, India
+              </span>
+            </div>
 
+            {/* ── Beautiful Map Card ── */}
             <a
               href={mapHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="group block rounded-2xl border border-[#BF953F]/45 bg-[#070604] p-3 mb-6 shadow-[0_0_35px_rgba(191,149,63,0.18)] transition hover:border-[#FCF6BA]/70"
+              className="group block rounded-sm border border-[#D4AF37]/40 bg-white p-3 mb-8 shadow-[0_4px_40px_rgba(212,175,55,0.12)] hover:border-[#D4AF37] hover:shadow-[0_8px_50px_rgba(212,175,55,0.22)] transition-all duration-300"
             >
-              <div className="relative h-64 overflow-hidden rounded-xl border border-[#BF953F]/35 bg-[#090806]">
-                <svg className="absolute inset-0 h-full w-full" viewBox="0 0 420 260" preserveAspectRatio="none">
-                  <rect width="420" height="260" fill="#090806" />
+              <div className="relative h-52 overflow-hidden rounded-sm border border-[#D4AF37]/20 bg-[#F5F0E8]">
 
-                  <path d="M0 40 C80 80 120 30 210 62 C285 88 336 50 420 76" stroke="#BF953F" strokeOpacity="0.25" />
-                  <path d="M0 112 C68 90 128 132 200 108 C284 80 336 122 420 96" stroke="#FCF6BA" strokeOpacity="0.18" />
-                  <path d="M20 260 C70 205 98 172 145 145 C190 120 240 116 284 78 C320 46 360 35 420 42" stroke="#BF953F" strokeOpacity="0.25" />
-                  <path d="M70 0 L110 260" stroke="#BF953F" strokeOpacity="0.14" />
-                  <path d="M180 0 L145 260" stroke="#FCF6BA" strokeOpacity="0.1" />
-                  <path d="M310 0 L242 260" stroke="#BF953F" strokeOpacity="0.14" />
-                  <path d="M0 214 L420 158" stroke="#FCF6BA" strokeOpacity="0.12" />
-
-                  <path
-                    d="M46 224 C76 198 82 172 112 150 C148 124 180 134 212 110 C246 84 248 58 282 44 C314 31 342 42 365 24"
-                    stroke="#FCF6BA"
-                    strokeWidth="5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    opacity="0.25"
-                  />
-                  <path
-                    d="M46 224 C76 198 82 172 112 150 C148 124 180 134 212 110 C246 84 248 58 282 44 C314 31 342 42 365 24"
-                    stroke="#BF953F"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-
-                  <circle cx="46" cy="224" r="6" fill="#B38728" />
-                  <circle cx="365" cy="24" r="7" fill="#FCF6BA" />
+                <svg className="absolute inset-0 h-full w-full" viewBox="0 0 420 208" preserveAspectRatio="none">
+                  <rect width="420" height="208" fill="#F5F0E8" />
+                  {/* Grid roads */}
+                  <line x1="0"   y1="52"  x2="420" y2="52"  stroke="#D4AF37" strokeOpacity="0.13" strokeWidth="5"/>
+                  <line x1="0"   y1="104" x2="420" y2="104" stroke="#D4AF37" strokeOpacity="0.10" strokeWidth="4"/>
+                  <line x1="0"   y1="156" x2="420" y2="156" stroke="#D4AF37" strokeOpacity="0.08" strokeWidth="4"/>
+                  <line x1="80"  y1="0"   x2="80"  y2="208" stroke="#D4AF37" strokeOpacity="0.10" strokeWidth="4"/>
+                  <line x1="200" y1="0"   x2="200" y2="208" stroke="#D4AF37" strokeOpacity="0.13" strokeWidth="5"/>
+                  <line x1="320" y1="0"   x2="320" y2="208" stroke="#D4AF37" strokeOpacity="0.10" strokeWidth="4"/>
+                  {/* City blocks */}
+                  <rect x="20"  y="65"  width="48" height="28" rx="2" fill="#D4AF37" fillOpacity="0.07"/>
+                  <rect x="92"  y="18"  width="58" height="26" rx="2" fill="#D4AF37" fillOpacity="0.07"/>
+                  <rect x="132" y="68"  width="50" height="24" rx="2" fill="#D4AF37" fillOpacity="0.07"/>
+                  <rect x="238" y="28"  width="54" height="34" rx="2" fill="#D4AF37" fillOpacity="0.07"/>
+                  <rect x="336" y="72"  width="58" height="30" rx="2" fill="#D4AF37" fillOpacity="0.07"/>
+                  <rect x="30"  y="136" width="44" height="24" rx="2" fill="#D4AF37" fillOpacity="0.07"/>
+                  <rect x="248" y="132" width="58" height="28" rx="2" fill="#D4AF37" fillOpacity="0.07"/>
+                  {/* Curved routes */}
+                  <path d="M0 40 C80 80 120 30 210 62 C285 88 336 50 420 76"    stroke="#BF953F" strokeOpacity="0.32" strokeWidth="2"   fill="none"/>
+                  <path d="M0 118 C68 96 128 138 210 116 C284 94 336 128 420 104" stroke="#BF953F" strokeOpacity="0.22" strokeWidth="1.5" fill="none"/>
+                  <path d="M20 208 C70 168 98 148 145 128 C190 108 240 105 284 76 C320 50 360 42 420 48" stroke="#BF953F" strokeOpacity="0.25" strokeWidth="1.5" fill="none"/>
+                  {/* Main route highlight */}
+                  <path d="M46 186 C76 164 82 144 112 126 C148 106 180 114 212 94 C246 72 248 50 282 38 C314 28 342 36 365 20"
+                    stroke="#D4AF37" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+                  {/* Start dot */}
+                  <circle cx="46"  cy="186" r="5"  fill="#BF953F" fillOpacity="0.5"/>
+                  <circle cx="46"  cy="186" r="10" fill="#D4AF37" fillOpacity="0.15"/>
+                  {/* Destination */}
+                  <circle cx="365" cy="20"  r="8"  fill="#D4AF37"/>
+                  <circle cx="365" cy="20"  r="15" fill="#D4AF37" fillOpacity="0.2"/>
+                  <circle cx="365" cy="20"  r="22" fill="#D4AF37" fillOpacity="0.08"/>
                 </svg>
 
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_56%,rgba(252,246,186,0.2),transparent_20%),radial-gradient(circle_at_75%_22%,rgba(191,149,63,0.18),transparent_30%)]" />
+                {/* Glow near pin */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_88%_10%,rgba(212,175,55,0.18),transparent_35%)]" />
 
-                <div className="absolute left-[30%] top-[55%] h-28 w-28 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#FCF6BA]/30 shadow-[0_0_30px_rgba(191,149,63,0.8)]" />
+                {/* Animated pin */}
+                <MapPin className="absolute right-[11%] top-[8%] h-10 w-10 -translate-x-1/2 -translate-y-1/2 text-[#D4AF37] drop-shadow-[0_0_12px_rgba(212,175,55,0.9)] group-hover:-translate-y-[calc(50%+8px)] transition-transform duration-300" />
 
-                <MapPin className="absolute left-[30%] top-[47%] h-14 w-14 -translate-x-1/2 -translate-y-1/2 text-[#FCF6BA] drop-shadow-[0_0_15px_rgba(252,246,186,0.9)] transition-transform group-hover:-translate-y-[60%]" />
+                {/* Address overlay */}
+                <div className="absolute left-3 bottom-3 w-[60%] rounded-sm border border-[#D4AF37]/40 bg-white/95 p-3 shadow-md backdrop-blur-sm">
+                  <p className="text-[11px] font-bold text-[#D4AF37] uppercase tracking-wider mb-1">Mumbai, India</p>
+                  <p className="text-[11px] leading-relaxed text-[#4a4a4a] font-light">{address}</p>
+                </div>
 
-                <div className="absolute right-4 top-1/2 w-[54%] -translate-y-1/2 rounded-xl border border-[#BF953F]/40 bg-black/75 p-4 shadow-[0_0_24px_rgba(191,149,63,0.2)] backdrop-blur-md">
-                  <p className="mb-2 text-xs font-semibold text-[#FCF6BA]">
-                    Mumbai, Maharashtra, India
-                  </p>
-                  <p className="text-xs leading-relaxed text-zinc-200">
-                    {address}
-                  </p>
+                {/* Chip */}
+                <div className="absolute top-3 left-3 bg-[#D4AF37] text-black text-[9px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-sm shadow group-hover:bg-[#B38728] transition-colors">
+                  View on Map ↗
                 </div>
               </div>
             </a>
 
-            <h3 className="text-white font-semibold text-lg mb-4 uppercase tracking-wide flex items-center gap-2">
-              <span className="w-8 h-[2px] bg-gradient-to-r from-[#BF953F] via-[#FCF6BA] to-[#B38728]" />
+            {/* ── Follow Us — below map ── */}
+            <h3 className="text-[#D4AF37] font-serif text-[20px] font-light mb-2 tracking-wide">
               Follow Us
             </h3>
-
-            <div className="flex flex-wrap gap-3">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-px w-8 bg-[#D4AF37]" />
+              <span className="text-[#B38728] text-[10px] uppercase tracking-[0.25em] font-semibold">
+                Stay Connected
+              </span>
+            </div>
+            <div className="flex gap-3">
               {socialIcons.map((social) => {
                 const Icon = social.icon;
                 return (
@@ -189,29 +242,34 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
-                    className="w-12 h-12 border border-[#BF953F]/45 rounded-full flex items-center justify-center text-[#FCF6BA] bg-black shadow-[0_0_18px_rgba(191,149,63,0.22)] hover:bg-[#BF953F] hover:text-black transition"
+                    className="w-11 h-11 border border-[#D4AF37]/45 rounded-full flex items-center justify-center text-[#D4AF37] bg-white hover:bg-[#D4AF37] hover:text-black shadow-sm hover:shadow-[0_4px_20px_rgba(212,175,55,0.3)] transition-all duration-300"
                   >
-                    <Icon className="w-5 h-5" />
+                    <Icon className="w-[18px] h-[18px]" />
                   </a>
                 );
               })}
             </div>
           </div>
+
         </div>
 
-        <div className="border-t border-[#BF953F]/10 pt-8 mt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-zinc-600 text-xs">
-              © 2026 Zoya Events. All rights reserved.
-            </p>
+        {/* ── Divider ── */}
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-[#D4AF37]/40 to-transparent mb-8" />
 
-            <div className="flex gap-6 text-xs">
-              <a href="#" className="text-zinc-500 hover:text-[#FCF6BA]">Privacy Policy</a>
-              <a href="#" className="text-zinc-500 hover:text-[#FCF6BA]">Terms of Service</a>
-              <a href="#" className="text-zinc-500 hover:text-[#FCF6BA]">Sitemap</a>
-            </div>
+        {/* ── Bottom Bar ── */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-[#6B6350] text-[13px] font-light">
+            © 2026{" "}
+            <span className="text-[#0a0a0a] font-medium">Zoya Events</span>.
+            {" "}All rights reserved. · Est. 2013 · Mumbai, India
+          </p>
+          <div className="flex gap-6">
+            <a href="#" className="text-[#6B6350] text-[13px] hover:text-[#D4AF37] transition-colors font-light">Privacy Policy</a>
+            <a href="#" className="text-[#6B6350] text-[13px] hover:text-[#D4AF37] transition-colors font-light">Terms of Service</a>
+            <a href="#" className="text-[#6B6350] text-[13px] hover:text-[#D4AF37] transition-colors font-light">Sitemap</a>
           </div>
         </div>
+
       </div>
     </footer>
   );

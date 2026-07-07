@@ -75,11 +75,11 @@ function ContactCard({ card, index }: { card: ContactInfoCardType; index: number
         </span>
       </div>
 
-      <h3 className="relative z-10 text-2xl font-black text-[#f4d998] drop-shadow-[0_2px_8px_rgba(0,0,0,0.7)]">
+      <h3 className="relative z-10 text-2xl font-black text-[#D4AF37] drop-shadow-[0_2px_8px_rgba(0,0,0,0.2)]">
         {card.title}
       </h3>
 
-      <div className="relative z-10 mt-4 space-y-1 text-sm font-medium text-[#f4e8c4]/90">
+      <div className="relative z-10 mt-4 space-y-1 text-sm font-medium text-[#3a3a3a]/90">
         <p>{card.email}</p>
         <p>{card.phone}</p>
       </div>
@@ -89,7 +89,7 @@ function ContactCard({ card, index }: { card: ContactInfoCardType; index: number
 
 export default function Contact3DGrid() {
   return (
-    <section className="relative overflow-hidden bg-black py-20 text-white md:py-28">
+    <section className="relative overflow-hidden bg-[#F5F1E8] py-20 text-[#0a0a0a] md:py-28">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_8%,rgba(255,219,112,0.55),transparent_18%),radial-gradient(circle_at_50%_45%,rgba(226,174,55,0.22),transparent_34%),linear-gradient(180deg,#050505,#111009_55%,#050505)]" />
 
       <div className="absolute left-1/2 top-[38%] h-px w-[620px] -translate-x-1/2 bg-yellow-200/50 shadow-[0_0_30px_rgba(255,222,121,0.9)]" />

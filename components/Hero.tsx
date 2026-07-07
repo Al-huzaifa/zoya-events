@@ -1,6 +1,14 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import {
+  motion,
+  AnimatePresence,
+  useScroll,
+  useMotionValueEvent,
+  useTransform,
+} from "framer-motion";
 
 type FormData = {
   name: string;
@@ -9,102 +17,137 @@ type FormData = {
 };
 
 const SUBMITTED_KEY = "zoya_form_submitted";
+const VIDEO_SRC =
+  "https://res.cloudinary.com/dv36bszdw/video/upload/f_auto,q_auto/zoya_web_hanger_rs7jqh.mp4";
+
+// How much scroll distance drives the video scrub. Taller = slower, more
+// deliberate scrub. Tune this once you know your video's length — for a
+// ~8-10s clip, 280-320vh feels cinematic without dragging.
+const SCROLL_TRACK_VH = 300;
+
+// Delay after the hero clears the viewport before the enquiry card appears.
+const POPUP_IDLE_MS = 2500;
 
 export default function Hero() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoDurationRef = useRef(0); // use ref so scroll handler always gets live value
+
   const [popupVisible, setPopupVisible] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
-  const openTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const frameRef = useRef<number | null>(null);
-
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     phone: "",
   });
 
-  const goldTextGradient =
+  const idleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hasTriggeredRef = useRef(false);
+
+  const goldText =
     "bg-clip-text text-transparent bg-gradient-to-r from-[#BF953F] via-[#FCF6BA] to-[#B38728]";
-  const goldButtonGradient =
+  const goldButton =
     "bg-gradient-to-r from-[#BF953F] via-[#F3E779] to-[#B38728]";
 
+  // --- Scroll-scrub the video instead of a canvas frame sequence ---
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+
+  useMotionValueEvent(scrollYProgress, "change", (progress) => {
+    const video = videoRef.current;
+    const dur = videoDurationRef.current;
+    if (video && dur > 0) {
+      video.currentTime = progress * dur;
+    }
+  });
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const onMetadata = () => {
+      videoDurationRef.current = video.duration || 0;
+      // Seek to frame 0 so first frame is visible immediately
+      video.currentTime = 0;
+    };
+
+    video.addEventListener("loadedmetadata", onMetadata);
+    // Force the browser to start downloading the video right away
+    video.load();
+
+    return () => video.removeEventListener("loadedmetadata", onMetadata);
+  }, []);
+
+  // (viewfinder frame removed per user request)
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.08, 0.92, 1], [1, 1, 1, 0.85]);
+  const scrollCueOpacity = useTransform(scrollYProgress, [0, 0.06], [1, 0]);
+
+  // --- Popup: fires once, after hero clears view + a short idle pause ---
   const openPopup = useCallback(() => {
     setPopupVisible(true);
-
-    frameRef.current = requestAnimationFrame(() => {
-      setIsAnimating(true);
-    });
+    requestAnimationFrame(() => setIsAnimating(true));
   }, []);
 
   const handleClose = useCallback(() => {
     setIsAnimating(false);
-
-    if (closeTimerRef.current) {
-      clearTimeout(closeTimerRef.current);
-    }
-
-    closeTimerRef.current = setTimeout(() => {
-      setPopupVisible(false);
-    }, 260);
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    closeTimerRef.current = setTimeout(() => setPopupVisible(false), 260);
   }, []);
 
   useEffect(() => {
     let hasSubmitted = false;
-
     try {
       hasSubmitted = localStorage.getItem(SUBMITTED_KEY) === "true";
     } catch {
       hasSubmitted = false;
     }
-
     if (hasSubmitted) return;
 
-    openTimerRef.current = setTimeout(openPopup, 10000);
+    const handleScroll = () => {
+      if (hasTriggeredRef.current) return;
+      const section = sectionRef.current;
+      if (!section) return;
 
+      const rect = section.getBoundingClientRect();
+      const scrolledPastHero = rect.bottom <= window.innerHeight * 0.5;
+
+      if (scrolledPastHero) {
+        hasTriggeredRef.current = true;
+        window.removeEventListener("scroll", handleScroll);
+        idleTimerRef.current = setTimeout(openPopup, POPUP_IDLE_MS);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
-      if (openTimerRef.current) clearTimeout(openTimerRef.current);
+      window.removeEventListener("scroll", handleScroll);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
       if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
-      if (frameRef.current) cancelAnimationFrame(frameRef.current);
     };
   }, [openPopup]);
 
   useEffect(() => {
     if (!popupVisible) return;
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        handleClose();
-      }
+      if (event.key === "Escape") handleClose();
     };
-
     window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", handleKeyDown);
-    };
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [popupVisible, handleClose]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
-    setFormData((current) => ({
-      ...current,
-      [name]: value,
-    }));
+    setFormData((current) => ({ ...current, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (isLoading) return;
-
     setIsLoading(true);
 
     try {
@@ -119,19 +162,12 @@ export default function Hero() {
           }),
         }
       );
-
-      if (!response.ok) {
-        throw new Error("SheetMonkey request failed");
-      }
+      if (!response.ok) throw new Error("SheetMonkey request failed");
 
       setIsSubmitted(true);
-
       try {
         localStorage.setItem(SUBMITTED_KEY, "true");
-      } catch {
-        // Ignore private-mode/localStorage failures.
-      }
-
+      } catch {}
       setFormData({ name: "", email: "", phone: "" });
     } catch (error) {
       console.error("Error:", error);
@@ -142,238 +178,221 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative flex min-h-[100svh] w-full flex-col overflow-hidden bg-black font-sans text-white md:block">
-      <div className="relative h-[48svh] min-h-[330px] w-full overflow-hidden bg-zinc-950 md:absolute md:inset-0 md:h-full md:min-h-0">
-        <video
-          src="https://res.cloudinary.com/dv36bszdw/video/upload/f_auto,q_auto/zoya_web_hanger_rs7jqh.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          className="h-full w-full object-cover opacity-95 md:opacity-65"
-        />
+    <>
+      {/* Tall scroll track — the sticky inner hero scrubs through this */}
+      <section
+        ref={sectionRef}
+        className="relative w-full bg-black"
+        style={{ height: `${SCROLL_TRACK_VH}vh` }}
+      >
+        <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
+          {/* Video layer */}
+          <div className="absolute inset-0">
+            <video
+              ref={videoRef}
+              src={VIDEO_SRC}
+              muted
+              playsInline
+              preload="auto"
+              className="h-full w-full object-cover"
+            />
 
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-black/10 to-black md:hidden" />
-        <div className="hidden absolute inset-0 bg-gradient-to-t from-black via-black/65 to-black/25 md:block" />
-      </div>
+            {/* ── Cinematic vignette: all 4 sides ── */}
+            {/* Top fade */}
+            <div className="absolute inset-x-0 top-0 h-[30%] bg-gradient-to-b from-black/90 via-black/50 to-transparent" />
+            {/* Bottom fade */}
+            <div className="absolute inset-x-0 bottom-0 h-[35%] bg-gradient-to-t from-black via-black/60 to-transparent" />
+            {/* Left fade */}
+            <div className="absolute inset-y-0 left-0 w-[20%] bg-gradient-to-r from-black/70 to-transparent" />
+            {/* Right fade */}
+            <div className="absolute inset-y-0 right-0 w-[20%] bg-gradient-to-l from-black/70 to-transparent" />
 
-      <div className="relative z-10 flex flex-1 flex-col justify-start bg-black px-5 pb-8 pt-6 text-left md:absolute md:inset-0 md:items-center md:justify-center md:bg-transparent md:px-8 md:pb-0 md:pt-0 md:text-center">
-        <div className="w-full max-w-xl md:max-w-5xl">
-          <div className="mb-4 h-1 w-12 rounded-full bg-gradient-to-r from-[#BF953F] via-[#F3E779] to-[#B38728] md:hidden" />
+            {/* ── Cinematic letterbox bars ── */}
+            <div className="absolute inset-x-0 top-0 h-[7vh] bg-black z-10" />
+            <div className="absolute inset-x-0 bottom-0 h-[7vh] bg-black z-10" />
 
-          <p className="mb-2 text-[11px] font-bold uppercase tracking-[0.24em] text-[#C5A059] md:hidden">
-            Direct Production Partner
-          </p>
+            {/* ── Thin gold line on letterbox edges (luxury frame) ── */}
+            <div className="absolute inset-x-0 top-[7vh] h-px bg-gradient-to-r from-transparent via-[#D4AF37]/60 to-transparent z-10" />
+            <div className="absolute inset-x-0 bottom-[7vh] h-px bg-gradient-to-r from-transparent via-[#D4AF37]/60 to-transparent z-10" />
 
-          <h1
-            className={`mb-4 break-words font-serif text-[clamp(2.75rem,15vw,4.9rem)] font-bold leading-[0.95] tracking-wide drop-shadow-2xl md:text-8xl ${goldTextGradient}`}
-          >
-            ZOYA EVENT
-          </h1>
-
-          <div className="space-y-4 md:hidden">
-            <h2 className="max-w-md text-xl font-medium leading-snug text-white">
-              Your trusted{" "}
-              <span className="text-[#F3E779]">in-house</span> vendor for
-              corporate excellence.
-            </h2>
-
-            <div className="flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-widest text-zinc-300">
-              {["German Hangar", "Fabrication", "Decor"].map((item) => (
-                <span
-                  key={item}
-                  className="rounded border border-zinc-800 bg-zinc-900 px-2.5 py-1.5"
-                >
-                  {item}
-                </span>
-              ))}
-            </div>
-
-            <p className="max-w-md border-l-2 border-[#BF953F] pl-3 text-[15px] font-light leading-7 text-zinc-200">
-              We don&apos;t just plan; we build. As a direct production house,
-              we provide the infrastructure that powers Mumbai&apos;s most
-              prestigious events.
-            </p>
+            {/* ── Film grain — boosted for cinematic feel ── */}
+            <div className="absolute inset-0 opacity-[0.06] z-[5]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")" }} />
           </div>
 
-          <p className="mt-5 hidden max-w-2xl text-lg font-light uppercase tracking-[0.2em] text-[#C5A059] md:mx-auto md:block">
-            Event Solution & Exhibition
-          </p>
 
-          <div className={`mx-auto mt-8 hidden h-[2px] w-32 rounded-full md:block ${goldButtonGradient}`} />
-        </div>
-      </div>
 
-      {popupVisible && (
-        <div className="fixed inset-0 z-[1000] flex items-center justify-center overflow-y-auto px-4 py-6">
-          <button
-            type="button"
-            aria-label="Close enquiry popup"
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300 opacity-100"
-            onClick={handleClose}
-          />
-
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label="Enquiry form"
-            className={`relative my-auto w-full max-w-md transform rounded-lg border border-[#BF953F] bg-black p-5 text-white shadow-[0_0_40px_rgba(191,149,63,0.3)] transition-all duration-300 ease-out sm:p-8 ${
-              isAnimating
-                ? "translate-y-0 scale-100 opacity-100"
-                : "translate-y-5 scale-[0.98] opacity-0"
-            }`}
+          {/* Content */}
+          <motion.div
+            style={{ opacity: contentOpacity }}
+            className="relative z-20 flex h-full w-full flex-col items-center justify-center px-6 text-center"
           >
-            <button
-              type="button"
-              onClick={handleClose}
-              aria-label="Close"
-              className="absolute right-4 top-4 z-10 text-[#BF953F] transition-colors hover:text-white"
+            <span className="mb-5 text-[10px] font-bold uppercase tracking-[0.35em] text-[#D4AF37] md:text-xs">
+              Est. 2015 · Mumbai&apos;s Direct Production House
+            </span>
+
+            <h1
+              className={`font-serif text-[clamp(2.8rem,9vw,7rem)] font-bold leading-[0.92] tracking-tight ${goldText}`}
             >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+              ZOYA EVENTS
+            </h1>
+
+            <p className="mt-6 max-w-xl text-sm font-light uppercase tracking-[0.3em] text-[#D4C9A8] md:text-base">
+              Infrastructure Built for Events That Cannot Fail
+            </p>
+
+            <div className="mt-4 h-px w-16 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
+
+            <p className="mt-6 max-w-lg text-[15px] font-light leading-relaxed text-[#C9C2AC]">
+              German hangars, pagodas, and bespoke structures — engineered,
+              fabricated, and deployed in-house for weddings, galas, and
+              exhibitions across Mumbai.
+            </p>
+
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+              <Link
+                href="/portfolio"
+                className="rounded-sm border border-[#D4AF37]/60 px-8 py-3 text-[11px] font-bold uppercase tracking-[0.2em] text-[#F5F1E8] transition-all hover:border-[#D4AF37] hover:bg-[#D4AF37]/10"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
+                View Our Work
+              </Link>
+              <button
+                type="button"
+                onClick={openPopup}
+                className={`rounded-sm px-8 py-3 text-[11px] font-bold uppercase tracking-[0.2em] text-black transition-all hover:scale-[1.02] ${goldButton}`}
+              >
+                Start Your Enquiry
+              </button>
+            </div>
+          </motion.div>
 
-            {!isSubmitted ? (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="mb-3 pr-8 text-center">
-                  <h3 className={`font-serif text-3xl font-bold ${goldTextGradient}`}>
-                    Get in Touch
-                  </h3>
-                  <p className="mt-2 text-xs uppercase tracking-widest text-[#8B7D5B]">
-                    Exclusive Event Planning
-                  </p>
-                </div>
-
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  autoComplete="name"
-                  className="w-full rounded border border-[#333] bg-[#111] px-4 py-3 text-[#F3E779] placeholder-[#555] transition-all focus:border-[#BF953F] focus:outline-none focus:shadow-[0_0_10px_rgba(191,149,63,0.2)]"
-                  placeholder="name"
-                />
-
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  autoComplete="email"
-                  className="w-full rounded border border-[#333] bg-[#111] px-4 py-3 text-[#F3E779] placeholder-[#555] transition-all focus:border-[#BF953F] focus:outline-none focus:shadow-[0_0_10px_rgba(191,149,63,0.2)]"
-                  placeholder="EMAIL ADDRESS"
-                />
-
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  required
-                  autoComplete="tel"
-                  className="w-full rounded border border-[#333] bg-[#111] px-4 py-3 text-[#F3E779] placeholder-[#555] transition-all focus:border-[#BF953F] focus:outline-none focus:shadow-[0_0_10px_rgba(191,149,63,0.2)]"
-                  placeholder="PHONE NUMBER"
-                />
-
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className={`mt-4 flex w-full items-center justify-center rounded py-3 text-base font-bold text-black shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70 sm:text-lg ${goldButtonGradient}`}
-                >
-                  {isLoading ? (
-                    <span className="flex items-center gap-2">
-                      <svg className="h-5 w-5 animate-spin text-black" viewBox="0 0 24 24">
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                          fill="none"
-                        />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                        />
-                      </svg>
-                      PROCESSING...
-                    </span>
-                  ) : (
-                    "Enquire Now"
-                  )}
-                </button>
-
-                <div className="flex items-center justify-center gap-3 py-1">
-                  <div className="h-px flex-1 bg-[#333]" />
-                  <span className="text-sm font-medium text-zinc-500">Or</span>
-                  <div className="h-px flex-1 bg-[#333]" />
-                </div>
-
-                <a
-                  href="https://wa.me/919503802865?text=Hello%20Zoya%20Events,%20I%20am%20interested%20in%20an%20enquiry."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex w-full items-center justify-center gap-3 rounded bg-[#25D366] py-3 text-base font-bold text-white shadow-lg transition-all hover:scale-[1.01] hover:bg-[#20b858] active:scale-[0.99] sm:text-lg"
-                >
-                  Connect On WhatsApp
-                </a>
-              </form>
-            ) : (
-              <div className="py-8 text-center">
-                <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full border-2 border-[#BF953F] shadow-[0_0_20px_rgba(191,149,63,0.4)] sm:h-24 sm:w-24">
-                  <svg
-                    className="h-10 w-10 text-[#BF953F] sm:h-12 sm:w-12"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </div>
-
-                <h3 className={`mb-4 font-serif text-3xl font-bold ${goldTextGradient}`}>
-                  Request Received
-                </h3>
-
-                <p className="mb-8 text-sm leading-relaxed text-zinc-400">
-                  Thank you for choosing Zoya Events.
-                  <br />
-                  Our team will contact you shortly.
-                </p>
-
-                <button
-                  type="button"
-                  onClick={handleClose}
-                  className="rounded border border-[#333] px-8 py-2 text-xs uppercase tracking-widest text-[#8B7D5B] transition-all hover:border-[#BF953F] hover:text-[#BF953F]"
-                >
-                  Return to Website
-                </button>
-              </div>
-            )}
-          </div>
+          {/* Scroll cue */}
+          <motion.div
+            style={{ opacity: scrollCueOpacity }}
+            className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2"
+          >
+            <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-[#D4AF37]/70">
+              Scroll
+            </span>
+            <div className="h-8 w-px bg-gradient-to-b from-[#D4AF37]/70 to-transparent" />
+          </motion.div>
         </div>
-      )}
-    </section>
+      </section>
+
+      {/* Corner enquiry card — not a full-screen modal */}
+      <AnimatePresence>
+        {popupVisible && (
+          <div className="fixed bottom-5 right-5 z-[1000] w-[calc(100%-2.5rem)] max-w-sm sm:bottom-8 sm:right-8">
+            <motion.div
+              initial={{ opacity: 0, y: 24, scale: 0.96 }}
+              animate={
+                isAnimating
+                  ? { opacity: 1, y: 0, scale: 1 }
+                  : { opacity: 0, y: 24, scale: 0.96 }
+              }
+              exit={{ opacity: 0, y: 24, scale: 0.96 }}
+              transition={{ duration: 0.28, ease: "easeOut" }}
+              role="dialog"
+              aria-modal="false"
+              aria-label="Enquiry form"
+              className="relative rounded-lg border border-[#D4AF37]/50 bg-[#0a0a0a] p-5 text-[#F5F1E8] shadow-[0_10px_50px_rgba(0,0,0,0.6)] sm:p-6"
+            >
+              <button
+                type="button"
+                onClick={handleClose}
+                aria-label="Close"
+                className="absolute right-3 top-3 z-10 text-[#BF953F] transition-colors hover:text-white"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.5"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+
+              {!isSubmitted ? (
+                <form onSubmit={handleSubmit} className="space-y-3">
+                  <div className="mb-2 pr-6">
+                    <h3 className={`font-serif text-xl font-bold ${goldText}`}>
+                      Plan With Us
+                    </h3>
+                    <p className="mt-1 text-[11px] uppercase tracking-widest text-[#8B7D5B]">
+                      We&apos;ll be in touch within the day
+                    </p>
+                  </div>
+
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    autoComplete="name"
+                    className="w-full rounded border border-[#D4AF37]/30 bg-[#141414] px-3 py-2.5 text-sm text-[#F5F1E8] placeholder-[#777] transition-all focus:border-[#D4AF37] focus:outline-none"
+                    placeholder="Name"
+                  />
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    autoComplete="email"
+                    className="w-full rounded border border-[#D4AF37]/30 bg-[#141414] px-3 py-2.5 text-sm text-[#F5F1E8] placeholder-[#777] transition-all focus:border-[#D4AF37] focus:outline-none"
+                    placeholder="Email address"
+                  />
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    required
+                    autoComplete="tel"
+                    className="w-full rounded border border-[#D4AF37]/30 bg-[#141414] px-3 py-2.5 text-sm text-[#F5F1E8] placeholder-[#777] transition-all focus:border-[#D4AF37] focus:outline-none"
+                    placeholder="Phone number"
+                  />
+
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className={`mt-1 flex w-full items-center justify-center rounded py-2.5 text-sm font-bold text-black transition-all hover:scale-[1.01] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-70 ${goldButton}`}
+                  >
+                    {isLoading ? "Sending…" : "Enquire Now"}
+                  </button>
+
+                  <a
+                    href="https://wa.me/919503802865?text=Hello%20Zoya%20Events,%20I%20am%20interested%20in%20an%20enquiry."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex w-full items-center justify-center gap-2 rounded bg-[#25D366] py-2.5 text-sm font-bold text-white transition-all hover:bg-[#20b858]"
+                  >
+                    Connect on WhatsApp
+                  </a>
+                </form>
+              ) : (
+                <div className="py-3 text-center">
+                  <h3 className={`mb-2 font-serif text-xl font-bold ${goldText}`}>
+                    Request Received
+                  </h3>
+                  <p className="mb-4 text-xs leading-relaxed text-[#999]">
+                    Thank you for choosing Zoya Events. Our team will reach
+                    out shortly.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleClose}
+                    className="rounded border border-[#D4AF37]/50 px-6 py-1.5 text-[10px] uppercase tracking-widest text-[#F5F1E8] transition-all hover:border-[#D4AF37]"
+                  >
+                    Continue
+                  </button>
+                </div>
+              )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
