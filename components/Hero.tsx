@@ -18,7 +18,7 @@ type FormData = {
 
 const SUBMITTED_KEY = "zoya_form_submitted";
 const VIDEO_SRC =
-  "https://res.cloudinary.com/dv36bszdw/video/upload/f_auto,q_auto/zoya_web_hanger_rs7jqh.mp4";
+  "https://res.cloudinary.com/dv36bszdw/video/upload/f_auto,q_auto:best,w_1920/Aerial_drone_shot_luxury_event_202607030230_lrpxeb.mp4";
 
 // How much scroll distance drives the video scrub. Taller = slower, more
 // deliberate scrub. Tune this once you know your video's length — for a
@@ -182,7 +182,7 @@ export default function Hero() {
       {/* Tall scroll track — the sticky inner hero scrubs through this */}
       <section
         ref={sectionRef}
-        className="relative w-full bg-black"
+        className="relative w-full bg-black -mt-[68px] sm:-mt-[80px] md:-mt-[88px]"
         style={{ height: `${SCROLL_TRACK_VH}vh` }}
       >
         <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
