@@ -16,28 +16,42 @@ export default function About() {
         ══════════════════════════════════════════════════ */}
         <section className="flex flex-col md:flex-row w-full">
 
-          {/* Left: Image with artistic framing */}
-          <div className="w-full md:w-1/2 relative min-h-[380px] md:min-h-[70vh] overflow-hidden bg-[#EDE8DE]">
+          {/* Left: Image — full image always visible, no cropping */}
+          <div className="w-full md:w-1/2 relative bg-[#EDE8DE] flex items-center justify-center">
             <motion.div
-              initial={{ scale: 1.06 }}
-              whileInView={{ scale: 1 }}
-              transition={{ duration: 1.2, ease: "easeOut" }}
+              initial={{ opacity: 0, scale: 0.97 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, ease: "easeOut" }}
               viewport={{ once: true }}
-              className="absolute inset-0"
+              className="relative w-full py-8 px-4 md:py-12 md:px-8"
             >
               <Image
                 src="/images/salesoffice.webp"
                 alt="Luxury Sales Office by Zoya Events"
-                fill
-                className="object-cover"
+                width={1200}
+                height={900}
+                className="w-full h-auto object-contain rounded-sm"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
-              {/* Gradient overlay for seamless blend */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#F5F1E8]/15" />
             </motion.div>
+
             {/* Gold corner accents */}
-            <div className="absolute top-6 left-6 h-8 w-8 border-t-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10" />
-            <div className="absolute bottom-6 right-6 h-8 w-8 border-b-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10" />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="absolute top-5 left-5 sm:top-6 sm:left-6 h-7 w-7 sm:h-8 sm:w-8 border-t-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10"
+              style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="absolute bottom-5 right-5 sm:bottom-6 sm:right-6 h-7 w-7 sm:h-8 sm:w-8 border-b-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10"
+              style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
+            />
           </div>
 
           {/* Right: Content */}
@@ -123,27 +137,42 @@ export default function About() {
             </motion.div>
           </div>
 
-          {/* Right: Image */}
-          <div className="w-full md:w-1/2 relative min-h-[380px] md:min-h-[70vh] overflow-hidden bg-[#EDE8DE] order-1 md:order-2">
+          {/* Right: Image — full image always visible, no cropping */}
+          <div className="w-full md:w-1/2 relative bg-[#EDE8DE] flex items-center justify-center order-1 md:order-2">
             <motion.div
-              initial={{ scale: 1.06 }}
-              whileInView={{ scale: 1 }}
-              transition={{ duration: 1.2, ease: "easeOut" }}
+              initial={{ opacity: 0, scale: 0.97 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, ease: "easeOut" }}
               viewport={{ once: true }}
-              className="absolute inset-0"
+              className="relative w-full py-8 px-4 md:py-12 md:px-8"
             >
               <Image
                 src="/images/13year.webp"
                 alt="13 Years of Zoya Events Excellence"
-                fill
-                className="object-cover"
+                width={1400}
+                height={800}
+                className="w-full h-auto object-contain rounded-sm"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#F5F1E8]/15" />
             </motion.div>
+
             {/* Gold corner accents */}
-            <div className="absolute top-6 right-6 h-8 w-8 border-t-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10" />
-            <div className="absolute bottom-6 left-6 h-8 w-8 border-b-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10" />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+              className="absolute top-5 right-5 sm:top-6 sm:right-6 h-7 w-7 sm:h-8 sm:w-8 border-t-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10"
+              style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="absolute bottom-5 left-5 sm:bottom-6 sm:left-6 h-7 w-7 sm:h-8 sm:w-8 border-b-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10"
+              style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
+            />
           </div>
         </section>
 

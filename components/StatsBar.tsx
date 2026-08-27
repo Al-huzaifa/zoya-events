@@ -40,20 +40,20 @@ function AnimatedCounter({ value, suffix }: { value: number; suffix: string }) {
 
 export default function StatsBar() {
   return (
-    <section className="relative bg-[#FFFBF0] py-14 md:py-20 px-6 overflow-hidden">
+    <section className="relative bg-[#0a0a0a] py-14 md:py-20 px-6 overflow-hidden">
 
       {/* ── Gold border rules ── */}
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D4AF37]/40 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#D4AF37]/40 to-transparent" />
 
       {/* ── Ambient warm glow ── */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,rgba(212,175,55,0.07)_0%,transparent_100%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_50%,rgba(212,175,55,0.04)_0%,transparent_100%)] pointer-events-none" />
 
       {/* ── Subtle dot texture ── */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-20"
+        className="absolute inset-0 pointer-events-none opacity-10"
         style={{
-          backgroundImage: "radial-gradient(circle, #C9A227 0.6px, transparent 0.6px)",
+          backgroundImage: "radial-gradient(circle, #C9A227 0.4px, transparent 0.4px)",
           backgroundSize: "32px 32px",
         }}
       />
@@ -71,7 +71,7 @@ export default function StatsBar() {
             >
               {/* ── Vertical gold divider (desktop) ── */}
               {idx > 0 && (
-                <div className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-16 bg-gradient-to-b from-transparent via-[#D4AF37]/40 to-transparent" />
+                <div className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-16 bg-gradient-to-b from-transparent via-[#D4AF37]/30 to-transparent" />
               )}
 
               {/* ── Big gold number ── */}
@@ -87,7 +87,7 @@ export default function StatsBar() {
                     WebkitBackgroundClip: "text",
                     backgroundClip: "text",
                     WebkitTextFillColor: "transparent",
-                    filter: "drop-shadow(0 2px 12px rgba(212,175,55,0.30))",
+                    filter: "drop-shadow(0 2px 12px rgba(212,175,55,0.25))",
                     textShadow: "none",
                   }}
                 >
@@ -99,15 +99,15 @@ export default function StatsBar() {
               <div className="w-8 h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent mb-3
                 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-center" />
               {/* Always-visible thin rule */}
-              <div className="w-5 h-px bg-[#D4AF37]/40 mb-3" />
+              <div className="w-5 h-px bg-[#D4AF37]/30 mb-3" />
 
               {/* ── Label ── */}
-              <p className="text-[#0a0a0a] text-[11px] md:text-xs font-semibold uppercase tracking-[0.22em] leading-snug mb-1.5">
+              <p className="text-[#E8DFC0] text-[11px] md:text-xs font-semibold uppercase tracking-[0.22em] leading-snug mb-1.5">
                 {stat.label}
               </p>
 
               {/* ── Description ── */}
-              <p className="text-[#9a8860] text-[10px] uppercase tracking-widest font-light">
+              <p className="text-[#7a6e50] text-[10px] uppercase tracking-widest font-light">
                 {stat.description}
               </p>
             </motion.div>
