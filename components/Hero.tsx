@@ -253,11 +253,11 @@ export default function Hero() {
 
   return (
     <>
-      {/* ── Scroll track: 300vh on desktop for scrub, 100vh on mobile ── */}
+      {/* ── On mobile: 100vh fixed, no scroll track. On desktop: 300vh for scrub ── */}
       <section
         ref={sectionRef}
         className="relative w-full bg-black -mt-[64px] sm:-mt-[76px] md:-mt-[84px]"
-        style={{ height: isMobile ? "100vh" : `${SCROLL_TRACK_VH}vh` }}
+        style={{ height: isMobile ? "100svh" : `${SCROLL_TRACK_VH}vh` }}
       >
         <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
 

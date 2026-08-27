@@ -16,48 +16,53 @@ export default function About() {
         ══════════════════════════════════════════════════ */}
         <section className="flex flex-col md:flex-row w-full">
 
-          {/* Left: Image — cover on mobile, contain on desktop */}
-          <div className="w-full md:w-1/2 relative bg-[#EDE8DE] flex items-center justify-center">
-            {/* Mobile: fixed height cover so image fills perfectly */}
+          {/* Left: Image */}
+          <div className="w-full md:w-1/2 relative bg-[#EDE8DE]">
+
+            {/* MOBILE: aspect-ratio container so image fills perfectly */}
+            <div className="relative w-full aspect-[4/3] md:hidden overflow-hidden">
+              <Image
+                src="/images/salesoffice.webp"
+                alt="Luxury Sales Office by Zoya Events"
+                fill
+                className="object-cover"
+                sizes="100vw"
+              />
+              {/* Gold corner accents */}
+              <div className="absolute top-4 left-4 h-6 w-6 border-t-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10" />
+              <div className="absolute bottom-4 right-4 h-6 w-6 border-b-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10" />
+            </div>
+
+            {/* DESKTOP: original contained layout with padding */}
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, ease: "easeOut" }}
               viewport={{ once: true }}
-              className="relative w-full h-[60vw] md:h-auto md:py-12 md:px-8"
+              className="hidden md:block relative w-full py-12 px-8"
             >
               <Image
                 src="/images/salesoffice.webp"
                 alt="Luxury Sales Office by Zoya Events"
-                fill
-                className="object-cover md:object-contain rounded-sm"
-                sizes="(max-width: 768px) 100vw, 50vw"
+                width={1200}
+                height={900}
+                className="w-full h-auto object-contain rounded-sm"
+                sizes="50vw"
               />
-              {/* Desktop: show with padding as before */}
-              <div className="hidden md:block" style={{ paddingTop: "75%" }} />
+              {/* Gold corner accents */}
+              <div
+                className="absolute top-6 left-6 h-8 w-8 border-t-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10"
+                style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
+              />
+              <div
+                className="absolute bottom-6 right-6 h-8 w-8 border-b-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10"
+                style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
+              />
             </motion.div>
-
-            {/* Gold corner accents */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="absolute top-5 left-5 sm:top-6 sm:left-6 h-7 w-7 sm:h-8 sm:w-8 border-t-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10"
-              style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="absolute bottom-5 right-5 sm:bottom-6 sm:right-6 h-7 w-7 sm:h-8 sm:w-8 border-b-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10"
-              style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
-            />
           </div>
 
           {/* Right: Content */}
-          <div className="w-full md:w-1/2 bg-[#FFFBF0] flex flex-col justify-center px-8 py-16 md:px-16 lg:px-20 xl:px-28">
+          <div className="w-full md:w-1/2 bg-[#FFFBF0] flex flex-col justify-center px-8 py-12 md:px-16 lg:px-20 xl:px-28">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -101,7 +106,7 @@ export default function About() {
         <section className="flex flex-col md:flex-row w-full">
 
           {/* Left: Content */}
-          <div className="w-full md:w-1/2 bg-[#FFFBF0] flex flex-col justify-center px-8 py-16 md:px-16 lg:px-20 xl:px-28 order-2 md:order-1">
+          <div className="w-full md:w-1/2 bg-[#FFFBF0] flex flex-col justify-center px-8 py-12 md:px-16 lg:px-20 xl:px-28 order-2 md:order-1">
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -139,44 +144,49 @@ export default function About() {
             </motion.div>
           </div>
 
-          {/* Right: Image — cover on mobile, contain on desktop */}
-          <div className="w-full md:w-1/2 relative bg-[#EDE8DE] flex items-center justify-center order-1 md:order-2">
-            {/* Mobile: fixed height cover so image fills perfectly */}
+          {/* Right: Image */}
+          <div className="w-full md:w-1/2 relative bg-[#EDE8DE] order-1 md:order-2">
+
+            {/* MOBILE: aspect-ratio container so image fills perfectly */}
+            <div className="relative w-full aspect-[4/3] md:hidden overflow-hidden">
+              <Image
+                src="/images/13year.webp"
+                alt="13 Years of Zoya Events Excellence"
+                fill
+                className="object-cover"
+                sizes="100vw"
+              />
+              {/* Gold corner accents */}
+              <div className="absolute top-4 right-4 h-6 w-6 border-t-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10" />
+              <div className="absolute bottom-4 left-4 h-6 w-6 border-b-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10" />
+            </div>
+
+            {/* DESKTOP: original contained layout with padding */}
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, ease: "easeOut" }}
               viewport={{ once: true }}
-              className="relative w-full h-[60vw] md:h-auto md:py-12 md:px-8"
+              className="hidden md:block relative w-full py-12 px-8"
             >
               <Image
                 src="/images/13year.webp"
                 alt="13 Years of Zoya Events Excellence"
-                fill
-                className="object-cover md:object-contain rounded-sm"
-                sizes="(max-width: 768px) 100vw, 50vw"
+                width={1400}
+                height={800}
+                className="w-full h-auto object-contain rounded-sm"
+                sizes="50vw"
               />
-              {/* Desktop: show with padding as before */}
-              <div className="hidden md:block" style={{ paddingTop: "57%" }} />
+              {/* Gold corner accents */}
+              <div
+                className="absolute top-6 right-6 h-8 w-8 border-t-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10"
+                style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
+              />
+              <div
+                className="absolute bottom-6 left-6 h-8 w-8 border-b-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10"
+                style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
+              />
             </motion.div>
-
-            {/* Gold corner accents */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="absolute top-5 right-5 sm:top-6 sm:right-6 h-7 w-7 sm:h-8 sm:w-8 border-t-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10"
-              style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="absolute bottom-5 left-5 sm:bottom-6 sm:left-6 h-7 w-7 sm:h-8 sm:w-8 border-b-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10"
-              style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
-            />
           </div>
         </section>
 
