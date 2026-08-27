@@ -487,10 +487,10 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* ── SCROLL CUE — animated pulse ── */}
+          {/* ── SCROLL CUE — animated pulse — desktop only ── */}
           <motion.div
             style={{ opacity: scrollCueOpacity }}
-            className="absolute bottom-3 sm:bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-1.5 sm:gap-2"
+            className="absolute bottom-3 sm:bottom-8 left-1/2 z-20 hidden sm:flex -translate-x-1/2 flex-col items-center gap-1.5 sm:gap-2"
           >
             <span className="text-[7px] sm:text-[9px] font-bold uppercase tracking-[0.3em] text-[#D4AF37]/80">
               Scroll

@@ -16,23 +16,25 @@ export default function About() {
         ══════════════════════════════════════════════════ */}
         <section className="flex flex-col md:flex-row w-full">
 
-          {/* Left: Image — full image always visible, no cropping */}
+          {/* Left: Image — cover on mobile, contain on desktop */}
           <div className="w-full md:w-1/2 relative bg-[#EDE8DE] flex items-center justify-center">
+            {/* Mobile: fixed height cover so image fills perfectly */}
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, ease: "easeOut" }}
               viewport={{ once: true }}
-              className="relative w-full py-8 px-4 md:py-12 md:px-8"
+              className="relative w-full h-[60vw] md:h-auto md:py-12 md:px-8"
             >
               <Image
                 src="/images/salesoffice.webp"
                 alt="Luxury Sales Office by Zoya Events"
-                width={1200}
-                height={900}
-                className="w-full h-auto object-contain rounded-sm"
+                fill
+                className="object-cover md:object-contain rounded-sm"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
+              {/* Desktop: show with padding as before */}
+              <div className="hidden md:block" style={{ paddingTop: "75%" }} />
             </motion.div>
 
             {/* Gold corner accents */}
@@ -137,23 +139,25 @@ export default function About() {
             </motion.div>
           </div>
 
-          {/* Right: Image — full image always visible, no cropping */}
+          {/* Right: Image — cover on mobile, contain on desktop */}
           <div className="w-full md:w-1/2 relative bg-[#EDE8DE] flex items-center justify-center order-1 md:order-2">
+            {/* Mobile: fixed height cover so image fills perfectly */}
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, ease: "easeOut" }}
               viewport={{ once: true }}
-              className="relative w-full py-8 px-4 md:py-12 md:px-8"
+              className="relative w-full h-[60vw] md:h-auto md:py-12 md:px-8"
             >
               <Image
                 src="/images/13year.webp"
                 alt="13 Years of Zoya Events Excellence"
-                width={1400}
-                height={800}
-                className="w-full h-auto object-contain rounded-sm"
+                fill
+                className="object-cover md:object-contain rounded-sm"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
+              {/* Desktop: show with padding as before */}
+              <div className="hidden md:block" style={{ paddingTop: "57%" }} />
             </motion.div>
 
             {/* Gold corner accents */}
