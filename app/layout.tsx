@@ -25,7 +25,11 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Zoya Event | Premium Exhibition Infrastructure & Luxury Event Management in Mumbai",
+  metadataBase: new URL("https://zoya-events.vercel.app"),
+  title: {
+    default: "Zoya Event | Luxury Event Management Mumbai",
+    template: "%s | Zoya Event",
+  },
   description:
     "Mumbai's premier turnkey event production company. Providing German hangers, pagoda tents, Octonorm stalls, industrial AC, staging, corporate lounges, Mojo barricades, and full inventory hire. Specializing in luxury event management, we create unforgettable experiences for corporate events, exhibitions, and private parties. Contact us for bespoke event solutions that elevate your brand and captivate your audience.",
   keywords: [
