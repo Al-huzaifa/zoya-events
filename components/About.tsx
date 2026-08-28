@@ -17,47 +17,52 @@ export default function About() {
         <section className="flex flex-col md:flex-row w-full">
 
           {/* Left: Image */}
-          <div className="w-full md:w-1/2 relative bg-[#EDE8DE]">
+          <div className="w-full md:w-1/2 bg-[#EDE8DE] flex items-center justify-center">
 
-            {/* MOBILE: aspect-ratio container so image fills perfectly */}
-            <div className="relative w-full aspect-[4/3] md:hidden overflow-hidden">
-              <Image
-                src="/images/salesoffice.webp"
-                alt="Luxury Sales Office by Zoya Events"
-                fill
-                className="object-cover"
-                sizes="100vw"
-              />
-              {/* Gold corner accents */}
-              <div className="absolute top-4 left-4 h-6 w-6 border-t-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10" />
-              <div className="absolute bottom-4 right-4 h-6 w-6 border-b-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10" />
+            {/* MOBILE: full image visible, no crop */}
+            <div className="relative w-full px-6 py-8 md:hidden flex items-center justify-center">
+              <div className="relative w-full">
+                <Image
+                  src="/images/salesoffice.webp"
+                  alt="Luxury Sales Office by Zoya Events"
+                  width={1200}
+                  height={900}
+                  className="w-full h-auto object-contain rounded-sm"
+                  sizes="100vw"
+                />
+                {/* Gold corner accents */}
+                <div className="absolute top-0 left-0 h-6 w-6 border-t-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10" />
+                <div className="absolute bottom-0 right-0 h-6 w-6 border-b-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10" />
+              </div>
             </div>
 
-            {/* DESKTOP: original contained layout with padding */}
+            {/* DESKTOP: contained layout with max-height cap */}
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, ease: "easeOut" }}
               viewport={{ once: true }}
-              className="hidden md:block relative w-full py-12 px-8"
+              className="hidden md:flex items-center justify-center w-full py-12 px-8"
             >
-              <Image
-                src="/images/salesoffice.webp"
-                alt="Luxury Sales Office by Zoya Events"
-                width={1200}
-                height={900}
-                className="w-full h-auto object-contain rounded-sm"
-                sizes="50vw"
-              />
-              {/* Gold corner accents */}
-              <div
-                className="absolute top-6 left-6 h-8 w-8 border-t-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10"
-                style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
-              />
-              <div
-                className="absolute bottom-6 right-6 h-8 w-8 border-b-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10"
-                style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
-              />
+              <div className="relative w-full max-h-[480px] flex items-center justify-center">
+                <Image
+                  src="/images/salesoffice.webp"
+                  alt="Luxury Sales Office by Zoya Events"
+                  width={1200}
+                  height={900}
+                  className="w-full h-auto max-h-[480px] object-contain rounded-sm"
+                  sizes="50vw"
+                />
+                {/* Gold corner accents */}
+                <div
+                  className="absolute top-0 left-0 h-8 w-8 border-t-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10"
+                  style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
+                />
+                <div
+                  className="absolute bottom-0 right-0 h-8 w-8 border-b-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10"
+                  style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
+                />
+              </div>
             </motion.div>
           </div>
 
@@ -145,47 +150,52 @@ export default function About() {
           </div>
 
           {/* Right: Image */}
-          <div className="w-full md:w-1/2 relative bg-[#EDE8DE] order-1 md:order-2">
+          <div className="w-full md:w-1/2 bg-[#EDE8DE] flex items-center justify-center order-1 md:order-2">
 
-            {/* MOBILE: aspect-ratio container so image fills perfectly */}
-            <div className="relative w-full aspect-[4/3] md:hidden overflow-hidden">
-              <Image
-                src="/images/13year.webp"
-                alt="13 Years of Zoya Events Excellence"
-                fill
-                className="object-cover"
-                sizes="100vw"
-              />
-              {/* Gold corner accents */}
-              <div className="absolute top-4 right-4 h-6 w-6 border-t-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10" />
-              <div className="absolute bottom-4 left-4 h-6 w-6 border-b-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10" />
+            {/* MOBILE: full image visible, no crop */}
+            <div className="relative w-full px-6 py-8 md:hidden flex items-center justify-center">
+              <div className="relative w-full">
+                <Image
+                  src="/images/13year.webp"
+                  alt="13 Years of Zoya Events Excellence"
+                  width={1400}
+                  height={800}
+                  className="w-full h-auto object-contain rounded-sm"
+                  sizes="100vw"
+                />
+                {/* Gold corner accents */}
+                <div className="absolute top-0 right-0 h-6 w-6 border-t-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10" />
+                <div className="absolute bottom-0 left-0 h-6 w-6 border-b-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10" />
+              </div>
             </div>
 
-            {/* DESKTOP: original contained layout with padding */}
+            {/* DESKTOP: contained layout with max-height cap */}
             <motion.div
               initial={{ opacity: 0, scale: 0.97 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, ease: "easeOut" }}
               viewport={{ once: true }}
-              className="hidden md:block relative w-full py-12 px-8"
+              className="hidden md:flex items-center justify-center w-full py-12 px-8"
             >
-              <Image
-                src="/images/13year.webp"
-                alt="13 Years of Zoya Events Excellence"
-                width={1400}
-                height={800}
-                className="w-full h-auto object-contain rounded-sm"
-                sizes="50vw"
-              />
-              {/* Gold corner accents */}
-              <div
-                className="absolute top-6 right-6 h-8 w-8 border-t-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10"
-                style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
-              />
-              <div
-                className="absolute bottom-6 left-6 h-8 w-8 border-b-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10"
-                style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
-              />
+              <div className="relative w-full max-h-[480px] flex items-center justify-center">
+                <Image
+                  src="/images/13year.webp"
+                  alt="13 Years of Zoya Events Excellence"
+                  width={1400}
+                  height={800}
+                  className="w-full h-auto max-h-[480px] object-contain rounded-sm"
+                  sizes="50vw"
+                />
+                {/* Gold corner accents */}
+                <div
+                  className="absolute top-0 right-0 h-8 w-8 border-t-2 border-r-2 border-[#D4AF37]/70 pointer-events-none z-10"
+                  style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
+                />
+                <div
+                  className="absolute bottom-0 left-0 h-8 w-8 border-b-2 border-l-2 border-[#D4AF37]/70 pointer-events-none z-10"
+                  style={{ filter: "drop-shadow(0 2px 8px rgba(212,175,55,0.3))" }}
+                />
+              </div>
             </motion.div>
           </div>
         </section>
