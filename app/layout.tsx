@@ -25,7 +25,10 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://zoya-events.vercel.app"),
+  metadataBase: new URL("https://www.zoyaevent.com"),
+  verification: {
+    google: "googlee1e35ba9634a8b8d",
+  },
   title: {
     default: "Zoya Event | Luxury Event Management Mumbai",
     template: "%s | Zoya Event",

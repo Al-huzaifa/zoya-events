@@ -259,7 +259,7 @@ export default function Hero() {
         className="relative w-full bg-black -mt-[64px] sm:-mt-[76px] md:-mt-[84px]"
         style={{ height: isMobile ? "100svh" : `${SCROLL_TRACK_VH}vh` }}
       >
-        <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
+        <div className="relative md:sticky md:top-0 h-[100svh] w-full overflow-hidden">
 
           {/* ═══════════════════════════════════════════════════════
               VIDEO LAYER
