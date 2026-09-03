@@ -20,9 +20,6 @@ const SUBMITTED_KEY = "zoya_form_submitted";
 const VIDEO_SRC =
   "https://res.cloudinary.com/dv36bszdw/video/upload/f_auto,q_auto:best,w_1920/Aerial_drone_shot_luxury_event_202607030230_lrpxeb.mp4";
 
-// How much scroll distance drives the video scrub.
-const SCROLL_TRACK_VH = 300;
-
 // Delay after the hero clears the viewport before the enquiry card appears.
 const POPUP_IDLE_MS = 2500;
 
@@ -40,7 +37,6 @@ function useMobileDetect() {
 
 export default function Hero() {
   const isMobile = useMobileDetect();
-
   
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -115,7 +111,7 @@ export default function Hero() {
     };
   }, [isMobile]);
 
-  // Desktop: pre-buffer for scroll scrub. Mobile: nothing needed (autoPlay attr handles it).
+  // Desktop: pre-buffer for scroll scrub. Mobile: nothing needed.
   useEffect(() => {
     if (isMobile) return;
     const video = videoRef.current;
@@ -134,6 +130,11 @@ export default function Hero() {
           .catch(() => {});
       }
     };
+
+    // Deep Fix: If video loads instantly from browser cache before listener attaches
+    if (video.readyState >= 1) {
+      onMetadata();
+    }
 
     video.addEventListener("loadedmetadata", onMetadata);
     video.load();
@@ -196,15 +197,6 @@ export default function Hero() {
     };
   }, [openPopup]);
 
-  useEffect(() => {
-    if (!popupVisible) return;
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") handleClose();
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [popupVisible, handleClose]);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((current) => ({ ...current, [name]: value }));
@@ -242,9 +234,6 @@ export default function Hero() {
     }
   };
 
-  /* ═══════════════════════════════════════════════════════════
-     STATS DATA — shown on both mobile and desktop
-     ═══════════════════════════════════════════════════════════ */
   const stats = [
     { num: "500+", label: "Events Delivered" },
     { num: "10+", label: "Years Excellence" },
@@ -253,42 +242,31 @@ export default function Hero() {
 
   return (
     <>
-      {/* ── On mobile: 100vh fixed, no scroll track. On desktop: 300vh for scrub ── */}
+      {/* ── CSS Driven Heights: 100svh for Mobile | 300vh for Desktop Scrubbing ── */}
       <section
         ref={sectionRef}
-        className="relative w-full bg-black -mt-[64px] sm:-mt-[76px] md:-mt-[84px]"
-        style={{ height: isMobile ? "100svh" : `${SCROLL_TRACK_VH}vh` }}
+        className="relative w-full bg-black h-[100svh] md:h-[300vh] -mt-[64px] sm:-mt-[76px] md:-mt-[84px]"
       >
         <div className="relative md:sticky md:top-0 h-[100svh] w-full overflow-hidden">
-
-          {/* ═══════════════════════════════════════════════════════
-              VIDEO LAYER
-              Mobile:   object-contain → shows FULL panorama
-              Desktop:  object-cover  → immersive full-bleed
-              ═══════════════════════════════════════════════════════ */}
           <div className="absolute inset-0">
             <motion.div
               className="absolute inset-0"
               style={{ scale: videoScale }}
             >
+              {/* Force autoPlay and loop everywhere to bypass iOS restrictions smoothly */}
               <video
                 ref={videoRef}
                 src={VIDEO_SRC}
                 muted
                 playsInline
                 preload="auto"
-                // Mobile: autoplay loop. Desktop: scrubbed via currentTime.
-                autoPlay={isMobile}
-                loop={isMobile}
+                autoPlay
+                loop
                 className="absolute inset-0 h-full w-full object-cover"
                 style={{ objectPosition: "center 25%" }}
               />
             </motion.div>
 
-            {/* ── OVERLAYS — different strategy per breakpoint ── */}
-
-            {/* MOBILE OVERLAY: strong gradient from transparent at top
-                to solid black at bottom — text always on dark canvas */}
             <div
               className="absolute inset-0 sm:hidden pointer-events-none"
               style={{
@@ -306,8 +284,6 @@ export default function Hero() {
                 `,
               }}
             />
-
-            {/* DESKTOP OVERLAY: centered radial for text readability */}
             <div
               className="absolute inset-0 hidden sm:block pointer-events-none"
               style={{
@@ -315,14 +291,11 @@ export default function Hero() {
                   "radial-gradient(ellipse 80% 70% at 50% 50%, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.1) 100%)",
               }}
             />
-
-            {/* DESKTOP edge vignettes */}
             <div className="absolute inset-x-0 top-0 h-[18%] bg-gradient-to-b from-black/50 to-transparent pointer-events-none hidden sm:block" />
             <div className="absolute inset-x-0 bottom-0 h-[25%] bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none hidden sm:block" />
             <div className="absolute inset-y-0 left-0 w-[10%] bg-gradient-to-r from-black/35 to-transparent pointer-events-none hidden sm:block" />
             <div className="absolute inset-y-0 right-0 w-[10%] bg-gradient-to-l from-black/35 to-transparent pointer-events-none hidden sm:block" />
 
-            {/* ── SUBTLE GRAIN TEXTURE ── */}
             <div
               className="absolute inset-0 opacity-[0.035] pointer-events-none mix-blend-screen"
               style={{
@@ -330,17 +303,9 @@ export default function Hero() {
                   "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")",
               }}
             />
-
-            {/* ── THIN GOLD ACCENT LINE (below navbar) ── */}
             <div className="absolute inset-x-0 top-[64px] sm:top-[76px] md:top-[84px] h-px bg-gradient-to-r from-transparent via-[#D4AF37]/40 to-transparent z-10" />
           </div>
 
-          {/* ═══════════════════════════════════════════════════════
-              CONTENT LAYER
-              Mobile:   flex-end layout, content sits in the solid-dark
-                        bottom zone beneath the contained video
-              Desktop:  centered overlay on full-bleed video
-              ═══════════════════════════════════════════════════════ */}
           <motion.div
             style={{ opacity: contentOpacity }}
             className="relative z-20 flex h-full w-full flex-col
@@ -348,7 +313,6 @@ export default function Hero() {
                        sm:justify-center sm:pb-0
                        px-5 sm:px-8 text-center"
           >
-            {/* ── Est. tag ── */}
             <motion.span
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -362,7 +326,6 @@ export default function Hero() {
               <span className="h-px w-4 sm:w-8 bg-[#D4AF37]/60" />
             </motion.span>
 
-            {/* ── Main heading ── */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -376,7 +339,6 @@ export default function Hero() {
               ZOYA EVENTS
             </motion.h1>
 
-            {/* ── Gold divider with diamond ── */}
             <motion.div
               initial={{ scaleX: 0, opacity: 0 }}
               animate={{ scaleX: 1, opacity: 1 }}
@@ -388,7 +350,6 @@ export default function Hero() {
               <div className="h-px w-6 sm:w-14 bg-gradient-to-l from-transparent to-[#D4AF37]" />
             </motion.div>
 
-            {/* ── Tagline — high contrast, always visible ── */}
             <motion.p
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
@@ -403,7 +364,6 @@ export default function Hero() {
               Infrastructure Built for Events That Cannot Fail
             </motion.p>
 
-            {/* ── Body description — crisp white on mobile's solid dark zone ── */}
             <motion.p
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -420,7 +380,6 @@ export default function Hero() {
               exhibitions across Mumbai.
             </motion.p>
 
-            {/* ── CTA buttons ── */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
@@ -460,7 +419,6 @@ export default function Hero() {
               </button>
             </motion.div>
 
-            {/* ── Trust stats — VISIBLE ON MOBILE TOO ── */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -487,7 +445,6 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* ── SCROLL CUE — animated pulse — desktop only ── */}
           <motion.div
             style={{ opacity: scrollCueOpacity }}
             className="absolute bottom-3 sm:bottom-8 left-1/2 z-20 hidden sm:flex -translate-x-1/2 flex-col items-center gap-1.5 sm:gap-2"
@@ -495,7 +452,6 @@ export default function Hero() {
             <span className="text-[7px] sm:text-[9px] font-bold uppercase tracking-[0.3em] text-[#D4AF37]/80">
               Scroll
             </span>
-            {/* Animated scroll line */}
             <div className="relative h-7 sm:h-10 w-px overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-b from-[#D4AF37]/50 to-transparent" />
               <motion.div
@@ -513,7 +469,6 @@ export default function Hero() {
         </div>
       </section>
 
-      {/* ── CORNER ENQUIRY CARD ── */}
       <AnimatePresence>
         {popupVisible && (
           <div className="fixed bottom-5 right-5 z-[1000] w-[calc(100%-2.5rem)] max-w-sm sm:bottom-8 sm:right-8">

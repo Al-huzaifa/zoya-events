@@ -100,6 +100,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>
+      <head>
+        <meta
+          name="google-site-verification"
+          content="JeIsEmF6JXZ6trPZYX6M_MRlBbSIkT2-e3M_T2S1eYU"
+        />
+      </head>
       <body className="font-sans antialiased bg-[#F5F1E8] pt-[68px] sm:pt-[80px] md:pt-[88px]">
         <ScrollProgress />
         <Navbar />

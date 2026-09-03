@@ -30,11 +30,15 @@ export default function Navbar() {
       const nav = navRef.current;
       if (!nav) return;
 
+      const navStyle = nav.style as CSSStyleDeclaration & {
+        webkitBackdropFilter?: string;
+      };
+
       if (!isHomePage) {
         // Non-home pages: always fully opaque dark glass
         nav.style.backgroundColor = "rgba(6,4,1,0.97)";
         nav.style.backdropFilter = "blur(20px) saturate(180%)";
-        nav.style.webkitBackdropFilter = "blur(20px) saturate(180%)";
+        navStyle.webkitBackdropFilter = "blur(20px) saturate(180%)";
         nav.style.borderBottomColor = "rgba(212,175,55,0.35)";
         nav.style.boxShadow = "0 4px 32px rgba(0,0,0,0.5)";
         return;
@@ -52,7 +56,7 @@ export default function Navbar() {
 
       nav.style.backgroundColor = `rgba(6,4,1,${bgA})`;
       nav.style.backdropFilter  = `blur(${blurPx}px) saturate(${saturate}%)`;
-      nav.style.webkitBackdropFilter = `blur(${blurPx}px) saturate(${saturate}%)`;
+      navStyle.webkitBackdropFilter = `blur(${blurPx}px) saturate(${saturate}%)`;
       nav.style.borderBottomColor = `rgba(212,175,55,${borderA})`;
       nav.style.boxShadow = t > 0.05
         ? `0 4px 32px rgba(0,0,0,${shadowA})`
