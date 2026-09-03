@@ -339,7 +339,7 @@ export default function OurWork() {
               href="/contact"
               className="text-[#0a0a0a] font-semibold border-b border-[#D4AF37]/50 hover:text-[#8B6914] transition-colors duration-200"
             >
-              Tell us what you're building →
+              Tell us what you&apos;re building →
             </Link>
           </p>
           <div className="hidden sm:flex items-center gap-2.5">

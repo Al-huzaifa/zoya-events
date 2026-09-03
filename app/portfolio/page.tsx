@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -17,17 +17,15 @@ export default function PortfolioGalleryPage() {
   const categories = getAllCategories();
 
   // Filter projects based on category and search query
-  const filteredProjects = useMemo(() => {
-    return allProjects.filter((project) => {
-      const matchesCategory = activeCategory === "All" || project.category === activeCategory;
-      const query = searchQuery.toLowerCase();
-      const matchesSearch =
-        project.title.toLowerCase().includes(query) ||
-        project.location.toLowerCase().includes(query) ||
-        project.category.toLowerCase().includes(query);
-      return matchesCategory && matchesSearch;
-    });
-  }, [activeCategory, searchQuery]);
+  const query = searchQuery.toLowerCase();
+  const filteredProjects = allProjects.filter((project) => {
+    const matchesCategory = activeCategory === "All" || project.category === activeCategory;
+    const matchesSearch =
+      project.title.toLowerCase().includes(query) ||
+      project.location.toLowerCase().includes(query) ||
+      project.category.toLowerCase().includes(query);
+    return matchesCategory && matchesSearch;
+  });
 
   return (
     <div className="bg-[#FFFBF0] min-h-screen text-[#0a0a0a] font-sans selection:bg-[#D4AF37] selection:text-black pb-24">
@@ -149,7 +147,7 @@ export default function PortfolioGalleryPage() {
                 </div>
                 <h3 className="text-2xl font-serif text-[#0a0a0a] mb-2">No projects found</h3>
                 <p className="text-[#6b5f3f] font-light">
-                  We couldn't find any projects matching your search criteria.
+                  We couldn&apos;t find any projects matching your search criteria.
                 </p>
                 <button
                   onClick={() => {
