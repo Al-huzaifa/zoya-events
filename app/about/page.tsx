@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ChevronRight } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 
@@ -65,9 +66,11 @@ export default function AboutPage() {
         ========================================================= */}
         <section className="relative h-[85vh] flex items-center justify-center overflow-hidden border-b border-[#D4AF37]/20">
           <div className="absolute inset-0 z-0">
-             <img 
+             <Image
                src="/images/aboutpage.webp" 
                alt="Zoya Events Background" 
+               width={1920}
+               height={1080}
                className="w-full h-full object-cover"
              />
              {/* Dark overlay — image must be vivid and visible */}
@@ -81,9 +84,11 @@ export default function AboutPage() {
               transition={{ duration: 1 }}
               className="flex justify-center mb-8"
             >
-              <img
+              <Image
                 src="/images/transparentlogo.png"
                 alt="Zoya Events Logo"
+                width={600}
+                height={300}
                 className="h-48 md:h-64 lg:h-72 w-auto object-contain drop-shadow-[0_0_40px_rgba(212,175,55,0.4)]"
               />
             </motion.div>
@@ -161,14 +166,14 @@ export default function AboutPage() {
               </motion.div>
             </div>
             <div className="w-full md:w-1/2 bg-[#F5F1E8] flex items-center justify-center min-h-[350px] md:min-h-[70vh] order-1 md:order-2">
-              <img src="/images/aboutplanningphase.webp" alt="Planning Phase" className="w-full h-full object-contain" />
+              <Image src="/images/aboutplanningphase.webp" alt="Planning Phase" width={1200} height={900} className="w-full h-full object-contain" />
             </div>
           </section>
 
           {/* --- BLOCK 2: SALES OFFICE (Image Left, Text Right) --- */}
           <section className="flex flex-col md:flex-row w-full min-h-[60vh] md:min-h-[70vh]">
             <div className="w-full md:w-1/2 bg-[#F5F1E8] flex items-center justify-center min-h-[350px] md:min-h-[70vh]">
-              <img src="/images/aboutsalesoffice.webp" alt="Sales Office" className="w-full h-full object-contain" />
+              <Image src="/images/aboutsalesoffice.webp" alt="Sales Office" width={1200} height={900} className="w-full h-full object-contain" />
             </div>
             <div className="w-full md:w-1/2 bg-[#FFFBF0] flex flex-col justify-center px-8 py-16 md:px-16 lg:px-24 xl:px-32">
               <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
@@ -218,14 +223,14 @@ export default function AboutPage() {
               </motion.div>
             </div>
             <div className="w-full md:w-1/2 bg-[#F5F1E8] flex items-center justify-center min-h-[350px] md:min-h-[70vh] order-1 md:order-2">
-              <img src="/images/about german hanger.png" alt="Aluminium Hangar Advantages" className="w-full h-full object-contain" />
+              <Image src="/images/about german hanger.png" alt="Aluminium Hangar Advantages" width={1200} height={900} className="w-full h-full object-contain" />
             </div>
           </section>
 
           {/* --- BLOCK 4: TRANSFORMATION (Image Left, Text Right) --- */}
           <section className="flex flex-col md:flex-row w-full min-h-[60vh] md:min-h-[70vh]">
             <div className="w-full md:w-1/2 bg-[#F5F1E8] flex items-center justify-center min-h-[350px] md:min-h-[70vh]">
-              <img src="/images/German Hangar Transformation.webp" alt="Hangar Transformation" className="w-full h-full object-contain" />
+              <Image src="/images/German Hangar Transformation.webp" alt="Hangar Transformation" width={1200} height={900} className="w-full h-full object-contain" />
             </div>
             <div className="w-full md:w-1/2 bg-[#FFFBF0] flex flex-col justify-center px-8 py-16 md:px-16 lg:px-24 xl:px-32">
               <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
@@ -274,9 +279,11 @@ export default function AboutPage() {
             
             {/* --- Background Logo (Highly Visible) --- */}
             <div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none px-4">
-                <img 
+                <Image
                     src="/images/transparentlogo.png" 
                     alt="Zoya Event Background Logo" 
+                  width={1200}
+                  height={600}
                     className="w-[95%] md:w-[80%] lg:w-[60%] max-w-[800px] object-contain opacity-60 md:opacity-80"
                 />
             </div>

@@ -26,8 +26,12 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.zoyaevent.com"),
+  applicationName: "Zoya Event",
+  alternates: {
+    canonical: "/",
+  },
   verification: {
-    google: "googlee1e35ba9634a8b8d",
+    google: "JeIsEmF6JXZ6trPZYX6M_MRlBbSIkT2-e3M_T2S1eYU",
   },
   title: {
     default: "Zoya Event | Luxury Event Management Mumbai",
@@ -98,12 +102,54 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // The "Big Company" Multi-Entity Schema Array using live Zoya Event data
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Zoya Event",
+      "image": "https://www.zoyaevent.com/favicon.png",
+      "@id": "https://www.zoyaevent.com/#organization",
+      "url": "https://www.zoyaevent.com",
+      "telephone": "+91-9503802865",
+      "email": "zoyaevent01@gmail.com",
+      "priceRange": "$$$",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Pinnacle Corporate Park, 10th Floor, Office No.11, Next to Trader Centre BKC",
+        "addressLocality": "Bandra (East), Mumbai",
+        "addressRegion": "Maharashtra",
+        "postalCode": "400051",
+        "addressCountry": "IN"
+      },
+      "sameAs": [
+        "https://www.instagram.com/zoya.event?igsh=MThwZTh0cDVuamRjMA==",
+        "https://www.facebook.com/share/1DeTQUHSt8/",
+        "https://wa.me/919503802865"
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Zoya Event",
+      "url": "https://www.zoyaevent.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.zoyaevent.com/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+  ];
+
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>
       <head>
-        <meta
-          name="google-site-verification"
-          content="JeIsEmF6JXZ6trPZYX6M_MRlBbSIkT2-e3M_T2S1eYU"
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="font-sans antialiased bg-[#F5F1E8] pt-[68px] sm:pt-[80px] md:pt-[88px]">

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import {
   motion,
   useMotionValue,
@@ -66,8 +66,6 @@ function ServiceCard({
   parentInView: boolean;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [hovered, setHovered] = useState(false);
-
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const sx = useSpring(mx, { stiffness: 130, damping: 20 });
@@ -84,7 +82,6 @@ function ServiceCard({
   const handleMouseLeave = () => {
     mx.set(0);
     my.set(0);
-    setHovered(false);
   };
 
   const Icon = service.icon;
@@ -105,7 +102,6 @@ function ServiceCard({
         ref={cardRef}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        onMouseEnter={() => setHovered(true)}
         style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}
         className="relative w-full h-full cursor-pointer group"
       >

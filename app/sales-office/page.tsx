@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowUpRight, 
@@ -146,7 +147,7 @@ export default function SalesOfficePage() {
       {/* ================= SECTION 1: HERO ================= */}
       <section className="relative h-[90vh] md:h-screen flex items-center justify-center text-center px-4 md:px-6 pt-16 md:pt-0 border-b border-[#D4AF37]/20">
         <div className="absolute inset-0 z-0">
-          <img src="/images/salesoffice/salesoffice-1.webp" alt="Luxury Background" className="w-full h-full object-cover" />
+          <Image src="/images/salesoffice/salesoffice-1.webp" alt="Luxury Background" width={1920} height={1080} className="w-full h-full object-cover" />
           {/* Dark overlay — make the image vivid */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/35 to-black/70" />
         </div>
@@ -242,7 +243,7 @@ export default function SalesOfficePage() {
           </div>
           {/* Uncut Image using object-contain on a black background */}
           <div className="w-full md:w-1/2 bg-[#F5F1E8] flex items-center justify-center min-h-[350px] md:min-h-[70vh] order-1 md:order-2">
-            <img src="/images/salesoffice/salesofficepermanent.webp" alt="Permanent Hub" className="w-full h-full object-contain" />
+            <Image src="/images/salesoffice/salesofficepermanent.webp" alt="Permanent Hub" width={1200} height={900} className="w-full h-full object-contain" />
           </div>
         </div>
 
@@ -250,7 +251,7 @@ export default function SalesOfficePage() {
         <div className="flex flex-col md:flex-row w-full min-h-[60vh] md:min-h-[70vh]">
           {/* Uncut Image using object-contain on a black background */}
           <div className="w-full md:w-1/2 bg-[#F5F1E8] flex items-center justify-center min-h-[350px] md:min-h-[70vh]">
-            <img src="/images/salesoffice/salesofficetemporary.webp" alt="Temporary Hangar" className="w-full h-full object-contain" />
+            <Image src="/images/salesoffice/salesofficetemporary.webp" alt="Temporary Hangar" width={1200} height={900} className="w-full h-full object-contain" />
           </div>
           <div className="w-full md:w-1/2 bg-[#FFFBF0] flex flex-col justify-center px-8 py-16 md:px-16 lg:px-24 xl:px-32">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} viewport={{ once: true }}>
@@ -293,9 +294,11 @@ export default function SalesOfficePage() {
                 }} 
                 className="relative aspect-[4/5] cursor-pointer group bg-[#F5F1E8] border border-[#D4AF37]/30 hover:border-[#D4AF37] rounded-sm overflow-hidden shadow-2xl"
               >
-                <img 
+                <Image
                   src={proj.mainSrc} 
                   alt={proj.title} 
+                  width={1200}
+                  height={1500}
                   className="w-full h-full object-cover opacity-70 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700" 
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/50 to-transparent" />
@@ -345,7 +348,7 @@ export default function SalesOfficePage() {
                   className="relative w-full h-full"
                 >
                   {/* Using object-contain in the modal so no part of the image is cut off while viewing */}
-                  <img src={selectedProject.gallery[galleryIdx]} alt="Gallery" className="w-full h-full object-contain p-4 lg:p-12" />
+                  <Image src={selectedProject.gallery[galleryIdx]} alt="Gallery" width={1600} height={1200} className="w-full h-full object-contain p-4 lg:p-12" />
                 </motion.div>
               </AnimatePresence>
               

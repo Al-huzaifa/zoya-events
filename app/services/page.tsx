@@ -1,17 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
-
-// --- DYNAMIC GOLDEN PARTICLES (Fixed for Hydration Mismatch) ---
-interface Particle {
-  id: number;
-  x: string;
-  duration: number;
-  delay: number;
-}
+import { motion, useScroll, useTransform } from "framer-motion";
 
 // ✅ Pre-computed values — same on server AND client (no hydration crash)
 const serviceParticles = [
@@ -61,39 +53,6 @@ const GoldenBackground = () => {
       ))}
     </div>
   );
-};
-
-// --- Animated Counter Component ---
-interface AnimatedNumberProps {
-  value: number;
-  suffix?: string;
-}
-
-const AnimatedNumber = ({ value, suffix = "" }: AnimatedNumberProps) => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-50px" });
-  const [displayValue, setDisplayValue] = useState(0);
-
-  useEffect(() => {
-    if (inView) {
-      let start = 0;
-      const duration = 1500; 
-      const increment = value / (duration / 16); 
-      
-      const timer = setInterval(() => {
-        start += increment;
-        if (start >= value) {
-          clearInterval(timer);
-          setDisplayValue(value);
-        } else {
-          setDisplayValue(Math.floor(start));
-        }
-      }, 16);
-      return () => clearInterval(timer);
-    }
-  }, [inView, value]);
-
-  return <span ref={ref}>{displayValue}{suffix}</span>;
 };
 
 // --- Services Zig-Zag Data ---
